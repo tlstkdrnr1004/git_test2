@@ -1653,10 +1653,79 @@
     .tool-list, .tool-result { padding: 8px 12px; }
   }
 
+  /* ===== AI 자동 입력: 원문 종류 ===== */
+  .autofill-type { font-size: 8.5pt; padding: 4px 6px; border: 1px solid #d0d7e3; border-radius: 6px; background: #fff; color: #1a365d; }
+  /* ===== 결과보고서 ===== */
+  .report-num { width: 64px; font-size: 8.5pt; padding: 3px 6px; border: 1px solid #d0d7e3; border-radius: 6px; }
+  #report-overlay .readme-content { min-height: 0; }
+  /* ===== 문장 다듬기 ===== */
+  .pl-item { display: flex; gap: 10px; align-items: flex-start; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; font-size: 9pt; line-height: 1.55; cursor: pointer; }
+  .pl-item:hover { border-color: #4a6fa5; background: #f7f9fc; }
+  .pl-item.fixed { opacity: 0.55; }
+  .pl-body { flex: 1; min-width: 0; }
+  .pl-field { font-size: 7.5pt; font-weight: 700; color: #4a6fa5; }
+  .pl-msg { color: #2d3748; }
+  .pl-snippet { font-size: 8pt; color: #718096; margin-top: 2px; word-break: break-all; }
+  .pl-snippet mark { background: #fff3b0; color: inherit; padding: 0 1px; }
+  .pl-item .readme-action-btn { flex-shrink: 0; padding: 4px 10px; font-size: 8pt; }
+  /* ===== 디자인 · 증명사진 패널 ===== */
+  .design-themes { display: flex; gap: 4px; margin: 4px 0 2px; }
+  .design-theme-btn { flex: 1; padding: 5px 4px; font-size: 8pt; font-weight: 600; border: 1px solid #d0d7e3; border-radius: 6px; background: #f7f9fc; color: #4a5568; cursor: pointer; }
+  .design-theme-btn.active { background: #1a365d; border-color: #1a365d; color: #fff; }
+  .design-colors { display: flex; gap: 6px; margin-top: 4px; }
+  .design-color { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px #d0d7e3; cursor: pointer; padding: 0; }
+  .design-color.active { box-shadow: 0 0 0 2px #1a365d; }
+  /* ===== 증명사진 ===== */
+  .header-photo { flex-shrink: 0; width: 24mm; height: 32mm; margin: 0 10px 0 auto; border: 1px solid #d0d7e3; border-radius: 3px; overflow: hidden; background: #f7f9fc; }
+  .header-photo[hidden] { display: none; }
+  .header-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* ===== 분량 실시간 표시 ===== */
+  .page { position: relative; }
+  #field-meter {
+    position: absolute; z-index: 9990; display: none; pointer-events: none;
+    background: #1a365d; color: #fff; font-size: 7.5pt; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2); white-space: nowrap;
+  }
+  #field-meter.over { background: #c53030; }
+  .a4-limit-line {
+    position: absolute; left: 0; right: 0; height: 0; border-top: 2px dashed #e53e3e; pointer-events: none; z-index: 5; display: none;
+  }
+  .a4-limit-line span {
+    position: absolute; right: 8px; top: -18px; background: #e53e3e; color: #fff; font-size: 7pt; font-weight: 700; padding: 1px 8px; border-radius: 8px;
+  }
+  /* ===== 디자인 템플릿: 강조 색 변수 (클래식 기본값 #1a365d) ===== */
+  .page { --rh-accent: #1a365d; --rh-accent-soft: #4a6fa5; --rh-accent-bg: #f0f4fa; }
+  .page .header { border-bottom-color: var(--rh-accent); }
+  .page .header-left h1, .page .section-title, .page .project-name, .page .project-role strong { color: var(--rh-accent); }
+  .page .header-left .subtitle, .page .skill-cat, .page .project-desc, .page .project-link { color: var(--rh-accent-soft); }
+  .page .section-title { border-left-color: var(--rh-accent-soft); }
+  .page .header-right .badge { background: var(--rh-accent); }
+  .page .contact-info span::before { background: var(--rh-accent-soft); }
+  .page .summary { background: var(--rh-accent-bg); }
+  .page .skill-tag { color: var(--rh-accent); }
+  /* 모던: 이름 아래 굵은 색 띠, 섹션 제목 밑줄, 프로젝트 카드 왼쪽 색 선 */
+  .page.theme-modern .header { border-bottom: none; padding: 10px 12px; background: var(--rh-accent); border-radius: 6px; }
+  .page.theme-modern .header-left h1, .page.theme-modern .header-left .subtitle, .page.theme-modern .contact-info, .page.theme-modern .header-right { color: #fff; }
+  .page.theme-modern .contact-info span::before { background: #fff; }
+  .page.theme-modern .header-right .badge { background: #fff; color: var(--rh-accent); }
+  .page.theme-modern .section-title { border-left: none; padding-left: 0; border-bottom: 2px solid var(--rh-accent); padding-bottom: 2px; text-transform: none; }
+  .page.theme-modern .project-item { border-left: 4px solid var(--rh-accent); background: #fff; }
+  .page.theme-modern .header-photo { border-color: rgba(255,255,255,0.6); }
+  /* 미니멀: 배경색 없이 흑백 위주, 얇은 선 */
+  .page.theme-minimal .header { border-bottom: 1px solid #2d3748; }
+  .page.theme-minimal .section-title { border-left: none; padding-left: 0; letter-spacing: 0.5px; border-bottom: 1px solid #cbd5e0; padding-bottom: 2px; }
+  .page.theme-minimal .summary, .page.theme-minimal .project-item { background: transparent; }
+  .page.theme-minimal .project-item { border: none; border-bottom: 1px solid #e2e8f0; border-radius: 0; padding-left: 0; padding-right: 0; }
+  .page.theme-minimal .skill-tag { background: transparent; border: 1px solid #cbd5e0; }
+  .page.theme-minimal .project-result { background: transparent; color: var(--rh-accent); border: 1px solid currentColor; }
+  .page.theme-minimal .header-right .badge { background: transparent; color: var(--rh-accent); border: 1px solid var(--rh-accent); }
+  .page, .page * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
   /* ===== Print: hide all AI UI ===== */
   @media print {
     .tool-overlay { display: none !important; }
     #app-toast { display: none !important; }
+    #field-meter, .a4-limit-line { display: none !important; }
     .page { padding: 0; max-width: none; }
     .guide { display: none !important; }
     #ai-control-panel { display: none !important; }
@@ -1673,10 +1742,21 @@
     .draft-helper-tools { display: none !important; }
     .draft-helper-box { display: none !important; }
     [data-print-empty="true"] { display: none !important; }
-    .hidden-section { display: block !important; }
-    [contenteditable="true"] {
+    /* 기존에는 숨긴 섹션도 인쇄 때 다시 보이게(display:block) 해서 "숨기기"가 PDF에 반영되지 않았다.
+       숨긴 섹션은 제목까지 통째로 인쇄하지 않는다. */
+    .section:has(> .hidden-section) { display: none !important; }
+    /* 편집용 버튼은 PDF에 넣지 않는다 (기존에는 "+ 기술 스택 추가" 등이 인쇄됐다) */
+    .project-add-wrap, .inline-add-wrap, .dynamic-item-header, .section-actions { display: none !important; }
+    /* 편집 표시만 지운다. 배지·요약·성과처럼 배경이 디자인인 칸은 유지한다
+       (기존에는 배지 배경이 지워져 흰 글자가 보이지 않았다) */
+    [contenteditable="true"]:not(.badge):not(.summary):not(.project-result) {
       background: none !important;
+    }
+    [contenteditable="true"] {
       box-shadow: none !important;
+      outline: none !important;
+    }
+    [contenteditable="true"]:not(.project-result):not(.badge) {
       border: none !important;
     }
     .is-placeholder {
@@ -1768,6 +1848,46 @@
         채용공고 맞춤 점검
       </button>
       <div class="panel-hint">채용공고를 붙여넣으면 요구 기술과 내 이력서를 비교하고, 회사별 맞춤 버전을 만들어 줍니다.</div>
+    </div>
+    <div class="panel-section">
+      <button id="report-open-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600;" type="button">
+        결과보고서 · 발표 대본 만들기
+      </button>
+      <div class="panel-hint">프로젝트 내용으로 결과보고서의 "역할별 기여·문제 해결" 문단과 3분 발표 대본을 만듭니다.</div>
+    </div>
+    <div class="panel-section">
+      <button id="polish-open-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600;" type="button">
+        문장 다듬기 (맞춤법·표기)
+      </button>
+      <div class="panel-hint">띄어쓰기, 기술 이름 표기, 어미 섞임, 긴 문장, 추상 표현을 찾아 고칩니다.</div>
+    </div>
+
+    <div class="panel-divider"></div>
+    <div class="panel-group-title">디자인 · 증명사진</div>
+    <div class="panel-section">
+      <label>디자인 템플릿</label>
+      <div class="design-themes" id="design-themes">
+        <button type="button" class="design-theme-btn" data-theme="classic">클래식</button>
+        <button type="button" class="design-theme-btn" data-theme="modern">모던</button>
+        <button type="button" class="design-theme-btn" data-theme="minimal">미니멀</button>
+      </div>
+      <label style="margin-top:6px;">강조 색상</label>
+      <div class="design-colors" id="design-colors">
+        <button type="button" class="design-color" data-accent="#1a365d" style="background:#1a365d" aria-label="남색"></button>
+        <button type="button" class="design-color" data-accent="#1f6f5c" style="background:#1f6f5c" aria-label="초록"></button>
+        <button type="button" class="design-color" data-accent="#7b2d43" style="background:#7b2d43" aria-label="와인"></button>
+        <button type="button" class="design-color" data-accent="#2d3748" style="background:#2d3748" aria-label="차콜"></button>
+        <button type="button" class="design-color" data-accent="#5b3fa0" style="background:#5b3fa0" aria-label="보라"></button>
+      </div>
+    </div>
+    <div class="panel-section">
+      <label>증명사진 <span style="font-weight:400;color:#999;font-size:7pt;">(선택 · 이 브라우저에만 저장)</span></label>
+      <div class="version-btns">
+        <button id="photo-add-btn" class="secondary-btn" type="button">사진 넣기 / 바꾸기</button>
+        <button id="photo-remove-btn" class="secondary-btn" type="button">사진 빼기</button>
+      </div>
+      <input type="file" id="photo-file-input" accept="image/jpeg,image/png,image/webp" style="display:none;">
+      <div class="panel-hint">3:4 비율로 자동으로 잘라 줄여 저장합니다. 사진은 AI로 보내지 않습니다.</div>
     </div>
 
     <div class="panel-divider"></div>
@@ -1981,6 +2101,80 @@
   </div>
 </div>
 
+<!-- ===== 결과보고서 · 발표 대본 ===== -->
+<div id="report-overlay" class="tool-overlay" role="dialog" aria-modal="true" aria-labelledby="report-title">
+  <div class="tool-card">
+    <div class="readme-header">
+      <span class="readme-title" id="report-title">결과보고서 · 발표 대본 만들기</span>
+      <button id="report-close" class="readme-close-btn" type="button" aria-label="닫기">&times;</button>
+    </div>
+    <div class="tool-tabs" id="report-tabs" role="tablist">
+      <button type="button" class="tool-tab active" data-mode="report">결과보고서 문단</button>
+      <button type="button" class="tool-tab" data-mode="script">3분 발표 대본</button>
+      <button type="button" class="tool-tab" data-mode="checklist">발표 시연 체크리스트</button>
+    </div>
+    <div class="tool-toolbar">
+      <div class="tool-target">
+        <label for="report-project">프로젝트</label>
+        <select id="report-project"></select>
+      </div>
+      <div class="tool-target">
+        <label for="report-commits">내 커밋 수</label>
+        <input id="report-commits" class="report-num" type="number" min="0" max="9999" placeholder="선택">
+        <label for="report-prs">PR 수</label>
+        <input id="report-prs" class="report-num" type="number" min="0" max="9999" placeholder="선택">
+      </div>
+      <div class="iv-actions">
+        <button id="report-build" class="readme-action-btn secondary" type="button">다시 만들기</button>
+        <button id="report-ai" class="readme-action-btn primary" type="button">
+          <span id="report-ai-text">AI로 다듬기</span>
+          <span id="report-ai-spinner" class="spinner" style="display:none;"></span>
+        </button>
+      </div>
+    </div>
+    <div class="tool-desc" id="report-desc"></div>
+    <div id="report-error" class="error-text" style="display:none; padding:6px 20px;"></div>
+    <div class="readme-content">
+      <div class="readme-editor-pane">
+        <div class="readme-editor-toolbar"><span class="readme-editor-label">편집 (Markdown)</span></div>
+        <textarea id="report-editor" class="readme-textarea"></textarea>
+      </div>
+      <div class="readme-preview-pane">
+        <div class="readme-preview-toolbar"><span class="readme-editor-label">미리보기</span></div>
+        <div id="report-preview" class="readme-preview-content"></div>
+      </div>
+    </div>
+    <div class="readme-footer">
+      <div class="readme-footer-left">
+        <button id="report-copy" class="readme-action-btn secondary" type="button">복사 (보고서에 붙여넣기)</button>
+        <button id="report-download" class="readme-action-btn secondary" type="button">.md 다운로드</button>
+      </div>
+      <div class="readme-footer-right"><span id="report-status" class="readme-status"></span></div>
+    </div>
+    <div class="tool-note">평가 기준 "개인 기여(15점)"는 결과보고서의 역할별 기여·본인 커밋·질의응답으로 봅니다. 커밋·PR 수는 GitHub에서 확인한 실제 숫자만 넣으세요.</div>
+  </div>
+</div>
+
+<!-- ===== 문장 다듬기 ===== -->
+<div id="polish-overlay" class="tool-overlay" role="dialog" aria-modal="true" aria-labelledby="polish-title">
+  <div class="tool-card">
+    <div class="readme-header">
+      <span class="readme-title" id="polish-title">문장 다듬기 · 맞춤법과 표기</span>
+      <button id="polish-close" class="readme-close-btn" type="button" aria-label="닫기">&times;</button>
+    </div>
+    <div class="tool-toolbar">
+      <div class="tool-filters" id="polish-filters"></div>
+      <div class="iv-actions">
+        <button id="polish-rerun" class="readme-action-btn secondary" type="button">다시 검사</button>
+        <button id="polish-fix-all" class="readme-action-btn primary" type="button">자동 수정 항목 모두 고치기</button>
+      </div>
+    </div>
+    <div class="tool-desc" id="polish-summary"></div>
+    <div class="tool-list" id="polish-list"></div>
+    <div class="tool-note">"고치기"가 있는 항목은 자동으로 바꿀 수 있고(되돌리기 가능), 나머지는 직접 고칠 위치를 알려줍니다. 항목을 누르면 이력서의 해당 칸으로 이동합니다.</div>
+  </div>
+</div>
+
 <!-- ===== 면접 예상 질문 ===== -->
 <div id="interview-overlay" class="tool-overlay" role="dialog" aria-modal="true" aria-labelledby="interview-title">
   <div class="tool-card">
@@ -2102,6 +2296,11 @@
           <span class="readme-editor-label">1. 원문 붙여넣기</span>
           <div class="readme-editor-actions">
             <button id="autofill-from-readme" class="readme-action-btn secondary" type="button">README 편집기에서 가져오기</button>
+            <select id="autofill-type" class="autofill-type" aria-label="원문 종류">
+              <option value="readme">README·메모</option>
+              <option value="commits">Git 커밋 기록</option>
+              <option value="weekly">주간보고서</option>
+            </select>
             <button id="autofill-sample" class="readme-action-btn secondary" type="button">예시 원문</button>
           </div>
         </div>
@@ -2154,6 +2353,7 @@
         <span contenteditable="true" data-field-id="header-saramin" data-optional="true" data-max-lines="1" data-guide-type="saramin-url">Saramin: [saramin.co.kr/your-resume-link]</span>
       </div>
     </div>
+    <div class="header-photo" id="header-photo" hidden><img id="header-photo-img" alt="증명사진"></div>
     <div class="header-right">
       <div class="badge" contenteditable="true" data-field-id="header-badge" data-max-lines="1" data-guide-type="badge">신입 · 웹 백엔드 지원</div>
       <div contenteditable="true" data-field-id="header-university" data-required="true" data-max-lines="2" data-guide-type="education-summary" data-storage-format="html" style="margin-top:3px;">[OO대학교] 졸업<br>[컴퓨터공학과 / 비전공]</div>
@@ -3665,6 +3865,8 @@
           return;
         }
         if (e.key === 'Escape') {
+          if (typeof Report !== 'undefined' && Report.isOpen()) { Report.close(); return; }
+          if (typeof Polish !== 'undefined' && Polish.isOpen()) { Polish.close(); return; }
           if (typeof Interview !== 'undefined' && Interview.isOpen()) { Interview.close(); return; }
           if (typeof JobMatch !== 'undefined' && JobMatch.isOpen()) { JobMatch.close(); return; }
           if (typeof ExampleLibrary !== 'undefined' && ExampleLibrary.isOpen()) { ExampleLibrary.close(); return; }
@@ -3871,6 +4073,9 @@
       if (payload.toggles) {
         Storage.save(STORAGE_KEYS.SECTION_TOGGLE, payload.toggles);
         this.applySavedSectionState(payload.toggles);
+        // 디자인·증명사진도 toggles에 함께 저장되므로 불러오기·되돌리기·버전 전환 때 같이 복원한다
+        if (typeof Design !== 'undefined' && Design.apply) Design.apply(payload.toggles.__design);
+        if (typeof Photo !== 'undefined' && Photo.apply) Photo.apply(payload.toggles.__photo);
       }
       this.refreshPlaceholders();
       if (typeof PrintVisibility !== 'undefined' && PrintVisibility && PrintVisibility.sync) {
@@ -7584,6 +7789,131 @@
     '- 찜 동시성: 100명 동시 찜 시 숫자 누락 → 원자적 UPDATE로 해결\n\n' +
     '## 저장소\nhttps://github.com/your-id/busan-matzip\n';
 
+
+  // ===== AI 자동 입력: Git 커밋 기록 · 주간보고서 =====
+  var AUTOFILL_TYPE_SAMPLES = {
+    commits:
+      '# git log --pretty=format:"%h %ad %s" --date=short --author="내이름"\n' +
+      'a1b2c3d 2026-11-28 fix(review): 남의 리뷰 수정 요청 403 처리\n' +
+      'b2c3d4e 2026-11-27 perf(store): 맛집 목록 N+1 해결 - SQL 51회 → 1회\n' +
+      'c3d4e5f 2026-11-25 test(like): 찜 동시성 테스트 100건 추가\n' +
+      'd4e5f6a 2026-11-24 fix(like): 찜 수 갱신 유실 - 원자적 UPDATE로 변경\n' +
+      'e5f6a7b 2026-11-20 feat(ai): Spring AI 리뷰 3줄 요약 기능\n' +
+      'f6a7b8c 2026-11-18 feat(review): 리뷰 작성·수정·삭제 API 구현\n' +
+      'a7b8c9d 2026-11-17 feat(review): 별점 평균 계산\n' +
+      'b8c9d0e 2026-11-14 ci: GitHub Actions 빌드·테스트 워크플로 추가\n' +
+      'c9d0e1f 2026-11-12 feat(store): 맛집 사진 S3 업로드\n' +
+      'd0e1f2a 2026-11-10 docs: README 실행 방법 정리\n' +
+      'e1f2a3b 2026-11-06 Merge pull request #12 from team/feature/review\n',
+    weekly:
+      '[주간보고서] 부산 로컬 맛집 리뷰 · 팀 5명 · 담당: 리뷰·AI\n\n' +
+      '■ 1주차 (11.05~11.06)\n- 요구사항 정리, ERD·화면 설계 완료\n\n' +
+      '■ 2주차 (11.09~11.13)\n- 리뷰 엔티티·API 구현 완료 (작성·수정·삭제, 별점 평균)\n- 이슈: 남의 리뷰를 주소만 바꿔 수정 가능 → 작성자 검사 추가로 해결\n\n' +
+      '■ 3주차 (11.16~11.20)\n- Spring AI 리뷰 요약 기능 개발\n- AI 응답에 스크립트가 섞일 수 있어 th:text로만 출력하도록 수정\n- 첫 자동 배포 성공 (GitHub Actions → EC2)\n\n' +
+      '■ 4주차 (11.23~11.27)\n- 맛집 목록 N+1 개선: SQL 51회 → 1회\n- 찜 동시성 버그 해결: 100건 동시 요청 테스트 3회 통과\n- 결과보고서 리뷰 파트 작성\n'
+  };
+
+  // 성과로 볼 수 있는 "숫자 변화": '51회 → 1회', '30% 단축', '100건 테스트 통과' 같은 표현
+  var METRIC_CHANGE_RE = /\d[\d,.]*\s*(?:회|건|개|%|초|ms|분|배|원)?\s*(?:→|->)\s*\d|\d[\d,.]*\s*(?:%|초|ms|배)\s*(?:개선|단축|감소|향상)|\d[\d,.]*\s*(?:회|건|개)\s*[^,.]{0,20}(?:통과|감소|단축)/;
+
+  var AutofillTypes = {
+    // 커밋 제목에서 'feat(scope): 내용'을 읽어 기능은 구현 내용으로, perf/fix 중 숫자가 있는 것은 성과 후보로 쓴다
+    parseCommits: function(text) {
+      var out = { name: '', meta: '', desc: '', role: '', details: [], result: '', link: '', skills: {}, about: '', intro: '' };
+      var counts = { feat: 0, fix: 0, perf: 0, refactor: 0, test: 0, ci: 0, docs: 0, other: 0 };
+      var feats = [], improvements = [], scopes = {}, dates = [];
+      var total = 0;
+      String(text || '').split(/\r?\n/).forEach(function(line) {
+        if (!line.trim() || /^\s*#/.test(line)) return;
+        if (/merge (pull request|branch)/i.test(line)) return;
+        total++;
+        var date = /(20\d{2})[-.\/](\d{2})[-.\/](\d{2})/.exec(line);
+        if (date) dates.push(date[1] + '.' + date[2] + '.' + date[3]);
+        var m = /(?:^|\s)(feat|fix|perf|refactor|test|ci|docs|chore|style|build)(?:\(([^)]{1,30})\))?!?\s*:\s*(.+)$/i.exec(line);
+        if (!m) { counts.other++; return; }
+        var type = m[1].toLowerCase();
+        var msg = normalizeWhitespace(m[3]);
+        counts[type in counts ? type : 'other']++;
+        if (m[2]) scopes[m[2]] = (scopes[m[2]] || 0) + 1;
+        if (type === 'feat') feats.push(msg);
+        if (type === 'feat') return;
+        if (type === 'perf' || type === 'fix' || type === 'refactor') {
+          if (METRIC_CHANGE_RE.test(msg) || /권한|403|보안|xss|동시|중복|타임아웃|n\+1/i.test(msg)) improvements.push(msg);
+        }
+      });
+      var featLines = feats.map(function(d) { return /(구현|추가|개발|적용|연동|처리|해결|개선|변경|기능)$/.test(d) ? d : d + ' 구현'; });
+      out.details = dedupeMessages(featLines.concat(improvements)).slice(0, 6);
+      var parts = [];
+      improvements.filter(function(i) { return METRIC_CHANGE_RE.test(i); }).slice(0, 2).forEach(function(i) { parts.push(i); });
+      var countText = '내 커밋 ' + total + '건 (기능 ' + counts.feat + ' · 버그 수정 ' + counts.fix + (counts.perf ? ' · 성능 ' + counts.perf : '') + (counts.test ? ' · 테스트 ' + counts.test : '') + (counts.ci ? ' · CI ' + counts.ci : '') + ')';
+      if (total) parts.push(countText);
+      out.result = parts.join(', ').slice(0, 200);
+      var topScopes = Object.keys(scopes).sort(function(a, b) { return scopes[b] - scopes[a]; }).slice(0, 3);
+      if (topScopes.length) out.role = topScopes.join('·') + ' 영역 담당 (커밋 범위 기준)';
+      if (dates.length) {
+        dates.sort();
+        out.meta = dates[0].slice(0, 7) + (dates[dates.length - 1].slice(0, 7) !== dates[0].slice(0, 7) ? ' ~ ' + dates[dates.length - 1].slice(0, 7) : '');
+      }
+      out.skills = Autofill.detectSkills(text);
+      this.lastStats = { total: total, counts: counts };
+      return out;
+    },
+
+    // 주간보고서: '완료/구현/해결' 줄은 구현 내용, 숫자 변화가 있는 줄은 성과, '이슈 → 해결' 줄도 구현으로 모은다
+    parseWeekly: function(text) {
+      var out = { name: '', meta: '', desc: '', role: '', details: [], result: '', link: '', skills: {}, about: '', intro: '' };
+      var done = [], metrics = [];
+      var lines = String(text || '').split(/\r?\n/);
+      lines.forEach(function(raw) {
+        var bullet = /^\s*(?:[-*•·]|\d+[.)])\s+(.+)/.exec(raw);
+        var line = normalizeWhitespace((bullet ? bullet[1] : raw).replace(/^(이슈|문제)\s*[:：]\s*/, ''));
+        if (!line) return;
+        var head = /^\[?주간보고서\]?\s*(.+)/.exec(line);
+        if (head) {
+          var parts = head[1].split(/\s+[·|]\s+/);
+          if (parts[0]) out.name = parts[0];
+          parts.forEach(function(p) {
+            if (/팀\s*\d+\s*명|개인/.test(p)) out.meta = p;
+            var r = /담당\s*[:：]?\s*(.+)/.exec(p);
+            if (r) out.role = r[1];
+          });
+          return;
+        }
+        if (!bullet) return;
+        if (METRIC_CHANGE_RE.test(line)) metrics.push(line);
+        if (/(완료|구현|개발|적용|해결|개선|연동|배포|추가|수정|성공)/.test(line) && !/(결과보고서|주간보고서|설계 완료|정리)/.test(line)) {
+          done.push(line.replace(/\s*(완료|성공)$/, '').replace(/\s*\((작성|완료)\)$/, ''));
+        }
+      });
+      var periods = String(text || '').match(/(\d{1,2})\.(\d{1,2})\s*~\s*(\d{1,2})\.(\d{1,2})/g) || [];
+      if (periods.length) {
+        var first = /(\d{1,2})\.(\d{1,2})/.exec(periods[0]);
+        var last = /~\s*(\d{1,2})\.(\d{1,2})/.exec(periods[periods.length - 1]);
+        var year = (/(20\d{2})/.exec(text) || [])[1] || String(new Date().getFullYear());
+        var pad = function(n) { return ('0' + n).slice(-2); };
+        var period = year + '.' + pad(first[1]) + '.' + pad(first[2]) + ' ~ ' + year + '.' + pad(last[1]) + '.' + pad(last[2]);
+        out.meta = out.meta ? period + ' | ' + out.meta : period;
+      }
+      out.details = dedupeMessages(done).slice(0, 6);
+      out.result = dedupeMessages(metrics).slice(0, 2).join(', ').slice(0, 200);
+      out.skills = Autofill.detectSkills(text);
+      return out;
+    },
+
+    parse: function(type, text) {
+      if (type === 'commits') return this.parseCommits(text);
+      if (type === 'weekly') return this.parseWeekly(text);
+      return Autofill.parseLocal(text);
+    },
+
+    promptHint: function(type) {
+      if (type === 'commits') return '원문 종류: Git 커밋 기록입니다. feat 커밋을 비슷한 것끼리 묶어 구현 내용으로 요약하고, perf/fix 커밋 중 숫자가 있는 것은 성과로 씁니다. 커밋 개수는 원문에서 실제로 센 값만 쓰세요. 프로젝트 이름이 원문에 없으면 빈 문자열로 둡니다.\n';
+      if (type === 'weekly') return '원문 종류: 주차별 주간보고서입니다. "완료/구현/해결"한 일을 구현 내용으로, 숫자로 나타난 개선을 성과로, "이슈 → 해결" 흐름은 구현 내용에 포함해 정리합니다.\n';
+      return '';
+    }
+  };
+  window.AutofillTypes = AutofillTypes;
+
   function stripMarkdownInline(text) {
     return normalizeWhitespace(String(text || '')
       .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
@@ -7614,7 +7944,8 @@
       this.overlay.addEventListener('click', function(e) { if (e.target === self.overlay) self.close(); });
       document.getElementById('autofill-sample').addEventListener('click', function() {
         if (self.source.value.trim() && !window.confirm('붙여넣은 원문을 예시로 바꿀까요?')) return;
-        self.source.value = AUTOFILL_SAMPLE;
+        var sampleType = document.getElementById('autofill-type').value;
+        self.source.value = AUTOFILL_TYPE_SAMPLES[sampleType] || AUTOFILL_SAMPLE;
         self.updateLength();
       });
       document.getElementById('autofill-from-readme').addEventListener('click', function() {
@@ -7766,7 +8097,7 @@
       var text = this.source.value.trim();
       this.hideError();
       if (!text) { this.showError('원문을 먼저 붙여넣으세요. "예시 원문" 버튼으로 형식을 확인할 수 있습니다.'); return; }
-      var parsed = this.parseLocal(text);
+      var parsed = AutofillTypes.parse(document.getElementById('autofill-type').value, text);
       this.result = this.toFields(parsed, text, 'local');
       this.renderResult();
       var filled = this.result.filter(function(f) { return f.value; }).length;
@@ -7786,7 +8117,8 @@
         '{"name":"프로젝트명 - 한줄 요약","meta":"YYYY.MM ~ YYYY.MM | 팀 N명","desc":"한줄 설명","role":"담당 영역 (사용 기술)",' +
         '"details":["구현 내용"],"result":"성과 문장","link":"github.com/아이디/저장소",' +
         '"skills":{"backend":[],"frontend":[],"database":[],"devops":[]},"about":"","intro":""}';
-      var user = '아래 원문을 위 JSON으로 정리해주세요. 개인정보는 [이메일], [전화번호]로 가려져 있습니다.\n\n' + maskContactInfo(text).slice(0, 8000);
+      var user = AutofillTypes.promptHint(document.getElementById('autofill-type').value) +
+        '아래 원문을 위 JSON으로 정리해주세요. 개인정보는 [이메일], [전화번호]로 가려져 있습니다.\n\n' + maskContactInfo(text).slice(0, 8000);
       return { system: system, user: user };
     },
 
@@ -7831,7 +8163,7 @@
         if (!content) throw new Error('AI 응답이 비어 있습니다. 다시 시도해주세요.');
         var parsed = self.parseAIResponse(content);
         // AI가 비워 둔 칸은 규칙 기반 결과로 채운다 (예: 기간·링크)
-        var local = self.parseLocal(text);
+        var local = AutofillTypes.parse(document.getElementById('autofill-type').value, text);
         ['name', 'meta', 'desc', 'role', 'result', 'link'].forEach(function(k) { if (!parsed[k] && local[k]) parsed[k] = local[k]; });
         if (!parsed.details.length) parsed.details = local.details;
         self.result = self.toFields(parsed, text, 'ai', local);
@@ -9169,6 +9501,729 @@
   };
   window.JobMatch = JobMatch;
 
+
+  // ===== Module: Report (결과보고서 문단 · 3분 발표 대본 · 시연 체크리스트) =====
+  // 구현 문장에서 "문제" 종류를 짐작하는 표 (결과보고서의 Before → After 표에 쓴다)
+  var REPORT_PROBLEM_HINTS = [
+    { re: /N\s*\+\s*1/i, problem: '목록 조회 시 SQL이 항목 수만큼 추가로 실행됨' },
+    { re: /동시|갱신 유실|원자적/i, problem: '동시 요청 시 숫자(찜·포인트 등)가 틀어짐' },
+    { re: /권한|본인|작성자|IDOR|403|소유자/i, problem: '주소의 번호만 바꾸면 남의 데이터에 접근 가능' },
+    { re: /XSS|스크립트|th:text/i, problem: '사용자/AI 입력의 스크립트가 실행될 위험' },
+    { re: /마스킹|개인정보/i, problem: '개인정보(전화번호)가 그대로 노출됨' },
+    { re: /타임아웃|외부 API|지연/i, problem: '외부 API가 느리면 화면이 멈춤' },
+    { re: /AI가 고른|대조|환각|지어낸/i, problem: 'AI가 없는 데이터를 지어내 오류 발생' },
+    { re: /중복/i, problem: '같은 데이터가 중복 저장됨' },
+    { re: /배포|CI|Actions/i, problem: '수동 배포에 시간이 오래 걸리고 실수가 생김' }
+  ];
+  var REPORT_STORAGE_KEY = 'resume-report-inputs';
+
+  var Report = {
+    overlay: null,
+    mode: 'report',
+
+    init: function() {
+      this.overlay = document.getElementById('report-overlay');
+      if (!this.overlay) return;
+      var self = this;
+      this.editor = document.getElementById('report-editor');
+      this.preview = document.getElementById('report-preview');
+      document.getElementById('report-open-btn').addEventListener('click', function() { self.open(); });
+      document.getElementById('report-close').addEventListener('click', function() { self.close(); });
+      this.overlay.addEventListener('click', function(e) { if (e.target === self.overlay) self.close(); });
+      this.overlay.querySelectorAll('#report-tabs .tool-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          self.mode = tab.getAttribute('data-mode');
+          self.overlay.querySelectorAll('#report-tabs .tool-tab').forEach(function(t) { t.classList.toggle('active', t === tab); });
+          self.build();
+        });
+      });
+      ['report-project', 'report-commits', 'report-prs'].forEach(function(id) {
+        document.getElementById(id).addEventListener('change', function() { self.saveInputs(); self.build(); });
+      });
+      document.getElementById('report-build').addEventListener('click', function() { self.build(); });
+      document.getElementById('report-ai').addEventListener('click', function() { self.polishWithAI(); });
+      document.getElementById('report-copy').addEventListener('click', function() { self.copy(); });
+      document.getElementById('report-download').addEventListener('click', function() {
+        triggerDownload(new Blob([self.editor.value], { type: 'text/markdown' }), (self.mode === 'script' ? '발표대본' : self.mode === 'checklist' ? '발표체크리스트' : '결과보고서_내파트') + '.md');
+      });
+      this.editor.addEventListener('input', debounce(function() { self.renderPreview(); }, 200));
+    },
+
+    open: function() {
+      var select = document.getElementById('report-project');
+      var projects = ResumeReader.projects();
+      select.innerHTML = '';
+      projects.forEach(function(p) {
+        var o = document.createElement('option');
+        o.value = String(p.index);
+        o.textContent = '프로젝트 ' + p.index + ' - ' + (p.shortName || p.name).slice(0, 24);
+        select.appendChild(o);
+      });
+      var saved = Storage.load(REPORT_STORAGE_KEY) || {};
+      if (saved.project && select.querySelector('option[value="' + saved.project + '"]')) select.value = saved.project;
+      document.getElementById('report-commits').value = saved.commits || '';
+      document.getElementById('report-prs').value = saved.prs || '';
+      this.showError('');
+      this.build();
+      this.overlay.classList.add('active');
+    },
+    close: function() { this.overlay.classList.remove('active'); },
+    isOpen: function() { return this.overlay && this.overlay.classList.contains('active'); },
+
+    saveInputs: function() {
+      Storage.save(REPORT_STORAGE_KEY, {
+        project: document.getElementById('report-project').value,
+        commits: document.getElementById('report-commits').value,
+        prs: document.getElementById('report-prs').value
+      });
+    },
+
+    showError: function(msg) {
+      var el = document.getElementById('report-error');
+      el.textContent = msg || '';
+      el.style.display = msg ? 'block' : 'none';
+    },
+
+    current: function() {
+      var idx = parseInt(document.getElementById('report-project').value, 10);
+      return ResumeReader.projects().filter(function(p) { return p.index === idx; })[0] || null;
+    },
+
+    num: function(id) {
+      var v = parseInt(document.getElementById(id).value, 10);
+      return isFinite(v) && v >= 0 ? v : null;
+    },
+
+    // 구현·성과 문장 중 "문제 → 해결 → 결과"로 정리할 만한 것을 표의 행으로 만든다
+    problemRows: function(p) {
+      var rows = [];
+      p.details.concat(p.result ? [p.result] : []).forEach(function(line) {
+        for (var i = 0; i < REPORT_PROBLEM_HINTS.length; i++) {
+          if (REPORT_PROBLEM_HINTS[i].re.test(line)) {
+            var metric = /(\S+\s*)?\d[\d,.]*\s*\S*\s*(?:→|->)\s*\d[\d,.]*\s*\S*/.exec(line);
+            rows.push({
+              problem: REPORT_PROBLEM_HINTS[i].problem,
+              solution: line,
+              result: metric ? normalizeWhitespace(metric[0]) : '[숫자로 결과 채우기]'
+            });
+            break;
+          }
+        }
+      });
+      var seen = {};
+      return rows.filter(function(r) { if (seen[r.problem]) return false; seen[r.problem] = true; return true; }).slice(0, 4);
+    },
+
+    buildReport: function(p) {
+      var esc = function(t) { return String(t || '').replace(/\|/g, '/'); };
+      var md = '## ' + p.name + ' — 내 담당 파트\n\n';
+      md += '### 1. 프로젝트 개요\n';
+      if (p.desc) md += '- 서비스: ' + p.desc + '\n';
+      if (p.meta) md += '- 기간/인원: ' + p.meta + '\n';
+      md += '- 내 역할: ' + (p.role || '[담당 영역]') + '\n\n';
+      var skillRows = [['Backend', 'skills-backend'], ['Frontend', 'skills-frontend'], ['Database', 'skills-database'], ['DevOps / Tool', 'skills-devops']]
+        .map(function(r) { return [r[0], FieldCollector.getSkillItems(r[1]).filter(function(s) { return !hasPlaceholderText(s); })]; })
+        .filter(function(r) { return r[1].length; });
+      if (skillRows.length) {
+        md += '### 2. 기술 구성\n| 구분 | 기술 |\n|---|---|\n';
+        skillRows.forEach(function(r) { md += '| ' + r[0] + ' | ' + esc(r[1].join(', ')) + ' |\n'; });
+        md += '\n';
+      }
+      md += '### 3. 내가 구현한 기능\n';
+      md += (p.details.length ? p.details.map(function(d, i) { return (i + 1) + '. ' + d; }).join('\n') : '1. [구현한 기능]') + '\n\n';
+      var commits = this.num('report-commits');
+      var prs = this.num('report-prs');
+      md += '### 4. 개인 기여 근거\n';
+      md += '- 커밋 ' + (commits === null ? '[N]' : commits) + '건 · PR ' + (prs === null ? '[M]' : prs) + '건 (GitHub Insights → Contributors 기준)\n';
+      md += '- 담당 화면/API: [직접 채우기]\n';
+      if (p.result) md += '- 성과: ' + p.result + '\n';
+      md += '\n### 5. 문제 해결 (Before → After)\n| 문제 | 원인 | 해결 | 결과 |\n|---|---|---|---|\n';
+      var rows = this.problemRows(p);
+      if (!rows.length) rows = [{ problem: '[무엇이 문제였나]', solution: '[무엇을 바꿨나]', result: '[숫자로 결과]' }];
+      rows.forEach(function(r) {
+        md += '| ' + esc(r.problem) + ' | [로그·테스트로 확인한 원인] | ' + esc(r.solution) + ' | ' + esc(r.result) + ' |\n';
+      });
+      md += '\n### 6. 배운 점과 아쉬운 점\n- 배운 점: [직접 채우기 — 예: AI 초안 코드는 데이터가 쌓였을 때를 측정해 검증해야 한다]\n- 아쉬운 점·개선 계획: [직접 채우기]\n';
+      return md;
+    },
+
+    buildScript: function(p) {
+      var rows = this.problemRows(p);
+      var demo = p.details.slice(0, 3);
+      var md = '# 3분 발표 대본 — ' + (p.shortName || p.name) + '\n\n';
+      md += '**0:00 ~ 0:20 인사·소개**\n> 안녕하세요, ' + (p.role ? p.role.split('(')[0].trim() + '을(를) 맡은 ' : '') + '[이름]입니다. 저희 팀은 ' + (p.desc || p.name) + '를 만들었습니다.\n\n';
+      md += '**0:20 ~ 0:50 왜 만들었나**\n> [사용자가 겪는 불편 1문장]. 그래서 ' + (p.shortName || '이 서비스') + '에서 [핵심 가치]를 할 수 있게 했습니다.\n\n';
+      md += '**0:50 ~ 1:50 시연 (배포 주소로 접속)**\n';
+      if (demo.length) {
+        demo.forEach(function(d, i) { md += '> ' + (i === 0 ? '먼저' : i === 1 ? '다음으로' : '마지막으로') + ' ' + d + ' 기능을 보여드리겠습니다.\n'; });
+      } else {
+        md += '> [시연할 기능 1~3개]\n';
+      }
+      md += '\n**1:50 ~ 2:30 문제 해결 1가지**\n';
+      if (rows.length) {
+        md += '> 개발 중 "' + rows[0].problem + '" 문제가 있었습니다. [원인]을 확인하고 ' + rows[0].solution + '. 결과적으로 ' + rows[0].result + '.\n\n';
+      } else {
+        md += '> 개발 중 [문제]가 있었습니다. [원인]을 확인하고 [해결]했습니다. 결과적으로 [숫자].\n\n';
+      }
+      md += '**2:30 ~ 3:00 마무리**\n> ' + (p.result ? p.result.replace(/^성과\s*[:：]\s*/, '') + '. ' : '') + '이 프로젝트로 [배운 점]을 배웠습니다. 감사합니다.\n';
+      var spoken = md.split('\n').filter(function(l) { return /^>/.test(l); }).join(' ').replace(/[>\s]/g, '');
+      md += '\n---\n_대본 분량: 약 ' + spoken.length + '자 (말하기 약 ' + Math.round(spoken.length / SPEAK_CHARS_PER_SEC) + '초). [ ] 부분을 채운 뒤 소리 내어 3분 안에 끝나는지 연습하세요._\n';
+      return md;
+    },
+
+    // 파이널 프로젝트 공지의 평가 기준(12번)을 시연 체크리스트로 바꾼 것
+    buildChecklist: function(p) {
+      var md = '# 발표 시연 체크리스트 — ' + (p.shortName || p.name) + '\n\n';
+      md += '## 평가 항목별 시연 (공지 12번 기준)\n';
+      md += '- [ ] **필수 기능 (30점)**: 배포 주소(또는 jar 실행)에서 기능 명세 필수 항목 시연\n';
+      p.details.slice(0, 4).forEach(function(d) { md += '  - [ ] ' + d + '\n'; });
+      md += '- [ ] **AI 기능 (15점)**: 결과 표시, 실패 시 안내 문구, 하루 횟수 제한, `:free` 모델 사용 보여주기\n';
+      md += '- [ ] **배포·CI/CD (15점)**: PR → CI 초록불 → main 머지 → 자동 배포 과정 보여주기\n';
+      md += '- [ ] **보안 (10점)**: JWT로 API 호출, 권한 없는 접근 거부(403), HTML 입력이 글자로 표시되는 것\n';
+      md += '- [ ] **코드·문서 (15점)**: README, 커밋 메시지, PR 리뷰 기록, 제출 파일 4개\n';
+      md += '- [ ] **개인 기여 (15점)**: 결과보고서의 역할별 기여, 본인 커밋, 질의응답 준비\n\n';
+      md += '## 발표 전날\n- [ ] 테스트 계정으로 로그인되는지 확인\n- [ ] 배포 주소 접속 확인 (다른 기기·모바일 데이터로도)\n- [ ] 인터넷이 안 될 때를 대비한 시연 영상·스크린샷 준비\n- [ ] 제출 파일 4개 최종본 확인 (기획·설계, 결과보고서, 주간보고서, jar)\n- [ ] 면접 예상 질문 중 이 프로젝트 질문 3개 답변 연습\n\n';
+      md += '## 발표 후\n- [ ] AWS 리소스 정리 (EC2·S3 등) — 켜 둔 시간만큼 요금 발생\n- [ ] 배포용 IAM 액세스 키 비활성화·삭제, GitHub Secrets 정리\n- [ ] 다음 날 결제 및 비용 관리에서 비용이 늘지 않았는지 확인\n';
+      return md;
+    },
+
+    build: function() {
+      var p = this.current();
+      var desc = document.getElementById('report-desc');
+      if (!p) {
+        this.editor.value = '';
+        this.renderPreview();
+        desc.textContent = '이력서에 작성된 프로젝트가 없습니다. 프로젝트를 먼저 채우거나 "AI 자동 입력"으로 가져오세요.';
+        return;
+      }
+      desc.textContent = this.mode === 'report' ? '결과보고서의 "구현 화면·기술 구성·역할별 기여·문제 해결" 칸에 붙여넣을 내 파트 초안입니다. [ ] 부분을 채우세요.'
+        : this.mode === 'script' ? '3분 발표 순서대로 만든 대본입니다. 시연 순서는 구현 내용 앞의 3개를 사용합니다.'
+        : '공지의 평가 기준을 시연 순서로 바꾼 체크리스트입니다.';
+      this.editor.value = this.mode === 'script' ? this.buildScript(p) : this.mode === 'checklist' ? this.buildChecklist(p) : this.buildReport(p);
+      this.renderPreview();
+      document.getElementById('report-status').textContent = '';
+    },
+
+    renderPreview: function() {
+      this.preview.innerHTML = this.editor.value.trim() ? ReadmeGenerator.markdownToHtml(this.editor.value) : '';
+    },
+
+    copy: function() {
+      var self = this;
+      var done = function() { document.getElementById('report-status').textContent = '복사했습니다.'; };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(this.editor.value).then(done, function() { self.editor.select(); document.execCommand('copy'); done(); });
+      } else { this.editor.select(); document.execCommand('copy'); done(); }
+    },
+
+    polishWithAI: function() {
+      var self = this;
+      var draft = this.editor.value.trim();
+      this.showError('');
+      if (!draft) { this.showError('먼저 초안을 만들어주세요.'); return; }
+      var btn = document.getElementById('report-ai');
+      btn.disabled = true;
+      document.getElementById('report-ai-text').textContent = 'AI가 다듬는 중...';
+      document.getElementById('report-ai-spinner').style.display = 'inline-block';
+      var system = '당신은 부트캠프 파이널 프로젝트의 결과보고서와 발표를 함께 준비하는 멘토입니다.\n' +
+        '규칙: 1) 초안에 있는 사실·숫자·기술만 사용하고 새로 만들지 않습니다. 2) [ ]로 된 빈칸은 그대로 남깁니다.\n' +
+        '3) 문장을 짧고 구체적으로 다듬고, 마크다운 구조(제목·표·체크박스)는 유지합니다. 4) 결과만 출력합니다.\n/no_think';
+      callOpenRouter(system, maskContactInfo(draft), { title: 'Project Report', maxTokens: 3000 })
+        .then(function(out) {
+          var cleaned = out.replace(/^```(?:markdown|md)?\s*\n?/, '').replace(/\n?```\s*$/, '');
+          var known = (draft.match(/\d+(?:[.,]\d+)*/g) || []);
+          var added = (cleaned.match(/\d+(?:[.,]\d+)*/g) || []).filter(function(n) { return known.indexOf(n) === -1; });
+          self.editor.value = cleaned;
+          self.renderPreview();
+          document.getElementById('report-status').textContent = added.length
+            ? '⚠ AI가 초안에 없던 숫자를 넣었습니다: ' + dedupeMessages(added).slice(0, 5).join(', ') + ' — 실제 값인지 확인하세요.'
+            : 'AI로 다듬었습니다. 새로 생긴 숫자는 없습니다.';
+        })
+        .catch(function(err) { self.showError(err.message); })
+        .finally(function() {
+          btn.disabled = false;
+          document.getElementById('report-ai-text').textContent = 'AI로 다듬기';
+          document.getElementById('report-ai-spinner').style.display = 'none';
+        });
+    }
+  };
+  window.Report = Report;
+
+  // ===== Module: FieldMeter (입력 칸 분량 실시간 표시) + A4Guide (1페이지 끝 위치 표시) =====
+  var FieldMeter = {
+    init: function() {
+      var self = this;
+      this.el = document.createElement('div');
+      this.el.id = 'field-meter';
+      this.el.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(this.el);
+      document.addEventListener('focusin', function(e) {
+        var t = e.target && e.target.closest ? e.target.closest('.page [contenteditable="true"][data-field-id]') : null;
+        self.target = t;
+        if (t) self.update(); else self.hide();
+      });
+      document.addEventListener('focusout', function() {
+        setTimeout(function() { if (!document.activeElement || !document.activeElement.closest || !document.activeElement.closest('.page [contenteditable="true"]')) self.hide(); }, 0);
+      });
+      document.addEventListener('input', function(e) { if (self.target && self.target.contains(e.target)) self.update(); });
+      window.addEventListener('resize', function() { if (self.target) self.update(); });
+    },
+
+    measure: function(el) {
+      var text = el.innerText || '';
+      var type = el.getAttribute('data-guide-type') || '';
+      var chars = text.replace(/\s/g, '').length;
+      if (type === 'skills') {
+        var max = parseInt(el.getAttribute('data-max-items') || '0', 10);
+        var n = FieldCollector.getSkillItems(el.getAttribute('data-field-id')).filter(function(s) { return !hasPlaceholderText(s); }).length;
+        return { text: '기술 ' + n + (max ? ' / 권장 ' + max + '개' : '개'), over: max && n > max };
+      }
+      var limit = parseInt(el.getAttribute('data-max-lines') || '0', 10);
+      if (type === 'about' || type === 'intro') {
+        var s = getSentenceCount(text);
+        return { text: s + '문장' + (limit ? ' / 권장 ' + limit + '문장' : '') + ' · ' + chars + '자', over: limit && s > limit };
+      }
+      if (el.tagName === 'UL') {
+        var items = el.querySelectorAll('li').length;
+        return { text: items + '줄' + (limit ? ' / 권장 ' + limit + '줄' : ''), over: limit && items > limit };
+      }
+      // 화면에 실제로 그려진 줄 수 (긴 한 줄이 두 줄로 넘어가면 2줄)
+      var style = window.getComputedStyle(el);
+      var lh = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.45;
+      var lines = Math.max(1, Math.round((el.getBoundingClientRect().height - parseFloat(style.paddingTop || 0) - parseFloat(style.paddingBottom || 0)) / lh));
+      return { text: lines + '줄' + (limit ? ' / 권장 ' + limit + '줄' : '') + ' · ' + chars + '자', over: limit && lines > limit };
+    },
+
+    update: function() {
+      var t = this.target;
+      if (!t || !document.body.contains(t)) { this.hide(); return; }
+      var m = this.measure(t);
+      this.el.textContent = (m.over ? '⚠ ' : '') + m.text;
+      this.el.classList.toggle('over', !!m.over);
+      this.el.style.display = 'block';
+      var r = t.getBoundingClientRect();
+      var w = this.el.offsetWidth;
+      var left = Math.min(window.scrollX + r.right - w, window.scrollX + document.documentElement.clientWidth - w - 8);
+      this.el.style.left = Math.max(window.scrollX + 4, left) + 'px';
+      this.el.style.top = (window.scrollY + r.top - this.el.offsetHeight - 4) + 'px';
+    },
+
+    hide: function() { if (this.el) this.el.style.display = 'none'; this.target = null; }
+  };
+
+  var A4Guide = {
+    init: function() {
+      var page = document.querySelector('.page');
+      if (!page) return;
+      this.page = page;
+      this.line = document.createElement('div');
+      this.line.className = 'a4-limit-line';
+      this.line.setAttribute('aria-hidden', 'true');
+      var label = document.createElement('span');
+      label.textContent = 'A4 1페이지 끝 · 이 아래는 2페이지로 넘어갑니다';
+      this.line.appendChild(label);
+      page.appendChild(this.line);
+      this.schedule = debounce(this.update.bind(this), 400);
+      // 완성도를 다시 계산할 때마다(입력·삽입·불러오기) 경계선 위치도 다시 잰다
+      var original = UI.updateCompleteness;
+      UI.updateCompleteness = function() {
+        var result = original.apply(UI, arguments);
+        A4Guide.schedule();
+        return result;
+      };
+      window.addEventListener('resize', this.schedule);
+      this.schedule();
+    },
+
+    // 인쇄 때 숨겨지는 요소를 잠깐 숨긴 "인쇄 모양"에서 1페이지를 넘는 첫 블록을 찾고,
+    // 원래 화면 모양에서 그 블록 위에 선을 그린다
+    update: function() {
+      var page = this.page;
+      if (!page || !this.line) return;
+      if (typeof PrintVisibility !== 'undefined' && PrintVisibility.sync) PrintVisibility.sync();
+      var ruler = document.createElement('div');
+      ruler.style.cssText = 'position:absolute;visibility:hidden;height:281mm;';
+      document.body.appendChild(ruler);
+      var limit = ruler.getBoundingClientRect().height;
+      document.body.removeChild(ruler);
+      var hideTargets = page.querySelectorAll('.guide, .section-toggle-btn, .inline-sample-btn, .draft-helper-tools, .draft-helper-box, .ai-feedback-container, [data-print-empty="true"], .project-add-wrap, .inline-add-wrap, .dynamic-item-header, .section-actions, .a4-limit-line');
+      var saved = [];
+      for (var i = 0; i < hideTargets.length; i++) { saved.push(hideTargets[i].style.display); hideTargets[i].style.display = 'none'; }
+      var pageRect = page.getBoundingClientRect();
+      var padTop = parseFloat(window.getComputedStyle(page).paddingTop) || 0;
+      var boundary = pageRect.top + padTop + limit;
+      var blocks = page.querySelectorAll('.header, .section-title, .summary, .skill-row, .project-header, .project-desc, .project-role, .project-detail li, .project-result, .project-link, .edu-row, .cert-row, .intro-text');
+      var crossing = null;
+      for (var b = 0; b < blocks.length; b++) {
+        var rect = blocks[b].getBoundingClientRect();
+        if (rect.height && rect.bottom > boundary) { crossing = blocks[b]; break; }
+      }
+      for (var j = 0; j < hideTargets.length; j++) hideTargets[j].style.display = saved[j];
+      if (!crossing) { this.line.style.display = 'none'; return; }
+      var top = crossing.getBoundingClientRect().top - page.getBoundingClientRect().top - 2;
+      this.line.style.top = top + 'px';
+      this.line.style.display = 'block';
+    }
+  };
+  window.A4Guide = A4Guide;
+
+  // ===== Module: Polish (문장 다듬기) =====
+  var POLISH_TERM_RULES = [
+    { re: /스프링\s?부트|\bspring\s?boot\b/gi, to: 'Spring Boot' },
+    { re: /\bmysql\b/gi, to: 'MySQL' },
+    { re: /깃허브|깃헙|\bgithub\b(?!\.)/gi, to: 'GitHub' },
+    { re: /자바스크립트|\bjavascript\b/gi, to: 'JavaScript' },
+    { re: /\bjpa\b/gi, to: 'JPA' },
+    { re: /\baws\b/gi, to: 'AWS' },
+    { re: /\bjwt\b/gi, to: 'JWT' },
+    { re: /인텔리제이|\bintellij\b/gi, to: 'IntelliJ' },
+    { re: /\bthymeleaf\b/gi, to: 'Thymeleaf' },
+    { re: /\bdocker\b/gi, to: 'Docker' },
+    { re: /\bredis\b/gi, to: 'Redis' },
+    { re: /\brest\s?api\b/gi, to: 'REST API' },
+    { re: /\bquerydsl\b/gi, to: 'QueryDSL' },
+    { re: /\bjunit\s?5\b/gi, to: 'JUnit5' }
+  ];
+  var POLISH_SPACING_RULES = [
+    { re: /(할|될|쓸|볼|알|갈|줄|올|살|만들)수(\s?)(있|없)/g, to: '$1 수 $3', msg: '"~할 수 있다"는 띄어 씁니다' },
+    { re: /것같/g, to: '것 같', msg: '"것 같다"는 띄어 씁니다' },
+    { re: /되어지(?=[다고는며게었])/g, to: '되', msg: '"되어지다"는 이중 피동입니다' },
+    { re: /되어진/g, to: '된', msg: '"되어진"은 이중 피동입니다' },
+    { re: /하였습니다/g, to: '했습니다', msg: '"했습니다"가 더 자연스럽습니다' },
+    { re: /되였/g, to: '되었', msg: '"되었"이 맞는 표기입니다' },
+    { re: /몇일/g, to: '며칠', msg: '"며칠"이 맞는 표기입니다' },
+    { re: /어떻해/g, to: '어떻게', msg: '"어떻게"가 맞는 표기입니다' },
+    { re: /웬지/g, to: '왠지', msg: '"왠지"가 맞는 표기입니다' }
+  ];
+
+  var Polish = {
+    overlay: null,
+    filter: 'all',
+    issues: [],
+
+    init: function() {
+      this.overlay = document.getElementById('polish-overlay');
+      if (!this.overlay) return;
+      var self = this;
+      document.getElementById('polish-open-btn').addEventListener('click', function() { self.open(); });
+      document.getElementById('polish-close').addEventListener('click', function() { self.close(); });
+      this.overlay.addEventListener('click', function(e) { if (e.target === self.overlay) self.close(); });
+      document.getElementById('polish-rerun').addEventListener('click', function() { self.run(); });
+      document.getElementById('polish-fix-all').addEventListener('click', function() { self.fixAll(); });
+    },
+
+    open: function() { this.filter = 'all'; this.run(); this.overlay.classList.add('active'); },
+    close: function() { this.overlay.classList.remove('active'); },
+    isOpen: function() { return this.overlay && this.overlay.classList.contains('active'); },
+
+    snippet: function(text, index, length) {
+      var start = Math.max(0, index - 18);
+      return { before: (start > 0 ? '…' : '') + text.slice(start, index), match: text.slice(index, index + length), after: text.slice(index + length, index + length + 18) + (index + length + 18 < text.length ? '…' : '') };
+    },
+
+    analyze: function() {
+      var self = this;
+      var issues = [];
+      var fields = FieldCollector.getAllFields();
+      Object.keys(fields).forEach(function(fieldId) {
+        var text = fields[fieldId];
+        if (!text || hasPlaceholderText(text)) return;
+        var el = FieldCollector.getFieldEl(fieldId);
+        var type = el ? el.getAttribute('data-guide-type') || '' : '';
+        var label = FieldCollector.getLabel(fieldId);
+        var isLink = /url$/.test(type) || /-link$/.test(fieldId);
+        if (!isLink) {
+          POLISH_TERM_RULES.forEach(function(rule) {
+            var re = new RegExp(rule.re.source, rule.re.flags);
+            var m;
+            while ((m = re.exec(text))) {
+              if (m[0] !== rule.to) {
+                issues.push({ cat: 'term', fieldId: fieldId, label: label, msg: '기술 이름 표기: "' + m[0] + '" → "' + rule.to + '"', snip: self.snippet(text, m.index, m[0].length), fix: rule });
+                break;
+              }
+            }
+          });
+        }
+        POLISH_SPACING_RULES.forEach(function(rule) {
+          var re = new RegExp(rule.re.source, rule.re.flags);
+          var m = re.exec(text);
+          if (m) issues.push({ cat: 'spacing', fieldId: fieldId, label: label, msg: rule.msg + ' ("' + m[0] + '" → "' + m[0].replace(new RegExp(rule.re.source), rule.to) + '")', snip: self.snippet(text, m.index, m[0].length), fix: rule });
+        });
+        if (type === 'about' || type === 'intro' || type === 'project-detail') {
+          var abstract = containsAbstractTerm(text);
+          if (abstract) {
+            var ai = text.indexOf(abstract);
+            issues.push({ cat: 'style', fieldId: fieldId, label: label, msg: '추상 표현 "' + abstract + '" — 어떤 경험으로 그렇게 말할 수 있는지 사례나 숫자를 붙이세요.', snip: self.snippet(text, ai, abstract.length) });
+          }
+          var sentences = text.replace(/([.!?])\s+/g, '$1\n').split(/\n+/).map(normalizeWhitespace).filter(Boolean);
+          sentences.forEach(function(sentence) {
+            if (sentence.length > 90) {
+              var si = text.indexOf(sentence.slice(0, 20));
+              issues.push({ cat: 'style', fieldId: fieldId, label: label, msg: '문장이 ' + sentence.length + '자로 깁니다. 두 문장으로 나누면 읽기 쉽습니다.', snip: self.snippet(text, Math.max(0, si), Math.min(40, sentence.length)) });
+            }
+          });
+        }
+        if (type === 'about' || type === 'intro') {
+          var formal = (text.match(/니다[.!]?(\s|$)/g) || []).length;
+          var plain = (text.match(/[^니]다[.!](\s|$)/g) || []).length;
+          if (formal && plain) issues.push({ cat: 'style', fieldId: fieldId, label: label, msg: '"~습니다"와 "~했다"가 섞여 있습니다. 한 가지 어미로 통일하세요.', snip: { before: '', match: '', after: '' } });
+          var me = (text.match(/저는/g) || []).length;
+          if (me >= 2) issues.push({ cat: 'style', fieldId: fieldId, label: label, msg: '"저는"이 ' + me + '번 나옵니다. 주어를 줄이면 문장이 단단해집니다.', snip: self.snippet(text, text.indexOf('저는'), 2) });
+          var counts = {};
+          (text.match(/[가-힣A-Za-z]{2,}/g) || []).forEach(function(w) {
+            if (STOPWORDS.indexOf(w) !== -1 || /^(을|를|이|가|은|는)$/.test(w)) return;
+            var stem = w.replace(/(을|를|이|가|은|는|와|과|로|으로|에서|에|의|도|만)$/, '');
+            if (stem.length < 2) return;
+            counts[stem] = (counts[stem] || 0) + 1;
+          });
+          Object.keys(counts).forEach(function(w) {
+            if (counts[w] >= 3) issues.push({ cat: 'style', fieldId: fieldId, label: label, msg: '"' + w + '"이(가) ' + counts[w] + '번 반복됩니다. 다른 표현이나 구체적인 기술명으로 바꿔 보세요.', snip: self.snippet(text, text.indexOf(w), w.length) });
+          });
+          if (/!/.test(text)) issues.push({ cat: 'style', fieldId: fieldId, label: label, msg: '이력서에는 느낌표(!)보다 차분한 마침표가 어울립니다.', snip: self.snippet(text, text.indexOf('!'), 1) });
+        }
+      });
+      return issues;
+    },
+
+    run: function() {
+      this.issues = this.analyze();
+      this.render();
+    },
+
+    render: function() {
+      var self = this;
+      var cats = [{ key: 'all', label: '전체' }, { key: 'spacing', label: '맞춤법·띄어쓰기' }, { key: 'term', label: '기술 이름 표기' }, { key: 'style', label: '문장 스타일' }];
+      var filters = document.getElementById('polish-filters');
+      filters.innerHTML = '';
+      cats.forEach(function(c) {
+        var n = c.key === 'all' ? self.issues.length : self.issues.filter(function(i) { return i.cat === c.key; }).length;
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'tool-filter' + (self.filter === c.key ? ' active' : '');
+        b.textContent = c.label + ' ' + n;
+        b.addEventListener('click', function() { self.filter = c.key; self.render(); });
+        filters.appendChild(b);
+      });
+      var fixable = this.issues.filter(function(i) { return i.fix; }).length;
+      document.getElementById('polish-summary').textContent = this.issues.length
+        ? '고칠 곳 ' + this.issues.length + '개 (자동 수정 가능 ' + fixable + '개)'
+        : '찾은 문제가 없습니다. 깔끔합니다!';
+      document.getElementById('polish-fix-all').disabled = !fixable;
+      var list = document.getElementById('polish-list');
+      list.innerHTML = '';
+      this.issues.filter(function(i) { return self.filter === 'all' || i.cat === self.filter; }).forEach(function(issue) {
+        var row = document.createElement('div');
+        row.className = 'pl-item';
+        var body = document.createElement('div');
+        body.className = 'pl-body';
+        var f = document.createElement('div');
+        f.className = 'pl-field';
+        f.textContent = issue.label;
+        var msg = document.createElement('div');
+        msg.className = 'pl-msg';
+        msg.textContent = issue.msg;
+        body.appendChild(f);
+        body.appendChild(msg);
+        if (issue.snip && (issue.snip.before || issue.snip.match)) {
+          var sn = document.createElement('div');
+          sn.className = 'pl-snippet';
+          sn.appendChild(document.createTextNode(issue.snip.before));
+          var mark = document.createElement('mark');
+          mark.textContent = issue.snip.match;
+          sn.appendChild(mark);
+          sn.appendChild(document.createTextNode(issue.snip.after));
+          body.appendChild(sn);
+        }
+        row.appendChild(body);
+        if (issue.fix) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'readme-action-btn primary';
+          btn.textContent = '고치기';
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            UI.captureUndoSnapshot();
+            self.applyFix(issue);
+            ResumeWriter.afterChange('문장 다듬기 적용');
+            self.run();
+          });
+          row.appendChild(btn);
+        }
+        row.addEventListener('click', function() { self.close(); UI.scrollToField(issue.fieldId); });
+        list.appendChild(row);
+      });
+    },
+
+    // 서식(굵게·목록·기술 태그)을 지키기 위해 글자 노드만 골라 바꾼다
+    applyFix: function(issue) {
+      var el = FieldCollector.getFieldEl(issue.fieldId);
+      if (!el || !issue.fix) return;
+      var rule = issue.fix;
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+      var node;
+      while ((node = walker.nextNode())) {
+        var re = new RegExp(rule.re.source, rule.re.flags);
+        var replaced = node.nodeValue.replace(re, function() {
+          var m = arguments[0];
+          if (rule.to === m) return m;
+          return m.replace(new RegExp(rule.re.source, rule.re.flags.replace('g', '')), rule.to);
+        });
+        if (replaced !== node.nodeValue) node.nodeValue = replaced;
+      }
+    },
+
+    fixAll: function() {
+      var fixable = this.issues.filter(function(i) { return i.fix; });
+      if (!fixable.length) return;
+      UI.captureUndoSnapshot();
+      var self = this;
+      fixable.forEach(function(issue) { self.applyFix(issue); });
+      ResumeWriter.afterChange('문장 다듬기 일괄 적용');
+      ResumeWriter.notify('자동 수정 ' + fixable.length + '건을 고쳤습니다. 되돌리려면 "방금 변경 되돌리기"를 누르세요.');
+      this.run();
+    }
+  };
+  window.Polish = Polish;
+
+  // ===== Module: Design (디자인 템플릿 · 강조 색) + Photo (증명사진) =====
+  // 디자인과 사진은 섹션 토글 저장소(toggles)에 함께 넣어 버전·내보내기·되돌리기에 같이 따라가게 한다
+  var DESIGN_THEMES = ['classic', 'modern', 'minimal'];
+  var PHOTO_DATA_RE = /^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/;
+
+  function mixWithWhite(hex, ratio) {
+    var m = /^#([0-9a-f]{6})$/i.exec(hex || '');
+    if (!m) return null;
+    var n = parseInt(m[1], 16);
+    var ch = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(function(c) { return Math.round(c + (255 - c) * ratio); });
+    return 'rgb(' + ch.join(',') + ')';
+  }
+
+  function loadToggles() { return Storage.load(STORAGE_KEYS.SECTION_TOGGLE) || {}; }
+  function saveToggleKey(key, value) {
+    var t = loadToggles();
+    if (value == null) delete t[key]; else t[key] = value;
+    return Storage.save(STORAGE_KEYS.SECTION_TOGGLE, t);
+  }
+
+  var Design = {
+    init: function() {
+      var self = this;
+      this.page = document.querySelector('.page');
+      document.querySelectorAll('.design-theme-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { self.set({ theme: btn.getAttribute('data-theme') }); });
+      });
+      document.querySelectorAll('.design-color').forEach(function(btn) {
+        btn.addEventListener('click', function() { self.set({ accent: btn.getAttribute('data-accent') }); });
+      });
+      this.apply(loadToggles().__design);
+    },
+
+    normalize: function(d) {
+      d = d && typeof d === 'object' ? d : {};
+      return {
+        theme: DESIGN_THEMES.indexOf(d.theme) !== -1 ? d.theme : 'classic',
+        accent: /^#[0-9a-f]{6}$/i.test(d.accent || '') ? d.accent : '#1a365d'
+      };
+    },
+
+    apply: function(design) {
+      var d = this.normalize(design);
+      if (!this.page) return d;
+      var page = this.page;
+      DESIGN_THEMES.forEach(function(t) { page.classList.toggle('theme-' + t, t === d.theme); });
+      page.style.setProperty('--rh-accent', d.accent);
+      page.style.setProperty('--rh-accent-soft', mixWithWhite(d.accent, 0.3));
+      page.style.setProperty('--rh-accent-bg', mixWithWhite(d.accent, 0.92));
+      document.querySelectorAll('.design-theme-btn').forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-theme') === d.theme); });
+      document.querySelectorAll('.design-color').forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-accent').toLowerCase() === d.accent.toLowerCase()); });
+      return d;
+    },
+
+    set: function(change) {
+      var d = this.normalize(loadToggles().__design);
+      if (change.theme) d.theme = change.theme;
+      if (change.accent) d.accent = change.accent;
+      UI.captureUndoSnapshot();
+      saveToggleKey('__design', d);
+      this.apply(d);
+      UI.persistContent({ label: '디자인 변경 저장' });
+      UI.updateCompleteness();
+    }
+  };
+  window.Design = Design;
+
+  var Photo = {
+    init: function() {
+      var self = this;
+      this.box = document.getElementById('header-photo');
+      this.img = document.getElementById('header-photo-img');
+      this.input = document.getElementById('photo-file-input');
+      if (!this.box || !this.input) return;
+      document.getElementById('photo-add-btn').addEventListener('click', function() { self.input.click(); });
+      document.getElementById('photo-remove-btn').addEventListener('click', function() { self.remove(); });
+      this.input.addEventListener('change', function() {
+        var file = self.input.files && self.input.files[0];
+        self.input.value = '';
+        if (file) self.load(file);
+      });
+      this.apply(loadToggles().__photo);
+    },
+
+    apply: function(dataUrl) {
+      if (!this.box) return;
+      var ok = typeof dataUrl === 'string' && dataUrl.length < 400000 && PHOTO_DATA_RE.test(dataUrl);
+      if (ok) this.img.src = dataUrl; else this.img.removeAttribute('src');
+      this.box.hidden = !ok;
+      var removeBtn = document.getElementById('photo-remove-btn');
+      if (removeBtn) removeBtn.disabled = !ok;
+    },
+
+    // 3:4로 가운데를 잘라 360x480 JPEG로 줄인다 (보통 30~60KB)
+    load: function(file) {
+      var self = this;
+      if (!/^image\/(jpeg|png|webp)$/.test(file.type)) { alert('JPG, PNG, WEBP 사진만 넣을 수 있습니다.'); return; }
+      if (file.size > 15 * 1024 * 1024) { alert('15MB 이하의 사진을 골라주세요.'); return; }
+      var url = URL.createObjectURL(file);
+      var image = new Image();
+      image.onload = function() {
+        var targetW = 360, targetH = 480;
+        var ratio = targetW / targetH;
+        var sw = image.width, sh = image.height;
+        var cw = sw, chh = sh;
+        if (sw / sh > ratio) cw = sh * ratio; else chh = sw / ratio;
+        var sx = (sw - cw) / 2, sy = (sh - chh) / 2;
+        var canvas = document.createElement('canvas');
+        canvas.width = targetW;
+        canvas.height = targetH;
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, targetW, targetH);
+        ctx.drawImage(image, sx, sy, cw, chh, 0, 0, targetW, targetH);
+        URL.revokeObjectURL(url);
+        var dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        UI.captureUndoSnapshot();
+        if (!saveToggleKey('__photo', dataUrl)) { alert('브라우저 저장 공간이 부족해 사진을 저장하지 못했습니다.'); return; }
+        self.apply(dataUrl);
+        UI.persistContent({ label: '증명사진 저장' });
+        UI.updateCompleteness();
+        ResumeWriter.notify('증명사진을 넣었습니다. PDF에도 함께 나옵니다.');
+      };
+      image.onerror = function() { URL.revokeObjectURL(url); alert('사진을 읽을 수 없습니다. 다른 파일을 골라주세요.'); };
+      image.src = url;
+    },
+
+    remove: function() {
+      if (!this.img.getAttribute('src')) return;
+      if (!window.confirm('증명사진을 뺄까요? ("방금 변경 되돌리기"로 되돌릴 수 있습니다)')) return;
+      UI.captureUndoSnapshot();
+      saveToggleKey('__photo', null);
+      this.apply(null);
+      UI.persistContent({ label: '증명사진 삭제' });
+      UI.updateCompleteness();
+    }
+  };
+  window.Photo = Photo;
+
   // ===== Initialize =====
   document.addEventListener('DOMContentLoaded', function() {
     UI.init();
@@ -9180,6 +10235,12 @@
     Interview.init();
     Versions.init();
     JobMatch.init();
+    Report.init();
+    Polish.init();
+    Design.init();
+    Photo.init();
+    FieldMeter.init();
+    A4Guide.init();
     PrintVisibility.init();
 
     // Auto-restore saved content
