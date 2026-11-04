@@ -1593,6 +1593,13 @@
       <button id="quick-check-btn" class="primary-btn">빠른 점검 실행</button>
       <div class="panel-hint">AI 없이도 필수 항목 누락, placeholder, 링크 형식, 정량 성과 부족을 먼저 점검합니다.</div>
     </div>
+    <div class="panel-section">
+      <button id="analyze-btn" class="outline-btn" type="button">
+        <span id="analyze-btn-text">AI로 더 자세히 점검하기</span>
+        <span id="analyze-spinner" class="spinner" style="display:none;"></span>
+      </button>
+      <div class="panel-hint">아래 API 키가 필요합니다. 이메일·전화번호는 가린 뒤 AI로 보냅니다.</div>
+    </div>
 
     <!-- #3 이력서 완성도 -->
     <div id="completeness-section" class="panel-section">
@@ -1619,17 +1626,17 @@
     </div>
 
     <div class="panel-divider"></div>
-    <div class="panel-group-title">README AI 설정</div>
+    <div class="panel-group-title">AI 설정 (AI 점검 · README 생성)</div>
 
     <!-- #1 API 튜토리얼 -->
     <div class="panel-section">
-      <label>README AI 생성용 API Key <span style="font-weight:400;color:#999;font-size:7pt;">(선택사항)</span></label>
+      <label>AI 기능용 API Key <span style="font-weight:400;color:#999;font-size:7pt;">(선택사항)</span></label>
       <button id="api-tutorial-toggle" class="api-tutorial-toggle">API Key 발급 방법 보기 ▼</button>
       <div id="api-tutorial" class="api-tutorial">
         <ol>
-          <li><a href="https://openrouter.ai" target="_blank"><strong>openrouter.ai</strong></a> 에 접속합니다</li>
+          <li><a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer"><strong>openrouter.ai</strong></a> 에 접속합니다</li>
           <li>우측 상단 <strong>"Sign Up"</strong> 버튼으로 무료 회원가입합니다<br>(Google 계정으로 간편 가입 가능)</li>
-          <li>가입 후 <a href="https://openrouter.ai/settings/keys" target="_blank"><strong>API Keys 페이지</strong></a>로 이동합니다</li>
+          <li>가입 후 <a href="https://openrouter.ai/settings/keys" target="_blank" rel="noopener noreferrer"><strong>API Keys 페이지</strong></a>로 이동합니다</li>
           <li><strong>"Create Key"</strong> 버튼을 클릭합니다</li>
           <li>생성된 키(<code>sk-or-v1-...</code>)를 복사합니다</li>
           <li>아래 입력칸에 붙여넣기 후 <strong>"저장"</strong>을 누릅니다</li>
@@ -2041,6 +2048,49 @@
   var STORAGE_VERSION = 2;
   var API_URL = 'https://openrouter.ai/api/v1/chat/completions';
   var MODEL = 'openrouter/free';
+  var AI_TIMEOUT_MS = 45000;
+  var MAX_IMPORT_BYTES = 2 * 1024 * 1024;
+
+  // 응답이 오지 않으면 버튼이 계속 '점검 중'으로 남던 문제를 막기 위해 시간 제한을 둔다
+  function fetchWithTimeout(url, options, timeoutMs) {
+    if (typeof AbortController === 'undefined') return fetch(url, options);
+    var controller = new AbortController();
+    var timer = setTimeout(function() { controller.abort(); }, timeoutMs);
+    var opts = Object.assign({}, options, { signal: controller.signal });
+    return fetch(url, opts).then(function(res) {
+      clearTimeout(timer);
+      return res;
+    }, function(err) {
+      clearTimeout(timer);
+      if (err && err.name === 'AbortError') {
+        throw new Error('AI 응답이 ' + Math.round(timeoutMs / 1000) + '초 안에 오지 않았습니다.\n무료 모델이 혼잡할 수 있으니 잠시 후 다시 시도해주세요.');
+      }
+      throw err;
+    });
+  }
+
+  function triggerDownload(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    // 바로 revoke 하면 일부 브라우저(Firefox 등)에서 다운로드가 취소된다
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function debounce(fn, wait) {
+    var timer = null;
+    return function() {
+      var ctx = this;
+      var args = arguments;
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(function() { timer = null; fn.apply(ctx, args); }, wait);
+    };
+  }
 
   // ===== Module 1: Storage =====
   var Storage = {
@@ -2118,8 +2168,52 @@
     return normalizeWhitespace(el ? el.innerText : '');
   }
 
+  function escapeHtml(text) {
+    return String(text == null ? '' : text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // 이력서 서식 필드에 필요한 태그만 남긴다. 속성은 skill-tag 클래스만 허용한다.
+  // (<script>만 지우던 기존 방식은 <img onerror>, <a href="javascript:"> 등을 막지 못했다)
+  var RICH_TEXT_ALLOWED_TAGS = { SPAN: true, STRONG: true, B: true, EM: true, I: true, BR: true, LI: true, UL: true, DIV: true, P: true };
+
   function sanitizeRichText(html) {
-    return String(html || '').replace(/<script[\s\S]*?<\/script>/gi, '').trim();
+    var template = document.createElement('template');
+    template.innerHTML = String(html || '');
+    (function clean(node) {
+      var children = Array.prototype.slice.call(node.childNodes);
+      for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+        if (child.nodeType === 3) continue;
+        if (child.nodeType !== 1 || !RICH_TEXT_ALLOWED_TAGS[child.tagName]) {
+          if (child.nodeType === 1 && !/^(SCRIPT|STYLE|IFRAME|OBJECT|EMBED|TEMPLATE|SVG|MATH)$/.test(child.tagName)) {
+            // 허용되지 않은 태그는 글자만 남기고 껍데기를 벗긴다
+            clean(child);
+            while (child.firstChild) node.insertBefore(child.firstChild, child);
+          }
+          node.removeChild(child);
+          continue;
+        }
+        var keepClass = child.tagName === 'SPAN' && child.classList.contains('skill-tag');
+        Array.prototype.slice.call(child.attributes).forEach(function(attr) {
+          child.removeAttribute(attr.name);
+        });
+        if (keepClass) child.className = 'skill-tag';
+        clean(child);
+      }
+    })(template.content);
+    return template.innerHTML.trim();
+  }
+
+  function isSafeUrl(url) {
+    var value = String(url || '').trim();
+    if (/^(https?:|mailto:)/i.test(value)) return true;
+    // 스킴이 없는 상대 경로/앵커만 허용 (javascript:, data: 등 차단)
+    return !/^[a-z][a-z0-9+.-]*:/i.test(value) && value.indexOf('//') !== 0;
   }
 
   function stripLinkLabel(text) {
@@ -2289,6 +2383,8 @@
 
   var FieldCollector = {
     getFieldEl: function(fieldId) {
+      // 저장된 피드백/AI 응답의 필드 ID가 이상해도 선택자 오류로 앱이 멈추지 않게 한다
+      if (typeof fieldId !== 'string' || !/^[A-Za-z0-9_-]+$/.test(fieldId)) return null;
       return document.querySelector('[data-field-id="' + fieldId + '"]');
     },
     getFieldText: function(fieldId) {
@@ -2317,11 +2413,15 @@
       for (var i = 0; i < keys.length; i++) {
         var el = this.getFieldEl(keys[i]);
         if (!el) continue;
+        var rawValue = savedFields[keys[i]];
+        if (typeof rawValue !== 'string') continue;
         if (el.getAttribute('data-storage-format') === 'html') {
-          var htmlValue = String(savedFields[keys[i]] || '');
-          el.innerHTML = htmlValue.indexOf('<') !== -1 ? htmlValue : htmlValue.replace(/\n/g, '<br>');
+          // 저장소나 가져온 파일의 값은 신뢰할 수 없으므로 반드시 정화한 뒤 넣는다
+          el.innerHTML = rawValue.indexOf('<') !== -1
+            ? sanitizeRichText(rawValue)
+            : escapeHtml(rawValue).replace(/\n/g, '<br>');
         } else {
-          el.innerText = savedFields[keys[i]];
+          el.innerText = rawValue;
         }
       }
     },
@@ -2783,23 +2883,23 @@
       el.setAttribute('data-print-empty', hidden ? 'true' : 'false');
     },
 
-    syncOptionalFields: function() {
+    syncOptionalFields: function(fields) {
       var optionalFields = document.querySelectorAll('[data-field-id][data-optional="true"]');
       for (var i = 0; i < optionalFields.length; i++) {
         var fieldId = optionalFields[i].getAttribute('data-field-id');
-        this.mark(optionalFields[i], !FieldCollector.hasRealContent(fieldId));
+        this.mark(optionalFields[i], !FieldCollector.hasRealContent(fieldId, fields));
       }
     },
 
-    syncProjectItems: function() {
+    syncProjectItems: function(fields) {
       var projectItems = document.querySelectorAll('.project-item');
       for (var i = 0; i < projectItems.length; i++) {
-        var fields = projectItems[i].querySelectorAll('[data-field-id]');
-        if (!fields.length) continue;
+        var fieldEls = projectItems[i].querySelectorAll('[data-field-id]');
+        if (!fieldEls.length) continue;
         var allOptional = true;
         var anyReal = false;
-        for (var j = 0; j < fields.length; j++) {
-          if (fields[j].getAttribute('data-optional') !== 'true') {
+        for (var j = 0; j < fieldEls.length; j++) {
+          if (fieldEls[j].getAttribute('data-optional') !== 'true') {
             allOptional = false;
             break;
           }
@@ -2808,8 +2908,8 @@
           this.mark(projectItems[i], false);
           continue;
         }
-        for (var k = 0; k < fields.length; k++) {
-          if (FieldCollector.hasRealContent(fields[k].getAttribute('data-field-id'))) {
+        for (var k = 0; k < fieldEls.length; k++) {
+          if (FieldCollector.hasRealContent(fieldEls[k].getAttribute('data-field-id'), fields)) {
             anyReal = true;
             break;
           }
@@ -2818,14 +2918,14 @@
       }
     },
 
-    syncCertificationSection: function() {
+    syncCertificationSection: function(fields) {
       var certRows = document.querySelectorAll('.cert-row');
       var hasVisibleRow = false;
       for (var i = 0; i < certRows.length; i++) {
-        var fields = certRows[i].querySelectorAll('[data-field-id]');
+        var fieldEls = certRows[i].querySelectorAll('[data-field-id]');
         var anyReal = false;
-        for (var j = 0; j < fields.length; j++) {
-          if (FieldCollector.hasRealContent(fields[j].getAttribute('data-field-id'))) {
+        for (var j = 0; j < fieldEls.length; j++) {
+          if (FieldCollector.hasRealContent(fieldEls[j].getAttribute('data-field-id'), fields)) {
             anyReal = true;
             break;
           }
@@ -2836,17 +2936,17 @@
       this.mark(document.querySelector('.section[data-section-toggle="certification"]'), !hasVisibleRow);
     },
 
-    syncEducationRows: function() {
+    syncEducationRows: function(fields) {
       var eduRows = document.querySelectorAll('.edu-row');
       for (var i = 0; i < eduRows.length; i++) {
-        var fields = eduRows[i].querySelectorAll('[data-field-id]');
+        var fieldEls = eduRows[i].querySelectorAll('[data-field-id]');
         var allOptional = true;
         var anyReal = false;
-        for (var j = 0; j < fields.length; j++) {
-          if (fields[j].getAttribute('data-optional') !== 'true') {
+        for (var j = 0; j < fieldEls.length; j++) {
+          if (fieldEls[j].getAttribute('data-optional') !== 'true') {
             allOptional = false;
           }
-          if (FieldCollector.hasRealContent(fields[j].getAttribute('data-field-id'))) {
+          if (FieldCollector.hasRealContent(fieldEls[j].getAttribute('data-field-id'), fields)) {
             anyReal = true;
           }
         }
@@ -2854,18 +2954,18 @@
       }
     },
 
-    syncSkillRows: function() {
+    syncSkillRows: function(fields) {
       var skillRows = document.querySelectorAll('.skill-row');
       for (var i = 0; i < skillRows.length; i++) {
-        var fields = skillRows[i].querySelectorAll('[data-field-id]');
-        if (!fields.length) continue;
+        var fieldEls = skillRows[i].querySelectorAll('[data-field-id]');
+        if (!fieldEls.length) continue;
         var allOptional = true;
         var anyReal = false;
-        for (var j = 0; j < fields.length; j++) {
-          if (fields[j].getAttribute('data-optional') !== 'true') {
+        for (var j = 0; j < fieldEls.length; j++) {
+          if (fieldEls[j].getAttribute('data-optional') !== 'true') {
             allOptional = false;
           }
-          if (FieldCollector.hasRealContent(fields[j].getAttribute('data-field-id'))) {
+          if (FieldCollector.hasRealContent(fieldEls[j].getAttribute('data-field-id'), fields)) {
             anyReal = true;
           }
         }
@@ -2874,17 +2974,20 @@
     },
 
     sync: function() {
-      this.syncOptionalFields();
-      this.syncSkillRows();
-      this.syncProjectItems();
-      this.syncEducationRows();
-      this.syncCertificationSection();
+      // 필드 텍스트를 한 번만 읽어 모든 판정에 재사용한다 (기존: 필드마다 전체를 다시 읽음)
+      var fields = FieldCollector.getAllFields();
+      this.syncOptionalFields(fields);
+      this.syncSkillRows(fields);
+      this.syncProjectItems(fields);
+      this.syncEducationRows(fields);
+      this.syncCertificationSection(fields);
     },
 
     init: function() {
       var self = this;
       this.sync();
-      document.addEventListener('input', function() { self.sync(); }, true);
+      var syncDebounced = debounce(function() { self.sync(); }, 250);
+      document.addEventListener('input', function() { syncDebounced(); }, true);
       document.addEventListener('blur', function() { self.sync(); }, true);
       window.addEventListener('beforeprint', function() { self.sync(); });
     }
@@ -2923,12 +3026,28 @@
         '}';
     },
 
+    // 외부 AI 서버로 개인정보가 나가지 않도록 연락처는 형식만 알 수 있게 가린다
+    maskPersonalInfo: function(fieldId, value) {
+      var text = String(value || '');
+      if (fieldId === 'header-email') {
+        return isValidEmail(text) ? '(형식이 올바른 이메일 - 개인정보 보호로 가림)' : text.replace(/[^@\s.\[\]]/g, '*');
+      }
+      if (fieldId === 'header-phone') {
+        return isValidPhone(text) ? '(형식이 올바른 전화번호 - 개인정보 보호로 가림)' : text.replace(/\d/g, '0');
+      }
+      if (fieldId === 'header-name') {
+        return hasPlaceholderText(text) ? text : '(이름 입력됨)';
+      }
+      return text;
+    },
+
     buildUserPrompt: function(fields) {
-      var prompt = '아래는 신입 개발자 이력서의 각 필드 내용입니다. 분석해주세요.\n\n';
+      var prompt = '아래는 신입 개발자 이력서의 각 필드 내용입니다. 분석해주세요.\n' +
+        '연락처는 개인정보 보호를 위해 가려져 있으니 형식 안내만 참고하세요.\n\n';
       var keys = Object.keys(fields);
       for (var i = 0; i < keys.length; i++) {
         var id = keys[i];
-        prompt += '[' + id + '] ' + FieldCollector.getLabel(id) + ': ' + fields[id] + '\n';
+        prompt += '[' + id + '] ' + FieldCollector.getLabel(id) + ': ' + this.maskPersonalInfo(id, fields[id]) + '\n';
       }
       return prompt;
     },
@@ -2945,7 +3064,7 @@
         max_tokens: 4000
       };
 
-      return fetch(API_URL, {
+      return fetchWithTimeout(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -2954,7 +3073,7 @@
           'X-Title': 'Resume AI Feedback'
         },
         body: JSON.stringify(body)
-      })
+      }, AI_TIMEOUT_MS)
       .then(function(response) {
         if (!response.ok) {
           return response.json().catch(function() { return {}; }).then(function(errData) {
@@ -3000,18 +3119,60 @@
         if (!parsed.fields || typeof parsed.fields !== 'object') {
           throw new Error('AI 응답 형식이 예상과 다릅니다.\n다시 시도해주세요.');
         }
-        return parsed;
+        return this.normalizeResult(parsed);
       } catch(e) {
         if (e instanceof SyntaxError) {
           throw new Error('AI 응답을 분석할 수 없습니다.\n다시 시도해주세요.');
         }
         throw e;
       }
+    },
+
+    // AI가 돌려준 값은 신뢰할 수 없으므로 실제 존재하는 필드와 문자열 메시지만 남긴다
+    normalizeResult: function(parsed) {
+      var result = { fields: {}, overall: typeof parsed.overall === 'string' ? parsed.overall.slice(0, 600) : '' };
+      var toMessages = function(list) {
+        if (!Array.isArray(list)) return [];
+        return list.filter(function(m) { return typeof m === 'string' && m.trim(); })
+          .map(function(m) { return m.trim().slice(0, 400); })
+          .slice(0, 5);
+      };
+      Object.keys(parsed.fields).forEach(function(fieldId) {
+        if (!/^[a-z0-9-]+$/.test(fieldId) || !FieldCollector.getFieldEl(fieldId)) return;
+        var fb = parsed.fields[fieldId] || {};
+        var warnings = toMessages(fb.warnings);
+        var recommendations = toMessages(fb.recommendations);
+        if (warnings.length || recommendations.length) {
+          result.fields[fieldId] = { warnings: warnings, recommendations: recommendations };
+        }
+      });
+      return result;
     }
   };
 
   // ===== Module 4: Feedback Renderer =====
   var FeedbackRenderer = {
+    buildMessageEl: function(item) {
+      var msg = document.createElement('div');
+      msg.className = 'ai-feedback-msg ' + (item.type === 'warning' ? 'warning' : 'recommendation');
+      msg.setAttribute('role', 'button');
+      msg.tabIndex = 0;
+      var icon = document.createElement('span');
+      icon.style.marginRight = '4px';
+      icon.textContent = item.type === 'warning' ? '⚠️' : '💡';
+      var label = document.createElement('strong');
+      label.textContent = item.label + ':';
+      msg.appendChild(icon);
+      msg.appendChild(label);
+      msg.appendChild(document.createTextNode(' ' + item.message));
+      var jump = function() { UI.scrollToField(item.fieldId); };
+      msg.addEventListener('click', jump);
+      msg.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); jump(); }
+      });
+      return msg;
+    },
+
     clear: function() {
       document.querySelectorAll('.ai-feedback-container').forEach(function(c) {
         c.innerHTML = '';
@@ -3059,16 +3220,11 @@
           return 0;
         });
 
-        var html = '';
+        // AI \uC751\uB2F5/\uC0AC\uC6A9\uC790 \uC785\uB825\uC774 \uC11E\uC778 \uBA54\uC2DC\uC9C0\uC774\uBBC0\uB85C innerHTML \uB300\uC2E0 textContent\uB85C \uADF8\uB9B0\uB2E4
+        container.innerHTML = '';
         for (var j = 0; j < items.length; j++) {
-          var item = items[j];
-          var icon = item.type === 'warning' ? '\u26A0\uFE0F' : '\uD83D\uDCA1';
-          html += '<div class="ai-feedback-msg ' + item.type + '" onclick="UI.scrollToField(\'' + item.fieldId + '\')">' +
-                  '<span style="margin-right:4px;">' + icon + '</span>' +
-                  '<strong>' + item.label + ':</strong> ' + item.message +
-                  '</div>';
+          container.appendChild(this.buildMessageEl(items[j]));
         }
-        container.innerHTML = html;
         container.style.display = 'block';
       }
 
@@ -3112,9 +3268,13 @@
         panelBody: document.getElementById('panel-body')
       };
 
+      // 입력할 때마다 A4 분량 측정(레이아웃 강제 계산)을 하면 타이핑이 버벅이므로 묶어서 실행한다
+      this.updateCompletenessDebounced = debounce(function() { UI.updateCompleteness(); }, 300);
+
       this.bindEvents();
       this.restoreApiKey();
       this.setupPasteHandler();
+      this.setupKeyboardShortcuts();
       this.setupPlaceholders();
       this.setupSampleQuickLinks();
       this.setupSectionToggles();
@@ -3163,14 +3323,47 @@
       this.updateUndoButton();
     },
 
+    // 문서 단위로 위임해서, 나중에 추가한 프로젝트/교육/자격증 칸에서도
+    // 웹페이지 서식(HTML)이 그대로 붙여넣어지지 않고 일반 텍스트로 들어가게 한다
     setupPasteHandler: function() {
-      document.querySelectorAll('[contenteditable="true"]').forEach(function(el) {
-        el.addEventListener('paste', function(e) {
-          e.preventDefault();
-          var text = (e.clipboardData || window.clipboardData).getData('text/plain');
-          document.execCommand('insertText', false, text);
-        });
+      document.addEventListener('paste', function(e) {
+        var target = e.target && e.target.closest ? e.target.closest('[contenteditable="true"]') : null;
+        if (!target) return;
+        e.preventDefault();
+        var text = (e.clipboardData || window.clipboardData).getData('text/plain');
+        document.execCommand('insertText', false, text);
       });
+    },
+
+    setupKeyboardShortcuts: function() {
+      var self = this;
+      document.addEventListener('keydown', function(e) {
+        // Ctrl/Cmd + S: 브라우저 '페이지 저장' 대신 이력서 내용 저장
+        if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && (e.key === 's' || e.key === 'S')) {
+          e.preventDefault();
+          self.persistContent({ label: '수동 저장 (Ctrl+S)' });
+          self.flashSaveStatus();
+          return;
+        }
+        if (e.key === 'Escape') {
+          var readme = document.getElementById('readme-overlay');
+          if (readme && readme.classList.contains('active')) { ReadmeGenerator.close(); return; }
+          var pdf = document.getElementById('pdf-guide-overlay');
+          if (pdf && pdf.classList.contains('active')) { pdf.classList.remove('active'); return; }
+          var wizard = document.getElementById('wizard-overlay');
+          if (wizard && wizard.classList.contains('active')) { Wizard.saveCurrentStepSafe(); Wizard.close(); return; }
+          var sample = document.getElementById('sample-resume-panel');
+          if (sample && sample.classList.contains('active')) { SampleResume.hide(); }
+        }
+      });
+    },
+
+    flashSaveStatus: function() {
+      var el = this.els.saveStatusText;
+      if (!el) return;
+      el.style.transition = 'background-color 0.6s';
+      el.style.backgroundColor = '#d4edda';
+      setTimeout(function() { el.style.backgroundColor = ''; }, 700);
     },
 
     saveApiKey: function() {
@@ -3274,7 +3467,7 @@
 
     setLoading: function(loading) {
       if (this.els.analyzeBtn) this.els.analyzeBtn.disabled = loading;
-      if (this.els.analyzeBtnText) this.els.analyzeBtnText.textContent = loading ? 'AI 점검 중... (최대 30초 소요)' : 'AI로 더 자세히 점검하기';
+      if (this.els.analyzeBtnText) this.els.analyzeBtnText.textContent = loading ? 'AI 점검 중... (최대 45초 소요)' : 'AI로 더 자세히 점검하기';
       if (this.els.analyzeSpinner) this.els.analyzeSpinner.style.display = loading ? 'inline-block' : 'none';
       if (loading) this.els.errorDisplay.style.display = 'none';
     },
@@ -3395,12 +3588,13 @@
         .catch(function(error) {
           var msg = error.message;
           if (error instanceof TypeError && (msg.indexOf('fetch') !== -1 || msg.indexOf('Failed') !== -1 || msg.indexOf('NetworkError') !== -1)) {
-            msg = '브라우저 보안 설정 때문에 AI 분석이 차단되었습니다.\n\n' +
-                  '해결 방법:\n' +
-                  '1. Chrome 웹스토어에서 "Allow CORS" 검색\n' +
-                  '2. 확장 프로그램 설치 후 활성화\n' +
-                  '3. 이 페이지를 새로고침 후 다시 시도\n\n' +
-                  '또는 인터넷 연결 상태를 확인해주세요.';
+            // 이전 안내는 "Allow CORS" 확장 설치를 권했는데, 이는 모든 사이트의 보안 정책을 꺼버려 위험하다
+            msg = 'AI 서버에 연결하지 못했습니다.\n\n' +
+                  '확인해볼 것:\n' +
+                  '1. 인터넷 연결 상태\n' +
+                  '2. 회사/학교 네트워크나 광고 차단 확장이 openrouter.ai를 막고 있지 않은지\n' +
+                  '3. 잠시 후 다시 시도\n\n' +
+                  'AI 없이도 "빠른 점검 실행"으로 대부분의 항목을 점검할 수 있습니다.';
           }
           self.showError(msg);
         })
@@ -3482,7 +3676,7 @@
 
         el.addEventListener('input', function() {
           el.classList.remove('is-placeholder');
-          UI.updateCompleteness();
+          UI.updateCompletenessDebounced();
           UI.scheduleAutosave();
         });
         el.addEventListener('blur', function() {
@@ -3631,21 +3825,32 @@
     renderPdfPreflight: function(preflight, box, printBtn) {
       if (!box || !printBtn) return;
       box.className = 'pdf-preflight-box';
+      // 항목 라벨에는 사용자가 입력한 카테고리명이 섞일 수 있어 textContent로만 그린다
+      var fill = function(title, lines) {
+        box.innerHTML = '';
+        var strong = document.createElement('strong');
+        strong.textContent = title;
+        box.appendChild(strong);
+        for (var i = 0; i < lines.length; i++) {
+          box.appendChild(document.createElement('br'));
+          box.appendChild(document.createTextNode(lines[i]));
+        }
+      };
       if (preflight.blocking.length > 0) {
         box.classList.add('is-blocking');
-        box.innerHTML = '<strong>먼저 수정이 필요한 항목</strong><br>' + preflight.blocking.join(', ');
+        fill('먼저 수정이 필요한 항목', [preflight.blocking.join(', ')]);
         printBtn.disabled = true;
         this.showError('PDF 저장 전 수정이 필요한 항목이 있습니다. 빠른 점검 결과를 먼저 확인해주세요.');
         return;
       }
       if (preflight.warnings.length > 0) {
         box.classList.add('is-warning');
-        box.innerHTML = '<strong>저장 전 확인 권장</strong><br>' + preflight.warnings.join('<br>');
+        fill('저장 전 확인 권장', preflight.warnings);
         printBtn.disabled = false;
         return;
       }
       box.classList.add('is-ready');
-      box.innerHTML = '<strong>저장 준비 완료</strong><br>필수 항목과 형식 점검을 통과했습니다. 인쇄 화면으로 이동해 PDF로 저장하세요.';
+      fill('저장 준비 완료', ['필수 항목과 형식 점검을 통과했습니다. 인쇄 화면으로 이동해 PDF로 저장하세요.']);
       printBtn.disabled = false;
     },
 
@@ -3661,12 +3866,7 @@
           var exportData = self.buildContentPayload();
           exportData.exportDate = new Date().toISOString();
           var blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-          var url = URL.createObjectURL(blob);
-          var a = document.createElement('a');
-          a.href = url;
-          a.download = '이력서_백업_' + new Date().toISOString().slice(0, 10) + '.json';
-          a.click();
-          URL.revokeObjectURL(url);
+          triggerDownload(blob, '이력서_백업_' + new Date().toISOString().slice(0, 10) + '.json');
           alert('이력서 데이터가 파일로 저장되었습니다.');
         });
       }
@@ -3679,11 +3879,31 @@
         fileInput.addEventListener('change', function(e) {
           var file = e.target.files[0];
           if (!file) return;
+          if (file.size > MAX_IMPORT_BYTES) {
+            alert('파일이 너무 큽니다 (최대 2MB). 이 도구에서 내보낸 .json 백업 파일인지 확인해주세요.');
+            fileInput.value = '';
+            return;
+          }
           var reader = new FileReader();
           reader.onload = function(ev) {
             try {
               var data = normalizeStoredContentPayload(JSON.parse(ev.target.result));
-              if (!data || !data.fields) throw new Error('invalid');
+              if (!data || !data.fields || typeof data.fields !== 'object' || Array.isArray(data.fields)) throw new Error('invalid');
+              // 문자열이 아닌 값은 버리고, 서식 필드는 applyStoredFields에서 정화된다
+              var cleanFields = {};
+              Object.keys(data.fields).forEach(function(key) {
+                if (/^[A-Za-z0-9_-]+$/.test(key) && typeof data.fields[key] === 'string') cleanFields[key] = data.fields[key];
+              });
+              data.fields = cleanFields;
+              data.toggles = (data.toggles && typeof data.toggles === 'object') ? data.toggles : {};
+              var current = self.getSavedContentPayload();
+              var hasCurrent = current && current.fields && Object.keys(current.fields).some(function(k) {
+                return current.fields[k] && !hasPlaceholderText(current.fields[k]);
+              });
+              if (hasCurrent && !window.confirm('지금 작성 중인 내용을 파일 내용으로 바꿀까요?\n(바꾼 뒤에도 "방금 변경 되돌리기"로 되돌릴 수 있습니다)')) {
+                fileInput.value = '';
+                return;
+              }
               self.captureUndoSnapshot();
               Storage.save(STORAGE_KEYS.CONTENT, data);
               if (data.toggles) Storage.save(STORAGE_KEYS.SECTION_TOGGLE, data.toggles);
@@ -4250,6 +4470,9 @@
 
     saveCurrentStep: function() {
       var step = STEPS[this.currentStep];
+      // 미리보기/완료 화면처럼 입력칸이 없는 화면에서 호출되면 저장하지 않는다.
+      // (기존에는 미리보기에서 "돌아가기"를 누르면 자기소개 답변이 빈 값으로 덮어써졌다)
+      if (!this.overlay || !this.overlay.querySelector('[data-wkey], [data-pkey], [data-ikey], input[type="checkbox"]')) return;
 
       if (step.type === 'checkbox') {
         var skills = {};
@@ -4327,9 +4550,18 @@
       return true;
     },
 
+    saveCurrentStepSafe: function() {
+      try { if (this.overlay && this.overlay.firstChild) this.saveCurrentStep(); } catch (e) {}
+    },
+
     next: function() {
       this.saveCurrentStep();
       if (!this.validateCurrentStep()) return;
+      // 한 번 건너뛰었더라도 이후 자격증을 직접 입력하고 "다음"을 누르면 숨김을 해제한다
+      if (STEPS[this.currentStep].id === 'certifications') {
+        this.data._certSkipped = !this.data.cert1Name && !this.data.cert2Name;
+        Storage.save(WIZARD_STORAGE_KEY, this.data);
+      }
       if (this.currentStep < STEPS.length - 1) {
         this.currentStep++;
         this.activeProject = 0;
@@ -4357,6 +4589,8 @@
     skip: function() {
       var step = STEPS[this.currentStep];
       if (step.id === 'certifications') {
+        // 기존 코드는 값을 비운 직후 saveCurrentStep()이 입력칸 값을 다시 읽어 덮어써서
+        // "건너뛰기"를 눌러도 입력했던 자격증이 그대로 남았다
         this.data.cert1Name = '';
         this.data.cert1Date = '';
         this.data.cert1Issuer = '';
@@ -4364,9 +4598,11 @@
         this.data.cert2Date = '';
         this.data.cert2Issuer = '';
         this.data._certSkipped = true;
+        Storage.save(WIZARD_STORAGE_KEY, this.data);
+      } else {
+        // skip은 검증 없이 다음으로
+        this.saveCurrentStep();
       }
-      // skip은 검증 없이 다음으로
-      this.saveCurrentStep();
       if (this.currentStep < STEPS.length - 1) {
         this.currentStep++;
         this.activeProject = 0;
@@ -4452,7 +4688,7 @@
         var el = document.querySelector('[data-field-id="' + previewFields[i][1] + '"]');
         var val = el ? el.innerText.trim() : '';
         var color = (val && val.indexOf('[') === -1) ? '#1a365d' : '#dc3545';
-        html += '<div><strong style="color:#4a6fa5;min-width:60px;display:inline-block;">' + previewFields[i][0] + ':</strong> <span style="color:' + color + ';">' + (val || '(미입력)') + '</span></div>';
+        html += '<div><strong style="color:#4a6fa5;min-width:60px;display:inline-block;">' + previewFields[i][0] + ':</strong> <span style="color:' + color + ';">' + (val ? escapeHtml(val) : '(미입력)') + '</span></div>';
       }
       var optionalPreviewFields = [
         ['블로그', 'header-blog'],
@@ -4462,7 +4698,7 @@
         var optionalEl = document.querySelector('[data-field-id="' + optionalPreviewFields[oi][1] + '"]');
         var optionalVal = optionalEl ? optionalEl.innerText.trim() : '';
         if (optionalVal && optionalVal.indexOf('[') === -1) {
-          html += '<div><strong style="color:#4a6fa5;min-width:60px;display:inline-block;">' + optionalPreviewFields[oi][0] + ':</strong> <span style="color:#1a365d;">' + optionalVal + '</span></div>';
+          html += '<div><strong style="color:#4a6fa5;min-width:60px;display:inline-block;">' + optionalPreviewFields[oi][0] + ':</strong> <span style="color:#1a365d;">' + escapeHtml(optionalVal) + '</span></div>';
         }
       }
       // 프로젝트 수
@@ -4493,11 +4729,14 @@
         if (el) el.innerText = value;
       }
 
+      // 호출하는 쪽에서 사용자 입력은 esc()로 감싸야 한다.
+      // (기존에는 "C++ <템플릿>" 같은 입력이 HTML로 해석돼 글자가 사라지거나 스크립트가 실행될 수 있었다)
       function setFieldHTML(id, value) {
         if (!value) return;
         var el = document.querySelector('[data-field-id="' + id + '"]');
-        if (el) el.innerHTML = value;
+        if (el) el.innerHTML = sanitizeRichText(value);
       }
+      var esc = escapeHtml;
 
       // Step 1: Basic info
       setField('header-name', d.name);
@@ -4525,7 +4764,7 @@
 
       // Step 2: Education → edu-2
       if (d.university) {
-        setFieldHTML('header-university', d.university + ' 졸업<br>' + (d.major || ''));
+        setFieldHTML('header-university', esc(d.university) + ' 졸업<br>' + esc(d.major || ''));
       }
       if (d.gradYear) setField('edu-2-period', d.gradYear);
       setField('edu-2-name', d.university);
@@ -4554,7 +4793,7 @@
       // Step 4: Skills
       if (d.skills) {
         var buildTags = function(arr) {
-          return arr.map(function(s) { return '<span class="skill-tag">' + s + '</span>'; }).join('');
+          return arr.map(function(s) { return '<span class="skill-tag">' + esc(s) + '</span>'; }).join('');
         };
         if (d.skills.Backend) setFieldHTML('skills-backend', buildTags(d.skills.Backend));
         if (d.skills.Frontend) setFieldHTML('skills-frontend', buildTags(d.skills.Frontend));
@@ -4565,7 +4804,7 @@
           var customs = d.customSkills.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
           if (customs.length > 0) {
             var devopsEl = document.querySelector('[data-field-id="skills-devops"]');
-            if (devopsEl) devopsEl.innerHTML += buildTags(customs);
+            if (devopsEl) devopsEl.innerHTML = sanitizeRichText(devopsEl.innerHTML + buildTags(customs));
           }
         }
       }
@@ -4587,10 +4826,10 @@
             setField('project-' + n + '-meta', metaStr);
           }
           if (pr.pDesc) setField('project-' + n + '-desc', pr.pDesc);
-          if (pr.pRole) setFieldHTML('project-' + n + '-role', '<strong>담당:</strong> ' + pr.pRole);
+          if (pr.pRole) setFieldHTML('project-' + n + '-role', '<strong>담당:</strong> ' + esc(pr.pRole));
           if (pr.pDetail) {
             var lines = pr.pDetail.split('\n').filter(function(l) { return l.trim(); });
-            var liHtml = lines.map(function(l) { return '<li>' + l.trim() + '</li>'; }).join('');
+            var liHtml = lines.map(function(l) { return '<li>' + esc(l.trim()) + '</li>'; }).join('');
             setFieldHTML('project-' + n + '-detail', liHtml);
           }
           if (pr.pResult) setField('project-' + n + '-result', '성과: ' + pr.pResult);
@@ -4650,15 +4889,24 @@
         }
       }
 
-      // #8 빈 프로젝트 섹션 자동 숨김
-      var projectCount = (d.projects && d.projects.length) || 0;
+      // #8 빈 보조 프로젝트 자동 숨김
+      // 기존 코드는 프로젝트 단계를 거치지 않으면(projects 없음) 필수인 대표 프로젝트까지
+      // display:none으로 숨겼고, 이 숨김은 저장되지도 되돌려지지도 않았다.
+      // 이제 대표 프로젝트(1번)와 내용이 있는 프로젝트는 항상 보이고, 비어 있는 보조 프로젝트만 숨긴다.
+      var projectCount = Math.max(1, (d.projects && d.projects.length) || 0);
+      var currentFields = FieldCollector.getAllFields();
       var projectItems = document.querySelectorAll('.project-item');
       for (var pi2 = 0; pi2 < projectItems.length; pi2++) {
-        if (pi2 >= projectCount) {
-          projectItems[pi2].style.display = 'none';
-        } else {
-          projectItems[pi2].style.display = '';
+        var itemFieldEls = projectItems[pi2].querySelectorAll('[data-field-id]');
+        var itemHasContent = false;
+        var itemRequired = false;
+        for (var fe = 0; fe < itemFieldEls.length; fe++) {
+          var feId = itemFieldEls[fe].getAttribute('data-field-id');
+          if (itemFieldEls[fe].getAttribute('data-required') === 'true') itemRequired = true;
+          if (FieldCollector.hasRealContent(feId, currentFields)) itemHasContent = true;
         }
+        var hideItem = pi2 >= projectCount && !itemRequired && !itemHasContent;
+        projectItems[pi2].style.display = hideItem ? 'none' : '';
       }
 
       // #6 About Me 자동 생성 안내
@@ -4696,8 +4944,9 @@
       UI.updateCompleteness();
     },
 
-    escAttr: function(str) { return String(str).replace(/"/g, '&quot;').replace(/</g, '&lt;'); },
-    escHtml: function(str) { return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    // 기존 escAttr는 &를 이스케이프하지 않아 "A &amp; B" 같은 값이 다시 열면 "A & B"로 바뀌었다
+    escAttr: function(str) { return escapeHtml(str); },
+    escHtml: function(str) { return escapeHtml(str); }
   };
 
   // Expose for inline onclick handlers
@@ -5289,8 +5538,11 @@
     restorePosition: function() {
       var state = Storage.load(SAMPLE_STORAGE_KEY);
       if (!state) return;
-      if (state.x !== undefined) { this.panel.style.left = state.x + 'px'; this.panel.style.right = 'auto'; }
-      if (state.y !== undefined) this.panel.style.top = state.y + 'px';
+      // 창 크기가 줄어든 뒤 다시 열면 패널이 화면 밖에 저장된 위치로 사라지지 않게 화면 안으로 맞춘다
+      var maxX = Math.max(0, window.innerWidth - 100);
+      var maxY = Math.max(0, window.innerHeight - 50);
+      if (typeof state.x === 'number' && isFinite(state.x)) { this.panel.style.left = Math.min(Math.max(0, state.x), maxX) + 'px'; this.panel.style.right = 'auto'; }
+      if (typeof state.y === 'number' && isFinite(state.y)) this.panel.style.top = Math.min(Math.max(0, state.y), maxY) + 'px';
     }
   };
   window.SampleResume = SampleResume;
@@ -5649,9 +5901,9 @@
         var currentHasData = currentName && currentName.indexOf('[') === -1;
         var activeClass = (currentIndex - 1 === this.activeProject) ? ' active' : '';
         var displayName = currentHasData ? currentName.split(' - ')[0].substring(0, 15) : '프로젝트 ' + currentIndex + ' (미입력)';
-        html += '<button class="readme-project-tab' + activeClass + '"' +
+        html += '<button type="button" class="readme-project-tab' + activeClass + '"' +
           (currentHasData ? ' onclick="ReadmeGenerator.switchProject(' + (currentIndex - 1) + ')"' : ' disabled') + '>' +
-          displayName + '</button>';
+          escapeHtml(displayName) + '</button>';
       }
       container.innerHTML = html;
     },
@@ -5709,19 +5961,31 @@
     },
 
     markdownToHtml: function(md) {
-      var html = md;
-      html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      // 따옴표까지 이스케이프하고(속성 탈출 방지), 링크/이미지 주소는 http(s)·상대경로만 허용한다.
+      // 기존 코드는 [x](javascript:...) 나 ![a](x" onerror="...) 형태로 스크립트 실행이 가능했고,
+      // 미리보기 내용은 AI 응답이므로 이 경로로 저장된 API 키가 유출될 수 있었다.
+      var html = escapeHtml(md);
+      var codeBlocks = [];
       html = html.replace(/```(\w*)\n([\s\S]*?)```/g, function(m, lang, code) {
-        return '<pre><code>' + code + '</code></pre>';
+        codeBlocks.push('<pre><code>' + code + '</code></pre>');
+        return '\u0000CODEBLOCK' + (codeBlocks.length - 1) + '\u0000';
       });
       html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+      var safeHref = function(url) {
+        var decoded = url.replace(/&amp;/g, '&');
+        return isSafeUrl(decoded) ? url : '#';
+      };
+      html = html.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, function(m, alt, src) {
+        return '<img src="' + safeHref(src) + '" alt="' + alt + '" />';
+      });
+      html = html.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function(m, text, href) {
+        return '<a href="' + safeHref(href) + '" target="_blank" rel="noopener noreferrer">' + text + '</a>';
+      });
       html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
       html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
       html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
       html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
-      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+      html = html.replace(/(^|[^*])\*([^*\n]+?)\*/g, '$1<em>$2</em>');
       html = html.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
       html = html.replace(/^[-*] (.+)$/gm, '<li>$1</li>');
       html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
@@ -5736,6 +6000,10 @@
       html = '<p>' + html + '</p>';
       html = html.replace(/<p>\s*(<h[1-3]|<pre|<ul|<ol|<table|<hr|<blockquote)/g, '$1');
       html = html.replace(/(<\/h[1-3]>|<\/pre>|<\/ul>|<\/ol>|<\/table>|<\/blockquote>)\s*<\/p>/g, '$1');
+      // 코드블록은 마지막에 되돌려 넣어서, 블록 안의 * 나 # 이 서식으로 바뀌지 않게 한다
+      html = html.replace(/(?:<p>)?\u0000CODEBLOCK(\d+)\u0000(?:<\/p>)?/g, function(m, idx) {
+        return codeBlocks[parseInt(idx, 10)] || '';
+      });
       return html;
     },
 
@@ -5805,7 +6073,7 @@
         temperature: 0.4,
         max_tokens: 4000
       };
-      fetch(API_URL, {
+      fetchWithTimeout(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -5814,7 +6082,7 @@
           'X-Title': 'Resume README Generator'
         },
         body: JSON.stringify(body)
-      })
+      }, AI_TIMEOUT_MS)
       .then(function(r) {
         if (!r.ok) {
           return r.json().catch(function() { return {}; }).then(function(errData) {
@@ -5930,63 +6198,99 @@
       var pd = this.getProjectData(this.activeProject);
       var name = (pd.name && pd.name.indexOf('[') === -1) ? pd.name.split(' - ')[0] : 'My Project';
       var desc = (pd.desc && pd.desc.indexOf('[') === -1) ? pd.desc : '프로젝트 설명 작성';
+      var clean = function(v) { return (v && !hasPlaceholderText(v)) ? normalizeWhitespace(v) : ''; };
+      var cell = function(v) { return (clean(v) || '[TODO]').replace(/\|/g, '/'); };
+
+      // 이력서에 이미 적은 구현 내용·기술 스택·GitHub 주소를 템플릿에 채워 넣는다
+      var features = String(pd.detail || '').split(/\n+/).map(clean).filter(Boolean);
+      var featureLines = features.length
+        ? features.map(function(f) { return '- ' + f; }).join('\n')
+        : '- [TODO: 핵심 기능 1]\n- [TODO: 핵심 기능 2]\n- [TODO: 핵심 기능 3]';
+      var repoPath = stripLinkLabel(clean(pd.link)).replace(/^https?:\/\//, '').replace(/^www\./, '');
+      var repoUrl = /^github\.com\/[^\/]+\/[^\/]+/.test(repoPath) ? 'https://' + repoPath.replace(/\/$/, '') : 'https://github.com/your-id/project-name';
+      var repoDir = repoUrl.split('/').pop() || 'project-name';
+      var skills = pd.skills || {};
+      var allSkills = [skills.backend, skills.frontend, skills.database, skills.devops].join(' ');
+      var usesGradle = /gradle/i.test(allSkills);
+      var runCmd = usesGradle ? './gradlew bootRun' : './mvnw spring-boot:run';
+      var buildCmd = usesGradle ? './gradlew build' : './mvnw clean package';
+      var extraRows = (skills.extra || []).map(function(item) {
+        return '| ' + cell(item.category) + ' | ' + cell(item.value) + ' | [TODO] |\n';
+      }).join('');
 
       var t = '# ' + name + '\n\n' +
         '> ' + desc + '\n\n' +
         '![Java](https://img.shields.io/badge/Java-17-orange) ' +
         '![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-green) ' +
         '![License](https://img.shields.io/badge/License-MIT-blue)\n\n' +
-        '## 목차\n' +
-        '- [프로젝트 소개](#프로젝트-소개)\n' +
-        '- [주요 기능](#주요-기능)\n' +
-        '- [기술 스택](#기술-스택)\n' +
-        '- [프로젝트 구조](#프로젝트-구조)\n' +
-        '- [시작하기](#시작하기)\n' +
-        '- [API 명세](#api-명세)\n' +
-        '- [스크린샷](#스크린샷)\n' +
-        '- [라이선스](#라이선스)\n\n' +
+        (clean(pd.meta) ? '- 기간/인원: ' + clean(pd.meta) + '\n' : '') +
+        (clean(pd.role) ? '- ' + clean(pd.role) + '\n' : '') +
+        (clean(pd.result) ? '- ' + clean(pd.result) + '\n' : '') +
+        '\n' +
+        '## 바로 실행하기\n\n' +
+        '1. 저장소 클론: `git clone ' + repoUrl + '.git`\n' +
+        '2. `src/main/resources/application.yml`에 DB 접속 정보 입력\n' +
+        '3. 실행: `' + runCmd + '` 후 http://localhost:8080 접속\n\n' +
         '## 프로젝트 소개\n\n' +
         '[TODO: 프로젝트의 배경과 어떤 문제를 해결하고자 하는지 작성하세요]\n\n' +
         '## 주요 기능\n\n' +
-        '- [TODO: 핵심 기능 1]\n' +
-        '- [TODO: 핵심 기능 2]\n' +
-        '- [TODO: 핵심 기능 3]\n\n' +
+        featureLines + '\n\n' +
         '## 기술 스택\n\n' +
         '| 구분 | 기술 | 선택 이유 |\n' +
         '|------|------|----------|\n' +
-        '| Backend | [TODO] | [TODO] |\n' +
-        '| Frontend | [TODO] | [TODO] |\n' +
-        '| Database | [TODO] | [TODO] |\n' +
-        '| DevOps | [TODO] | [TODO] |\n\n' +
+        '| Backend | ' + cell(skills.backend) + ' | [TODO] |\n' +
+        '| Frontend | ' + cell(skills.frontend) + ' | [TODO] |\n' +
+        '| Database | ' + cell(skills.database) + ' | [TODO] |\n' +
+        '| DevOps | ' + cell(skills.devops) + ' | [TODO] |\n' +
+        extraRows + '\n' +
         '## 프로젝트 구조\n\n' +
         '```\n' +
-        '[TODO: 폴더 구조를 작성하세요]\n' +
+        'src/main/java/.../\n' +
+        '├── controller/   # 요청 처리\n' +
+        '├── service/      # 비즈니스 로직\n' +
+        '├── repository/   # JPA Repository\n' +
+        '├── entity/       # JPA Entity\n' +
+        '├── dto/          # 요청/응답 DTO\n' +
+        '└── config/       # Security 등 설정\n' +
+        'src/main/resources/\n' +
+        '├── templates/    # Thymeleaf 화면\n' +
+        '├── static/       # CSS, JS, 이미지\n' +
+        '└── application.yml\n' +
         '```\n\n' +
         '## 시작하기\n\n' +
         '### 사전 요구사항\n' +
         '- Java 17+\n' +
-        '- Node.js 18+\n' +
         '- MySQL 8.0+\n\n' +
         '### 설치 및 실행\n\n' +
         '```bash\n' +
-        '# 레포지토리 클론\n' +
-        'git clone https://github.com/your-id/project-name.git\n' +
-        'cd project-name\n\n' +
-        '# 백엔드 실행\n' +
-        './gradlew bootRun\n\n' +
-        '# 프론트엔드 실행\n' +
-        'cd frontend && npm install && npm start\n' +
+        'git clone ' + repoUrl + '.git\n' +
+        'cd ' + repoDir + '\n\n' +
+        '# 빌드\n' +
+        buildCmd + '\n\n' +
+        '# 실행\n' +
+        runCmd + '\n' +
         '```\n\n' +
-        '## API 명세\n\n' +
-        '| Method | Endpoint | 설명 |\n' +
-        '|--------|----------|------|\n' +
-        '| GET | /api/v1/... | [TODO] |\n' +
-        '| POST | /api/v1/... | [TODO] |\n\n' +
+        '### 환경 변수 / 설정 예시\n\n' +
+        '```yaml\n' +
+        'spring:\n' +
+        '  datasource:\n' +
+        '    url: jdbc:mysql://localhost:3306/[TODO: DB명]\n' +
+        '    username: [TODO]\n' +
+        '    password: [TODO]\n' +
+        '```\n\n' +
+        '## 주요 URL\n\n' +
+        '| Method | URL | 설명 |\n' +
+        '|--------|-----|------|\n' +
+        '| GET | / | [TODO] |\n' +
+        '| POST | /[TODO] | [TODO] |\n\n' +
+        '## 트러블슈팅 / 배운 점\n\n' +
+        '- [TODO: 겪은 문제 → 원인 → 해결 방법]\n\n' +
         '## 스크린샷\n\n' +
         '[TODO: 스크린샷 이미지를 추가하세요]\n\n' +
         '## 라이선스\n\n' +
         'MIT License\n';
 
+      if (this.editor.value.trim() && !window.confirm('편집기의 현재 내용을 템플릿으로 바꿀까요?')) return;
       this.editor.value = t;
       this.renderPreview(t);
       this.saveCurrentReadme();
@@ -6006,13 +6310,7 @@
     downloadReadme: function() {
       var content = this.editor.value;
       if (!content) return;
-      var blob = new Blob([content], { type: 'text/markdown' });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = 'README.md';
-      a.click();
-      URL.revokeObjectURL(url);
+      triggerDownload(new Blob([content], { type: 'text/markdown' }), 'README.md');
       this.setStatus('README.md 다운로드 완료!');
     },
 
@@ -6021,7 +6319,7 @@
       var text = document.getElementById('readme-ai-text');
       var spinner = document.getElementById('readme-ai-spinner');
       btn.disabled = loading;
-      text.textContent = loading ? '생성 중... (최대 30초)' : 'AI로 생성하기';
+      text.textContent = loading ? '생성 중... (최대 45초)' : 'AI로 생성하기';
       spinner.style.display = loading ? 'inline-block' : 'none';
     },
 
