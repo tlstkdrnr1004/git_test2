@@ -1603,12 +1603,52 @@
   .tool-warn { font-size: 8pt; color: #b7791f; margin-top: 3px; }
   .tool-source-tag { font-size: 7pt; font-weight: 600; padding: 1px 6px; border-radius: 8px; background: #e6fffa; color: #2c7a7b; margin-left: auto; }
   .tool-card .readme-footer { flex-wrap: wrap; gap: 6px; }
+  /* ===== 이력서 버전 ===== */
+  .version-select { width: 100%; font-size: 8.5pt; padding: 4px 6px; border: 1px solid #d0d7e3; border-radius: 6px; margin: 4px 0 6px; }
+  .version-btns { display: flex; flex-wrap: wrap; gap: 4px; }
+  .version-btns .secondary-btn { margin: 0; flex: 1 1 45%; font-size: 8pt; padding: 5px 4px; }
+  /* ===== 면접 질문 ===== */
+  .iv-actions { display: flex; flex-wrap: wrap; gap: 4px; margin-left: auto; }
+  .iv-card { border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
+  .iv-card.answered { border-left: 3px solid #38a169; }
+  .iv-head { display: flex; gap: 8px; align-items: flex-start; }
+  .iv-num { flex-shrink: 0; font-size: 8pt; font-weight: 700; color: #4a6fa5; padding-top: 2px; min-width: 22px; }
+  .iv-q { flex: 1; font-size: 10pt; font-weight: 700; color: #1a365d; line-height: 1.5; }
+  .iv-basis { font-size: 7.5pt; color: #718096; margin: 3px 0 0 30px; }
+  .iv-guide { margin: 6px 0 0 30px; font-size: 8.5pt; color: #2d3748; }
+  .iv-guide summary { cursor: pointer; color: #4a6fa5; font-weight: 600; }
+  .iv-guide ul, .iv-guide ol { margin: 4px 0 0; padding-left: 18px; line-height: 1.6; }
+  .iv-answer { margin: 6px 0 0 30px; }
+  .iv-answer textarea { width: 100%; min-height: 70px; border: 1px solid #d0d7e3; border-radius: 6px; padding: 6px 8px; font-size: 9pt; line-height: 1.55; font-family: inherit; resize: vertical; }
+  .iv-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 4px; font-size: 8pt; color: #718096; }
+  .iv-tools .readme-action-btn { padding: 4px 10px; font-size: 8pt; }
+  .iv-timer { font-weight: 700; color: #1a365d; min-width: 44px; }
+  .iv-timer.over { color: #c53030; }
+  .iv-len.long { color: #b7791f; font-weight: 600; }
+  /* ===== 채용공고 맞춤 ===== */
+  .jm-company-row { border-top: none; border-bottom: 1px solid #e2e8f0; }
+  .jm-company-row input { flex: 1; min-width: 0; font-size: 8.5pt; padding: 4px 8px; border: 1px solid #d0d7e3; border-radius: 6px; }
+  .jm-score { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .jm-score-bar { flex: 1; height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; }
+  .jm-score-bar i { display: block; height: 100%; background: #38a169; }
+  .jm-score b { font-size: 14pt; color: #1a365d; }
+  .jm-table-wrap { overflow-x: auto; margin-bottom: 12px; }
+  .jm-table { width: 100%; border-collapse: collapse; font-size: 8.5pt; }
+  .jm-table th, .jm-table td { border: 1px solid #e2e8f0; padding: 5px 7px; text-align: left; vertical-align: top; }
+  .jm-table th { background: #f7f9fc; color: #1a365d; white-space: nowrap; }
+  .jm-h { font-size: 9.5pt; font-weight: 800; color: #1a365d; margin: 12px 0 6px; }
+  .jm-suggest { border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; font-size: 9pt; line-height: 1.55; }
+  .jm-suggest .readme-action-btn { margin-top: 6px; padding: 4px 10px; font-size: 8pt; }
+  .jm-muted { font-size: 8pt; color: #718096; }
+
   @media (max-width: 768px) {
     .tool-card { height: 95vh; width: 100%; }
-    #autofill-source { min-height: 180px; }
-    #autofill-overlay .readme-content { overflow-y: auto; }
-    #autofill-overlay .readme-editor-pane, #autofill-overlay .readme-preview-pane { flex: none; overflow: visible; }
-    #autofill-overlay .tool-result { overflow: visible; }
+    #autofill-source, #jobmatch-source { min-height: 180px; }
+    #autofill-overlay .readme-content, #jobmatch-overlay .readme-content { overflow-y: auto; }
+    #autofill-overlay .readme-editor-pane, #autofill-overlay .readme-preview-pane,
+    #jobmatch-overlay .readme-editor-pane, #jobmatch-overlay .readme-preview-pane { flex: none; overflow: visible; }
+    #autofill-overlay .tool-result, #jobmatch-overlay .tool-result { overflow: visible; }
+    .iv-basis, .iv-guide, .iv-answer { margin-left: 0; }
     .tool-toolbar { padding: 8px 12px; }
     .tool-list, .tool-result { padding: 8px 12px; }
   }
@@ -1716,6 +1756,21 @@
     </div>
 
     <div class="panel-divider"></div>
+    <div class="panel-group-title">취업 준비</div>
+    <div class="panel-section">
+      <button id="interview-open-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600; background:#eef3fb; border-color:#4a6fa5; color:#1a365d;" type="button">
+        면접 예상 질문 · 60초 답변
+      </button>
+      <div class="panel-hint">이력서에 쓴 기술·프로젝트로 면접 질문을 만들고, 답변을 써 보고 60초 연습까지 합니다.</div>
+    </div>
+    <div class="panel-section">
+      <button id="jobmatch-open-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600;" type="button">
+        채용공고 맞춤 점검
+      </button>
+      <div class="panel-hint">채용공고를 붙여넣으면 요구 기술과 내 이력서를 비교하고, 회사별 맞춤 버전을 만들어 줍니다.</div>
+    </div>
+
+    <div class="panel-divider"></div>
     <div class="panel-group-title">AI 설정 (AI 점검 · README 생성)</div>
 
     <!-- #1 API 튜토리얼 -->
@@ -1761,6 +1816,21 @@
         프로젝트 README 도구
       </button>
       <div style="font-size:7pt; color:#888; margin-top:2px; text-align:center;">프로젝트 README를 AI로 생성합니다 (API 키 필요)</div>
+    </div>
+
+    <div class="panel-divider"></div>
+    <div class="panel-group-title">이력서 버전 (회사별 관리)</div>
+    <div class="panel-section">
+      <label for="version-select">저장된 버전</label>
+      <select id="version-select" class="version-select"></select>
+      <div class="version-btns">
+        <button id="version-load-btn" class="secondary-btn" type="button">불러오기</button>
+        <button id="version-overwrite-btn" class="secondary-btn" type="button">이 버전에 덮어쓰기</button>
+        <button id="version-save-btn" class="secondary-btn" type="button">새 버전으로 저장</button>
+        <button id="version-rename-btn" class="secondary-btn" type="button">이름 바꾸기</button>
+        <button id="version-delete-btn" class="secondary-btn" type="button">삭제</button>
+      </div>
+      <div id="version-status" class="panel-hint"></div>
     </div>
 
     <div class="panel-divider"></div>
@@ -1908,6 +1978,79 @@
       </div>
     </div>
     <div id="readme-error" class="error-text" style="display:none; padding:0 20px 10px;"></div>
+  </div>
+</div>
+
+<!-- ===== 면접 예상 질문 ===== -->
+<div id="interview-overlay" class="tool-overlay" role="dialog" aria-modal="true" aria-labelledby="interview-title">
+  <div class="tool-card">
+    <div class="readme-header">
+      <span class="readme-title" id="interview-title">면접 예상 질문 · 60초 답변 연습</span>
+      <button id="interview-close" class="readme-close-btn" type="button" aria-label="닫기">&times;</button>
+    </div>
+    <div class="tool-toolbar">
+      <div class="tool-filters" id="interview-filters"></div>
+      <div class="iv-actions">
+        <button id="interview-refresh" class="readme-action-btn secondary" type="button">이력서로 다시 만들기</button>
+        <button id="interview-ai-more" class="readme-action-btn primary" type="button">
+          <span id="interview-ai-more-text">AI로 질문 더 만들기</span>
+          <span id="interview-ai-more-spinner" class="spinner" style="display:none;"></span>
+        </button>
+        <button id="interview-export" class="readme-action-btn secondary" type="button">질문·답변 내보내기 (.md)</button>
+      </div>
+    </div>
+    <div class="tool-desc" id="interview-summary"></div>
+    <div id="interview-error" class="error-text" style="display:none; padding:6px 20px;"></div>
+    <div class="tool-list" id="interview-list"></div>
+    <div class="tool-note">답변은 이 브라우저에 자동 저장됩니다. 말하기 기준 1분은 약 300자입니다. 면접관이 "AI를 썼는데 본인은 뭘 했나요?"라고 물으면 <strong>측정 → 원인 → 해결 → 숫자</strong>로 답하세요.</div>
+  </div>
+</div>
+
+<!-- ===== 채용공고 맞춤 점검 ===== -->
+<div id="jobmatch-overlay" class="tool-overlay" role="dialog" aria-modal="true" aria-labelledby="jobmatch-title">
+  <div class="tool-card">
+    <div class="readme-header">
+      <span class="readme-title" id="jobmatch-title">채용공고 맞춤 점검</span>
+      <button id="jobmatch-close" class="readme-close-btn" type="button" aria-label="닫기">&times;</button>
+    </div>
+    <div class="readme-content">
+      <div class="readme-editor-pane">
+        <div class="readme-editor-toolbar">
+          <span class="readme-editor-label">1. 채용공고 붙여넣기</span>
+          <div class="readme-editor-actions">
+            <button id="jobmatch-sample" class="readme-action-btn secondary" type="button">예시 공고</button>
+          </div>
+        </div>
+        <div class="tool-source-footer jm-company-row">
+          <label for="jobmatch-company">회사·공고 이름</label>
+          <input id="jobmatch-company" type="text" maxlength="40" placeholder="예: OO테크 백엔드 신입">
+        </div>
+        <textarea id="jobmatch-source" class="readme-textarea" maxlength="15000" placeholder="채용공고의 담당 업무, 자격 요건, 우대 사항을 그대로 붙여넣으세요.&#10;&#10;'자격요건', '필수', '우대사항' 같은 제목이 있으면 필수/우대를 나눠서 봅니다."></textarea>
+        <div class="tool-source-actions">
+          <button id="jobmatch-run" class="readme-action-btn primary" type="button">비교하기</button>
+          <button id="jobmatch-ai" class="readme-action-btn secondary" type="button">
+            <span id="jobmatch-ai-text">AI 맞춤 문장 제안</span>
+            <span id="jobmatch-ai-spinner" class="spinner" style="display:none;"></span>
+          </button>
+        </div>
+      </div>
+      <div class="readme-preview-pane">
+        <div class="readme-preview-toolbar">
+          <span class="readme-editor-label">2. 비교 결과와 맞춤 제안</span>
+        </div>
+        <div id="jobmatch-result" class="tool-result">
+          <div class="tool-empty">왼쪽에 채용공고를 붙여넣고 "비교하기"를 누르세요.<br>요구 기술 중 내 이력서에 있는 것과 없는 것, 앞에 내세울 프로젝트를 알려줍니다.</div>
+        </div>
+      </div>
+    </div>
+    <div id="jobmatch-error" class="error-text" style="display:none; padding:6px 20px;"></div>
+    <div class="readme-footer">
+      <div class="readme-footer-left"><span id="jobmatch-status" class="readme-status"></span></div>
+      <div class="readme-footer-right">
+        <button id="jobmatch-save-version" class="readme-action-btn primary" type="button">지금 이력서를 이 회사용 버전으로 저장</button>
+      </div>
+    </div>
+    <div class="tool-note">없는 기술을 이력서에 지어 넣으라는 뜻이 아닙니다. 써 본 기술은 잘 보이게 드러내고, 없는 기술은 "학습 중"이라고 솔직하게 쓰는 것이 면접에서 안전합니다.</div>
   </div>
 </div>
 
@@ -3522,6 +3665,8 @@
           return;
         }
         if (e.key === 'Escape') {
+          if (typeof Interview !== 'undefined' && Interview.isOpen()) { Interview.close(); return; }
+          if (typeof JobMatch !== 'undefined' && JobMatch.isOpen()) { JobMatch.close(); return; }
           if (typeof ExampleLibrary !== 'undefined' && ExampleLibrary.isOpen()) { ExampleLibrary.close(); return; }
           if (typeof Autofill !== 'undefined' && Autofill.isOpen()) { Autofill.close(); return; }
           var readme = document.getElementById('readme-overlay');
@@ -7978,6 +8123,1052 @@
   };
   window.Portfolio = Portfolio;
 
+
+  // ===== 공통: OpenRouter 호출 =====
+  function callOpenRouter(system, user, opts) {
+    opts = opts || {};
+    var apiKey = Storage.load(STORAGE_KEYS.API_KEY);
+    if (!apiKey) {
+      return Promise.reject(new Error('AI 기능에는 OpenRouter API 키가 필요합니다. 오른쪽 패널 "AI 설정"에서 키를 저장해주세요.'));
+    }
+    return fetchWithTimeout(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey,
+        'HTTP-Referer': 'https://resume-ai-feedback.local',
+        'X-Title': opts.title || 'Resume Helper'
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
+        temperature: opts.temperature == null ? 0.3 : opts.temperature,
+        max_tokens: opts.maxTokens || 2500
+      })
+    }, AI_TIMEOUT_MS)
+    .then(function(r) {
+      if (!r.ok) {
+        if (r.status === 401) throw new Error('API 키가 올바르지 않습니다.');
+        if (r.status === 429) throw new Error('요청이 많거나 무료 모델이 혼잡합니다. 1분 뒤 다시 시도해주세요.');
+        if (r.status === 402) throw new Error('OpenRouter 계정의 무료 사용량을 초과했습니다.');
+        throw new Error('AI 서버 응답 오류입니다 (HTTP ' + r.status + ').');
+      }
+      return r.json();
+    }, function(err) {
+      if (err instanceof TypeError) throw new Error('AI 서버에 연결하지 못했습니다. 인터넷 연결을 확인해주세요.');
+      throw err;
+    })
+    .then(function(data) {
+      var content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+      if (!content) throw new Error('AI 응답이 비어 있습니다. 다시 시도해주세요.');
+      var cleaned = String(content).trim();
+      var thinkEnd = cleaned.indexOf('</think>');
+      if (thinkEnd !== -1) cleaned = cleaned.substring(thinkEnd + 8).trim();
+      return cleaned;
+    });
+  }
+
+  function extractJsonFromAI(text) {
+    var start = text.indexOf('{');
+    var end = text.lastIndexOf('}');
+    if (start === -1 || end === -1) throw new Error('AI 응답을 읽을 수 없습니다. 다시 시도해주세요.');
+    try { return JSON.parse(text.substring(start, end + 1)); }
+    catch (e) { throw new Error('AI 응답 형식이 올바르지 않습니다. 다시 시도해주세요.'); }
+  }
+
+  // ===== 공통: 이력서 내용을 구조로 읽기 =====
+  var ResumeReader = {
+    clean: function(fieldId) {
+      var text = FieldCollector.getFieldText(fieldId);
+      return text && !hasPlaceholderText(text) ? normalizeWhitespace(text) : '';
+    },
+
+    skills: function() {
+      var all = [];
+      FieldCollector.getAllSkillFieldIds().forEach(function(fid) {
+        FieldCollector.getSkillItems(fid).forEach(function(s) {
+          if (!hasPlaceholderText(s) && all.indexOf(s) === -1) all.push(s);
+        });
+      });
+      return all;
+    },
+
+    projects: function() {
+      var self = this;
+      return getProjectIndices().map(function(i) {
+        var p = 'project-' + i + '-';
+        return {
+          index: i,
+          name: self.clean(p + 'name'),
+          shortName: (self.clean(p + 'name').split(' - ')[0] || '').trim(),
+          meta: self.clean(p + 'meta'),
+          desc: self.clean(p + 'desc'),
+          role: self.clean(p + 'role').replace(/^담당\s*[:：]\s*/, ''),
+          details: ResumeWriter.getDetailLines(i),
+          result: self.clean(p + 'result').replace(/^성과\s*[:：]\s*/, '')
+        };
+      }).filter(function(p) { return p.name; });
+    },
+
+    // 면접 질문 생성·AI 전송용 전체 텍스트 (연락처·이름 제외)
+    text: function() {
+      var self = this;
+      var parts = [self.clean('header-subtitle'), self.clean('about-summary'), self.skills().join(', ')];
+      self.projects().forEach(function(p) {
+        parts.push([p.name, p.meta, p.desc, p.role, p.details.join(' '), p.result].join(' '));
+      });
+      getIndexedFieldNumbers('edu').forEach(function(i) { parts.push(self.clean('edu-' + i + '-name') + ' ' + self.clean('edu-' + i + '-detail')); });
+      getIndexedFieldNumbers('cert').forEach(function(i) { parts.push(self.clean('cert-' + i + '-name')); });
+      parts.push(self.clean('intro-text'));
+      return parts.filter(Boolean).join('\n');
+    },
+
+    textForAI: function() {
+      var name = this.clean('header-name');
+      var text = maskContactInfo(this.text());
+      if (name) text = text.split(name).join('[이름]');
+      return text.slice(0, 7000);
+    }
+  };
+
+  // ===== Module: Interview (면접 예상 질문 + 60초 답변) =====
+  // re: 이력서 텍스트에 이 패턴이 있으면 질문을 만든다. points: 답변에 꼭 들어가야 할 핵심.
+  var INTERVIEW_TOPICS = [
+    { id: 't-n1', cat: 'tech', re: /N\s*\+\s*1|n\+1/i, q: 'N+1 문제가 무엇이고, 프로젝트에서 어떻게 발견하고 해결했나요?',
+      points: ['연관 엔티티를 지연 로딩할 때 목록 1번 + 항목 수(N)만큼 추가 조회가 나가는 문제', '발견: SQL 로그(show_sql)나 쿼리 수 테스트로 측정 (예: 50개 목록에 51번)', '해결: fetch join, @EntityGraph, 필요한 값만 DTO로 조회(COUNT) 중 상황에 맞게 선택', '재발 방지: 쿼리 수를 세는 테스트로 고정'] },
+    { id: 't-lazy', cat: 'tech', re: /JPA|Hibernate|Entity/i, q: 'JPA의 지연 로딩(LAZY)과 즉시 로딩(EAGER) 차이, 그리고 @ManyToOne을 LAZY로 두는 이유는?',
+      points: ['EAGER는 조회 시점에 연관 엔티티를 함께 가져오고, LAZY는 실제로 쓸 때 프록시로 가져옴', '@ManyToOne·@OneToOne은 기본이 EAGER라 예상 못 한 조인·N+1이 생김 → LAZY로 명시', '필요한 곳에서만 fetch join으로 한 번에 가져오는 것이 일반적'] },
+    { id: 't-pc', cat: 'tech', re: /JPA|Spring Data/i, q: '영속성 컨텍스트와 변경 감지(Dirty Checking)를 설명해 주세요.',
+      points: ['트랜잭션 안에서 엔티티를 1차 캐시에 보관하고 같은 ID는 같은 객체를 돌려줌', '트랜잭션 커밋 시 스냅샷과 비교해 바뀐 필드만 UPDATE (save 호출 없이도 반영)', '트랜잭션 밖에서 엔티티를 바꾸면 반영되지 않음에 주의'] },
+    { id: 't-tx', cat: 'tech', re: /트랜잭션|@Transactional|주문|재고|포인트|쿠폰/i, q: '@Transactional은 어떻게 동작하고, 어디에 붙였나요?',
+      points: ['스프링 AOP 프록시가 메서드 시작에 트랜잭션을 열고, 끝나면 커밋·런타임 예외면 롤백', '서비스 계층의 "하나의 업무 단위"(예: 주문 + 재고 감소)에 붙임', '같은 클래스 내부 호출은 프록시를 거치지 않아 적용되지 않음', '조회 전용은 readOnly = true로 성능·의도 표시'] },
+    { id: 't-concur', cat: 'tech', re: /동시|갱신 유실|원자적|중복 찜|CountDownLatch|race/i, q: '동시에 여러 요청이 들어오면 숫자가 틀어지는 문제를 어떻게 재현하고 막았나요?',
+      points: ['원인: 읽기 → 자바에서 계산 → 저장 사이에 다른 요청이 끼어드는 갱신 유실', '재현: ExecutorService + CountDownLatch로 동시 요청 100개를 보내는 테스트', '해결: UPDATE ... SET cnt = cnt + 1 같은 원자적 쿼리, 조건부 UPDATE, 비관적/낙관적 락, 유니크 제약', '검증: 같은 테스트를 여러 번 반복해 항상 통과하는지 확인'] },
+    { id: 't-unique', cat: 'tech', re: /중복|유니크|unique|북마크/i, q: '"이미 있으면 저장하지 않기"를 exists 검사만으로 막으면 안 되는 이유는?',
+      points: ['exists 확인과 save 사이에 다른 요청이 끼어들면 둘 다 저장됨', 'DB 유니크 제약을 두고, 위반 예외(DataIntegrityViolationException)를 잡아 처리', '최종 방어선은 DB 제약'] },
+    { id: 't-idor', cat: 'tech', re: /IDOR|남의|본인만|작성자|권한 검사|소유자|403/i, q: '주소의 번호만 바꿔 남의 데이터에 접근하는 문제(IDOR)를 어떻게 막았나요?',
+      points: ['화면에서 버튼을 숨기는 것만으로는 부족: 요청을 직접 보내면 서버가 처리함', '서비스에서 로그인 사용자와 리소스 소유자를 비교하고 다르면 403', '테스트로 "다른 사용자로 요청하면 거부" 를 고정'] },
+    { id: 't-xss', cat: 'tech', re: /XSS|스크립트|th:text|utext/i, q: 'XSS가 무엇이고 타임리프에서 어떻게 막았나요?',
+      points: ['사용자가 입력한 스크립트가 다른 사람 화면에서 실행되는 공격', 'th:utext는 HTML을 그대로 출력, th:text는 이스케이프해서 글자로 출력 → 사용자 입력은 th:text', 'AI 응답도 사용자 입력처럼 신뢰하지 않고 글자로만 출력'] },
+    { id: 't-mask', cat: 'tech', re: /마스킹|개인정보|전화번호/i, q: '개인정보(전화번호)는 어디서, 왜 마스킹했나요?',
+      points: ['화면이 아니라 서버(DTO 변환 시점)에서 가려야 어떤 화면·API·로그에서도 원문이 새지 않음', '예: 010-****-1234', 'AI 같은 외부 서비스에도 개인정보를 보내지 않음'] },
+    { id: 't-jwt', cat: 'tech', re: /JWT|토큰/i, q: '세션 로그인과 JWT의 차이, 그리고 둘을 함께 쓴 이유는?',
+      points: ['세션: 서버가 로그인 상태를 저장, 화면(타임리프) 요청에 편리', 'JWT: 서명된 토큰을 클라이언트가 보관, 서버는 검증만 → API·여러 서버에 적합', '단점: JWT는 만료 전 강제 무효화가 어려워 만료 시간을 짧게, 저장 위치 주의', 'SecurityFilterChain을 화면용/API용으로 나눠 구성'] },
+    { id: 't-security', cat: 'tech', re: /Spring Security|SecurityFilterChain|인증|인가/i, q: 'Spring Security에서 인증과 인가는 어떻게 처리되나요?',
+      points: ['인증: 누구인지 확인 (로그인, 토큰 검증) / 인가: 무엇을 할 수 있는지 (Role, URL·메서드 권한)', '요청은 필터 체인을 거쳐 SecurityContext에 인증 정보가 저장됨', '비밀번호는 BCrypt 같은 단방향 해시로 저장', 'CSRF: 세션 기반 폼은 토큰으로 방어, 무상태 API는 보통 비활성화'] },
+    { id: 't-oauth', cat: 'tech', re: /OAuth|구글 로그인|소셜/i, q: '구글 로그인(OAuth2)은 어떤 흐름으로 동작하고, 배포할 때 무엇을 바꿨나요?',
+      points: ['사용자 → 구글 로그인 → 승인 코드와 함께 리디렉션 URI로 돌아옴 → 서버가 코드로 토큰·사용자 정보를 받음', '배포 주소용 리디렉션 URI를 구글 콘솔에 추가해야 함 (로컬 주소만 있으면 실패)', '클라이언트 비밀값은 환경 변수로 분리, 저장소에 올리지 않음'] },
+    { id: 't-layer', cat: 'tech', re: /Controller|Service|Repository|계층|DTO/i, q: 'Controller·Service·Repository로 나누고 DTO를 쓰는 이유는?',
+      points: ['역할 분리: 요청 처리 / 업무 규칙·트랜잭션 / 데이터 접근 → 테스트와 변경이 쉬워짐', 'Entity를 그대로 응답하면 내부 구조 노출, 순환 참조, 지연 로딩 문제 발생', 'DTO로 필요한 값만 주고받고 입력값 검증(@Valid)도 DTO에서'] },
+    { id: 't-rest', cat: 'tech', re: /REST|API/i, q: 'REST API를 설계할 때 지킨 원칙은?',
+      points: ['자원은 명사(/reviews/{id}), 행위는 HTTP 메서드(GET/POST/PUT/DELETE)', '상태 코드를 의미대로 (200, 201, 400, 401, 403, 404)', '오류 응답 형식 통일 (@RestControllerAdvice)', 'Postman 등으로 명세를 팀과 공유'] },
+    { id: 't-mysql', cat: 'tech', re: /MySQL|RDS|SQL/i, q: 'DB 인덱스는 언제 쓰고, 단점은 무엇인가요?',
+      points: ['조회 조건·정렬·조인에 자주 쓰는 컬럼에 걸면 전체 탐색 대신 빠르게 찾음', '단점: 쓰기(INSERT/UPDATE) 비용 증가, 저장 공간 사용', 'EXPLAIN으로 실행 계획을 보고 판단'] },
+    { id: 't-aggregate', cat: 'tech', re: /집계|대시보드|GROUP BY|재방문/i, q: '대시보드 통계를 SQL 집계로 만들 때 신경 쓴 점은?',
+      points: ['자바에서 전부 가져와 계산하지 않고 DB에서 GROUP BY·COUNT·SUM으로 집계', '기간 조건과 인덱스로 조회 범위를 줄임', '결과는 DTO(인터페이스/레코드 프로젝션)로 받기'] },
+    { id: 't-s3', cat: 'tech', re: /S3|이미지 업로드|사진/i, q: '이미지를 서버 디스크가 아니라 S3에 저장한 이유와 권한 설정은?',
+      points: ['서버를 다시 배포하거나 늘려도 파일이 사라지지 않고 공유됨', 'DB에는 파일 URL(키)만 저장', 'EC2 IAM 역할에 업로드 권한을 주고, 액세스 키를 코드에 넣지 않음', '버킷 정책으로 읽기 공개 범위 제한'] },
+    { id: 't-deploy', cat: 'tech', re: /EC2|Beanstalk|빈스톡|배포/i, q: '서비스를 AWS에 어떻게 배포했고, 배포 중 생긴 문제는 어떻게 해결했나요?',
+      points: ['구성: (예) Elastic Beanstalk = EC2 + 로드밸런서 자동 구성, RDS(MySQL), S3', 'DB 접속 정보·키는 환경 속성(환경 변수)으로 분리', '문제 해결: web.stdout.log 등 서버 로그에서 첫 Error 줄부터 확인', '실습 후 리소스 정리로 비용 관리'] },
+    { id: 't-cicd', cat: 'tech', re: /GitHub Actions|CI\/CD|ci\.yml|자동 배포/i, q: 'CI와 CD의 차이와, GitHub Actions로 구성한 파이프라인을 설명해 주세요.',
+      points: ['CI: 푸시·PR마다 빌드·테스트를 자동 실행해 문제를 일찍 발견', 'CD: 테스트를 통과한 결과물을 자동 배포', '구성: (예) PR → ci.yml 빌드·테스트 → main 머지 → cicd.yml로 jar 빌드 후 배포', '액세스 키는 GitHub Secrets에, 배포용 IAM 사용자는 최소 권한'] },
+    { id: 't-secret', cat: 'tech', re: /Secrets|IAM|액세스 키|환경 변수|application\.yml/i, q: 'API 키나 DB 비밀번호 같은 비밀값은 어떻게 관리했나요?',
+      points: ['코드·저장소에 넣지 않음 (첫 푸시 전 application.yml 키를 가짜 값으로)', '로컬은 환경 변수, CI는 GitHub Secrets, 서버는 환경 속성', '키가 노출되면 즉시 비활성화·삭제 후 재발급', 'IAM은 필요한 권한만 (최소 권한)'] },
+    { id: 't-ai', cat: 'ai', re: /Spring AI|OpenRouter|AI 요약|AI 추천|AI 일정|AI 재방문|생성형/i, q: '서비스에 AI 기능을 넣을 때 어떤 위험이 있고, 어떻게 대비했나요?',
+      points: ['AI는 그럴듯하게 틀린 답(환각)을 만듦 → AI가 고른 ID·관광지를 DB와 대조해 없는 것은 버림', 'AI 응답에 스크립트가 섞일 수 있음 → th:text·textContent로 글자만 출력', '비용·남용: 무료 모델(:free), 1인 하루 횟수·입력 길이 제한', '개인정보는 AI로 보내지 않음, 실패 시 안내 문구'] },
+    { id: 't-timeout', cat: 'tech', re: /타임아웃|timeout|외부 API|TourAPI|날씨/i, q: '외부 API가 느리거나 실패하면 우리 서비스는 어떻게 되나요? 어떻게 대비했나요?',
+      points: ['기다리는 동안 요청 스레드가 묶여 화면이 멈추고, 사용자가 많으면 서버 전체가 느려짐', '연결·응답 타임아웃 설정 (예: 2초)', '실패 시 대체 응답(캐시, 기본 문구)으로 화면은 정상 표시', '자주 쓰는 응답은 캐시'] },
+    { id: 't-test', cat: 'tech', re: /테스트|JUnit|@SpringBootTest/i, q: '어떤 테스트를 작성했고, 테스트로 무엇을 증명했나요?',
+      points: ['단위 테스트(빠름, 로직 검증)와 통합 테스트(@SpringBootTest, DB까지)', '결함을 먼저 실패하는 테스트로 재현 → 고친 뒤 통과 (Before/After 숫자)', '테스트 전용 DB를 분리해 실행용 데이터에 영향이 없게'] },
+    { id: 't-querydsl', cat: 'tech', re: /QueryDSL|동적 검색/i, q: 'QueryDSL을 쓴 이유와 동적 검색 구현 방법은?',
+      points: ['조건이 선택적으로 붙는 검색을 문자열 JPQL 대신 자바 코드로 타입 안전하게 작성', 'BooleanExpression을 반환하는 메서드로 조건을 조합, null이면 조건 무시', 'Pageable로 페이징, count 쿼리 최적화'] },
+    { id: 't-java21', cat: 'tech', re: /Java\s*(17|21)/i, q: 'Java 17/21에서 실제로 써 본 기능이 있나요?',
+      points: ['record: DTO를 짧고 불변으로 작성', 'switch 표현식, 텍스트 블록, var', 'Java 21의 가상 스레드는 I/O 대기가 많은 작업에 유리 (써 봤다면 근거와 함께)', '모르는 기능은 아는 척하지 말고 학습 계획으로 답하기'] },
+    { id: 't-git', cat: 'tech', re: /Git|브랜치|PR|커밋/i, q: '팀 프로젝트에서 Git 브랜치와 PR은 어떻게 운영했나요? 충돌은 어떻게 해결했나요?',
+      points: ['main(배포) ← develop(통합) ← feature/이름 브랜치', '기능 하나마다 커밋, feat/fix/test/ci/docs 커밋 규칙', 'PR → CI 초록불 → 팀원 1명 리뷰 → 머지, main·develop 직접 push 금지', '충돌: 매일 develop을 받아 작게 자주 합치고, 충돌 시 양쪽 의도를 확인 후 해결'] }
+  ];
+
+  var INTERVIEW_COMMON = [
+    { id: 'c-intro', cat: 'person', q: '1분 동안 자기소개를 해 주세요.',
+      steps: ['어떤 개발자인지 한 문장 (한줄 소개)', '대표 프로젝트와 내가 맡은 역할', '숫자로 보여줄 성과 1개', '이 회사에서 하고 싶은 일'] },
+    { id: 'c-ai-role', cat: 'ai', q: 'AI를 써서 코드를 만들었다면, 본인은 무엇을 했나요?',
+      steps: ['무엇을 만들었나 ("○○ 기능을 AI 초안으로 만들었습니다")', '무엇이 이상했나 ("테스트 데이터로 측정하니 ○○")', '원인 ("○○ 때문에")', '해결 ("○○로 바꿨습니다")', '결과 ("○○ → ○○, 테스트로 고정")', '배운 점 ("AI 코드는 측정·검증이 필요하다")'] },
+    { id: 'c-hardest', cat: 'project', q: '프로젝트에서 가장 어려웠던 문제와 해결 과정을 말해 주세요.',
+      steps: ['상황: 어떤 기능에서', '문제: 무엇이 안 됐는지 (숫자·현상)', '원인 분석: 로그·테스트로 무엇을 확인했는지', '해결: 무엇을 바꿨는지', '결과와 배운 점'] },
+    { id: 'c-conflict', cat: 'person', q: '팀원과 의견이 달랐던 경험이 있나요? 어떻게 해결했나요?',
+      steps: ['상황: 어떤 결정에서 의견이 갈렸는지', '내 의견과 근거', '상대 의견을 어떻게 확인했는지', '합의 방법 (데이터, 작은 실험, 팀장 결정 등)', '결과와 다음에 다르게 할 점'] },
+    { id: 'c-why', cat: 'person', q: '왜 개발자가 되려고 하나요? (비전공이라면 전환 계기는?)',
+      steps: ['계기가 된 구체적 경험 1개', '교육·프로젝트에서 확인한 적성', '앞으로 어떤 개발자가 되고 싶은지'] },
+    { id: 'c-weak', cat: 'person', q: '본인의 부족한 점과, 그것을 보완하기 위해 하고 있는 것은?',
+      steps: ['실제 부족한 점 1개 (치명적이지 않은 것)', '그로 인해 겪은 일', '보완하기 위해 지금 하는 구체적 행동 (스터디, 기록, 테스트 습관 등)'] },
+    { id: 'c-study', cat: 'person', q: '최근에 새로 공부한 기술과, 어떻게 공부했는지 말해 주세요.',
+      steps: ['기술 이름과 공부한 이유', '공부 방법 (공식 문서, 실습, 프로젝트 적용)', '적용해 본 결과', '다음에 더 공부할 것'] },
+    { id: 'c-company', cat: 'person', q: '우리 회사에 지원한 이유는 무엇인가요?',
+      steps: ['회사의 서비스·기술 스택에서 끌린 점 (채용공고 맞춤 점검 결과 참고)', '내 경험과 연결되는 부분', '입사 후 기여할 수 있는 것'] },
+    { id: 'c-question', cat: 'person', q: '마지막으로 궁금한 점이 있나요?',
+      steps: ['팀의 코드 리뷰·배포 방식', '신입 온보딩 과정', '팀이 지금 가장 풀고 싶은 기술 문제'] }
+  ];
+
+  var INTERVIEW_CATS = [
+    { key: 'all', label: '전체' },
+    { key: 'project', label: '프로젝트' },
+    { key: 'tech', label: '기술' },
+    { key: 'ai', label: 'AI' },
+    { key: 'person', label: '인성·공통' },
+    { key: 'extra', label: 'AI가 만든 질문' }
+  ];
+  var INTERVIEW_STORAGE_KEY = 'resume-interview';
+  var SPEAK_CHARS_PER_SEC = 5; // 한국어 말하기 기준 약 1분 300자
+
+  var Interview = {
+    overlay: null,
+    filter: 'all',
+    questions: [],
+    state: { answers: {}, extra: [] },
+    timer: null,
+
+    init: function() {
+      this.overlay = document.getElementById('interview-overlay');
+      if (!this.overlay) return;
+      var self = this;
+      this.state = Storage.load(INTERVIEW_STORAGE_KEY) || { answers: {}, extra: [] };
+      if (!this.state.answers) this.state.answers = {};
+      if (!Array.isArray(this.state.extra)) this.state.extra = [];
+      document.getElementById('interview-open-btn').addEventListener('click', function() { self.open(); });
+      document.getElementById('interview-close').addEventListener('click', function() { self.close(); });
+      this.overlay.addEventListener('click', function(e) { if (e.target === self.overlay) self.close(); });
+      document.getElementById('interview-refresh').addEventListener('click', function() { self.build(); self.render(); ResumeWriter.notify('지금 이력서 내용으로 질문을 다시 만들었습니다. 써 둔 답변은 그대로 있습니다.'); });
+      document.getElementById('interview-ai-more').addEventListener('click', function() { self.generateMore(); });
+      document.getElementById('interview-export').addEventListener('click', function() { self.exportMarkdown(); });
+      this.saveDebounced = debounce(function() { Storage.save(INTERVIEW_STORAGE_KEY, self.state); }, 400);
+    },
+
+    open: function() {
+      this.build();
+      this.filter = 'all';
+      this.render();
+      this.overlay.classList.add('active');
+    },
+    close: function() { this.stopTimer(); this.overlay.classList.remove('active'); },
+    isOpen: function() { return this.overlay && this.overlay.classList.contains('active'); },
+
+    // 이력서 내용으로 질문 목록을 만든다: 프로젝트별 질문 → 기술 질문(이력서에 근거가 있는 것만) → 공통 질문
+    build: function() {
+      var questions = [];
+      var projects = ResumeReader.projects();
+      var text = ResumeReader.text();
+      projects.slice(0, 4).forEach(function(p) {
+        var label = p.shortName || ('프로젝트 ' + p.index);
+        var hardLine = '';
+        for (var i = 0; i < p.details.length; i++) {
+          if (/N\+1|동시|중복|타임아웃|권한|마스킹|XSS|성능|개선|해결|오류|에러/i.test(p.details[i])) { hardLine = p.details[i]; break; }
+        }
+        questions.push({ id: 'p' + p.index + '-role', cat: 'project', q: '"' + label + '" 프로젝트에서 본인이 맡은 역할과, 직접 구현한 것을 구체적으로 설명해 주세요.',
+          basis: p.role ? '담당: ' + p.role : p.name,
+          steps: ['프로젝트 한 줄 소개: ' + (p.desc || p.name), '내 역할: ' + (p.role || '[담당 영역]'), '직접 구현한 것 2가지: ' + (p.details.slice(0, 2).join(' / ') || '[구현 내용]'), '팀과 어떻게 나눠 일했는지 (브랜치·PR·리뷰)'] });
+        if (p.result) {
+          questions.push({ id: 'p' + p.index + '-result', cat: 'project', q: '"' + label + '"의 성과 "' + p.result.slice(0, 60) + (p.result.length > 60 ? '…' : '') + '"는 어떻게 측정했나요? 측정 전후 값은?',
+            basis: '성과: ' + p.result,
+            steps: ['무엇을 만들었나', '무엇이 이상했나 (측정 방법: SQL 로그, 테스트, 응답 시간 등)', '원인', '해결', '결과 (Before → After 숫자, 테스트로 고정했는지)', '배운 점'] });
+        }
+        questions.push({ id: 'p' + p.index + '-hard', cat: 'project', q: '"' + label + '"을 하면서 가장 어려웠던 문제는 무엇이었고, 어떻게 해결했나요?',
+          basis: hardLine ? '구현: ' + hardLine : p.name,
+          steps: ['상황: ' + (hardLine || '[어떤 기능에서]'), '문제: 무엇이 안 됐는지 (숫자·현상)', '원인: 로그·테스트로 확인한 것', '해결: 무엇을 바꿨는지', '결과와 배운 점'] });
+      });
+      INTERVIEW_TOPICS.forEach(function(t) {
+        var m = t.re.exec(text);
+        if (!m) return;
+        var idx = m.index;
+        var basis = text.slice(Math.max(0, idx - 25), idx + 45).replace(/\s+/g, ' ').trim();
+        questions.push({ id: t.id, cat: t.cat, q: t.q, basis: '이력서: "…' + basis + '…"', points: t.points });
+      });
+      INTERVIEW_COMMON.forEach(function(c) {
+        questions.push({ id: c.id, cat: c.cat, q: c.q, basis: '', steps: c.steps });
+      });
+      this.state.extra.forEach(function(x) { questions.push(x); });
+      this.questions = questions;
+    },
+
+    render: function() {
+      var self = this;
+      this.stopTimer();
+      var filters = document.getElementById('interview-filters');
+      filters.innerHTML = '';
+      INTERVIEW_CATS.forEach(function(c) {
+        var count = c.key === 'all' ? self.questions.length : self.questions.filter(function(q) { return q.cat === c.key; }).length;
+        if (c.key === 'extra' && !count) return;
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'tool-filter' + (self.filter === c.key ? ' active' : '');
+        b.textContent = c.label + ' ' + count;
+        b.addEventListener('click', function() { self.filter = c.key; self.render(); });
+        filters.appendChild(b);
+      });
+      var answered = this.questions.filter(function(q) { return normalizeWhitespace(self.state.answers[q.id]); }).length;
+      var projects = ResumeReader.projects().length;
+      document.getElementById('interview-summary').textContent =
+        '질문 ' + this.questions.length + '개 · 답변 작성 ' + answered + '개' +
+        (projects ? '' : ' · 이력서에 프로젝트를 먼저 채우면 프로젝트 질문이 만들어집니다.');
+
+      var list = document.getElementById('interview-list');
+      list.innerHTML = '';
+      var visible = this.questions.filter(function(q) { return self.filter === 'all' || q.cat === self.filter; });
+      visible.forEach(function(q, n) { list.appendChild(self.buildCard(q, n + 1)); });
+      if (!visible.length) {
+        var empty = document.createElement('div');
+        empty.className = 'tool-empty';
+        empty.textContent = '이 분류에 질문이 없습니다.';
+        list.appendChild(empty);
+      }
+    },
+
+    buildCard: function(q, num) {
+      var self = this;
+      var card = document.createElement('div');
+      card.className = 'iv-card' + (normalizeWhitespace(this.state.answers[q.id]) ? ' answered' : '');
+      var head = document.createElement('div');
+      head.className = 'iv-head';
+      var n = document.createElement('span');
+      n.className = 'iv-num';
+      n.textContent = 'Q' + num;
+      var title = document.createElement('div');
+      title.className = 'iv-q';
+      title.textContent = q.q;
+      var badge = document.createElement('span');
+      badge.className = 'tool-badge';
+      var catLabel = INTERVIEW_CATS.filter(function(c) { return c.key === q.cat; })[0];
+      badge.textContent = catLabel ? catLabel.label : q.cat;
+      title.appendChild(document.createTextNode(' '));
+      title.appendChild(badge);
+      head.appendChild(n);
+      head.appendChild(title);
+      card.appendChild(head);
+      if (q.basis) {
+        var basis = document.createElement('div');
+        basis.className = 'iv-basis';
+        basis.textContent = '근거 · ' + q.basis;
+        card.appendChild(basis);
+      }
+      var guideItems = q.points || q.steps;
+      if (guideItems && guideItems.length) {
+        var guide = document.createElement('details');
+        guide.className = 'iv-guide';
+        var sum = document.createElement('summary');
+        sum.textContent = q.points ? '답변에 들어가야 할 핵심' : '답변 순서 (60초)';
+        guide.appendChild(sum);
+        var listEl = document.createElement(q.points ? 'ul' : 'ol');
+        guideItems.forEach(function(t) {
+          var li = document.createElement('li');
+          li.textContent = t;
+          listEl.appendChild(li);
+        });
+        guide.appendChild(listEl);
+        card.appendChild(guide);
+      }
+
+      var answer = document.createElement('div');
+      answer.className = 'iv-answer';
+      var ta = document.createElement('textarea');
+      ta.placeholder = '내 답변을 적어 보세요. 소리 내어 읽었을 때 1분(약 300자) 안쪽이 좋습니다.';
+      ta.value = this.state.answers[q.id] || '';
+      answer.appendChild(ta);
+      var tools = document.createElement('div');
+      tools.className = 'iv-tools';
+      var len = document.createElement('span');
+      len.className = 'iv-len';
+      var updateLen = function() {
+        var chars = ta.value.replace(/\s/g, '').length;
+        var secs = Math.round(chars / SPEAK_CHARS_PER_SEC);
+        len.textContent = chars + '자 · 말하면 약 ' + secs + '초';
+        len.classList.toggle('long', secs > 70);
+      };
+      updateLen();
+      ta.addEventListener('input', function() {
+        self.state.answers[q.id] = ta.value;
+        card.classList.toggle('answered', !!normalizeWhitespace(ta.value));
+        updateLen();
+        self.saveDebounced();
+      });
+      var timerBtn = document.createElement('button');
+      timerBtn.type = 'button';
+      timerBtn.className = 'readme-action-btn secondary';
+      timerBtn.textContent = '60초 연습';
+      var timerEl = document.createElement('span');
+      timerEl.className = 'iv-timer';
+      timerBtn.addEventListener('click', function() { self.toggleTimer(timerBtn, timerEl); });
+      var aiBtn = document.createElement('button');
+      aiBtn.type = 'button';
+      aiBtn.className = 'readme-action-btn secondary';
+      aiBtn.textContent = 'AI 답변 초안';
+      aiBtn.addEventListener('click', function() { self.draftAnswer(q, ta, aiBtn); });
+      tools.appendChild(len);
+      tools.appendChild(timerBtn);
+      tools.appendChild(timerEl);
+      tools.appendChild(aiBtn);
+      answer.appendChild(tools);
+      card.appendChild(answer);
+      return card;
+    },
+
+    toggleTimer: function(btn, el) {
+      var running = this.timer && this.timer.btn === btn;
+      this.stopTimer();
+      if (running) return;
+      var left = 60;
+      el.textContent = '60초';
+      el.classList.remove('over');
+      btn.textContent = '멈추기';
+      var self = this;
+      var id = setInterval(function() {
+        left--;
+        if (left >= 0) {
+          el.textContent = left + '초';
+        } else {
+          el.textContent = '시간 초과 ' + (-left) + '초';
+          el.classList.add('over');
+        }
+        if (left <= -30) self.stopTimer();
+      }, 1000);
+      this.timer = { id: id, btn: btn, el: el };
+    },
+
+    stopTimer: function() {
+      if (!this.timer) return;
+      clearInterval(this.timer.id);
+      this.timer.btn.textContent = '60초 연습';
+      this.timer = null;
+    },
+
+    showError: function(msg) {
+      var el = document.getElementById('interview-error');
+      el.textContent = msg;
+      el.style.display = msg ? 'block' : 'none';
+    },
+
+    draftAnswer: function(q, ta, btn) {
+      var self = this;
+      if (normalizeWhitespace(ta.value) && !window.confirm('이미 쓴 답변이 있습니다. AI 초안으로 바꿀까요?')) return;
+      this.showError('');
+      btn.disabled = true;
+      btn.textContent = '작성 중...';
+      var guide = (q.points || q.steps || []).join('\n- ');
+      var system = '당신은 신입 개발자의 면접 답변을 함께 준비하는 코치입니다.\n' +
+        '규칙: 1) 아래 이력서에 있는 사실만 사용하고, 없는 숫자·기술·회사명은 만들지 마세요. 근거가 없으면 [직접 채우기]로 남깁니다.\n' +
+        '2) 말로 하는 답변이므로 존댓말 구어체, 280~320자(약 60초)로 씁니다.\n' +
+        '3) 결론을 먼저 말하고, 경험 질문은 "무엇 → 문제 → 원인 → 해결 → 결과(숫자) → 배운 점" 순서로 씁니다.\n' +
+        '4) 답변 본문만 출력하세요.\n/no_think';
+      var user = '면접 질문: ' + q.q + '\n\n답변에 들어가면 좋은 핵심:\n- ' + guide + '\n\n내 이력서:\n' + ResumeReader.textForAI();
+      callOpenRouter(system, user, { title: 'Interview Answer', maxTokens: 900, temperature: 0.4 })
+        .then(function(answer) {
+          var clean = normalizeWhitespace(answer.replace(/^["'“]|["'”]$/g, ''));
+          ta.value = clean;
+          ta.dispatchEvent(new Event('input'));
+          ResumeWriter.notify('AI 초안을 넣었습니다. 내 말투로 고치고 [직접 채우기] 부분을 채운 뒤 소리 내어 연습하세요.');
+        })
+        .catch(function(err) { self.showError(err.message); })
+        .finally(function() { btn.disabled = false; btn.textContent = 'AI 답변 초안'; });
+    },
+
+    generateMore: function() {
+      var self = this;
+      this.showError('');
+      var text = ResumeReader.textForAI();
+      if (text.length < 40) { this.showError('이력서 내용이 너무 적습니다. 프로젝트와 기술 스택을 먼저 채워주세요.'); return; }
+      var btn = document.getElementById('interview-ai-more');
+      btn.disabled = true;
+      document.getElementById('interview-ai-more-text').textContent = 'AI가 질문 만드는 중...';
+      document.getElementById('interview-ai-more-spinner').style.display = 'inline-block';
+      var existing = this.questions.map(function(q) { return q.q; }).slice(0, 40).join('\n');
+      var system = '당신은 한국 IT 기업의 백엔드 기술 면접관입니다. 신입 지원자의 이력서를 보고 실제 면접에서 물어볼 꼬리 질문을 만듭니다.\n' +
+        '규칙: 1) 이력서에 적힌 기술·프로젝트·숫자에 근거한 질문만 만듭니다. 2) 이미 있는 질문과 겹치지 않게 합니다.\n' +
+        '3) 질문마다 좋은 답변의 핵심 2~3개를 함께 씁니다. 4) 아래 JSON만 출력하세요.\n/no_think\n' +
+        '{"questions":[{"q":"질문","basis":"이력서의 근거 문구","points":["핵심1","핵심2"]}]}';
+      var user = '이미 있는 질문:\n' + existing + '\n\n이력서:\n' + text + '\n\n새 질문 8개를 만들어주세요.';
+      callOpenRouter(system, user, { title: 'Interview Questions', maxTokens: 2500 })
+        .then(function(content) {
+          var obj = extractJsonFromAI(content);
+          var list = Array.isArray(obj.questions) ? obj.questions : [];
+          var str = function(v, max) { return typeof v === 'string' ? normalizeWhitespace(v).slice(0, max) : ''; };
+          var added = 0;
+          var known = self.questions.map(function(q) { return q.q; });
+          list.slice(0, 10).forEach(function(item) {
+            var q = str(item && item.q, 200);
+            if (!q || known.indexOf(q) !== -1) return;
+            var points = Array.isArray(item.points) ? item.points.filter(function(p) { return typeof p === 'string' && p.trim(); }).map(function(p) { return str(p, 200); }).slice(0, 4) : [];
+            self.state.extra.push({ id: 'x' + Date.now().toString(36) + added, cat: 'extra', q: q, basis: str(item.basis, 120) ? 'AI가 본 근거: ' + str(item.basis, 120) : 'AI 생성', points: points });
+            known.push(q);
+            added++;
+          });
+          self.state.extra = self.state.extra.slice(-30);
+          Storage.save(INTERVIEW_STORAGE_KEY, self.state);
+          self.build();
+          self.filter = 'extra';
+          self.render();
+          ResumeWriter.notify(added ? 'AI가 꼬리 질문 ' + added + '개를 만들었습니다.' : 'AI가 새 질문을 만들지 못했습니다. 다시 시도해보세요.');
+        })
+        .catch(function(err) { self.showError(err.message); })
+        .finally(function() {
+          btn.disabled = false;
+          document.getElementById('interview-ai-more-text').textContent = 'AI로 질문 더 만들기';
+          document.getElementById('interview-ai-more-spinner').style.display = 'none';
+        });
+    },
+
+    exportMarkdown: function() {
+      var self = this;
+      var md = '# 면접 예상 질문과 내 답변\n\n_이력서 작성 도우미에서 ' + new Date().toISOString().slice(0, 10) + ' 생성_\n\n';
+      var cats = INTERVIEW_CATS.filter(function(c) { return c.key !== 'all'; });
+      cats.forEach(function(c) {
+        var qs = self.questions.filter(function(q) { return q.cat === c.key; });
+        if (!qs.length) return;
+        md += '## ' + c.label + '\n\n';
+        qs.forEach(function(q, i) {
+          md += '### Q' + (i + 1) + '. ' + q.q + '\n\n';
+          if (q.basis) md += '> ' + q.basis + '\n\n';
+          var guide = q.points || q.steps || [];
+          if (guide.length) md += (q.points ? '**핵심**\n' : '**답변 순서**\n') + guide.map(function(g) { return '- ' + g; }).join('\n') + '\n\n';
+          var ans = normalizeWhitespace(self.state.answers[q.id]);
+          md += '**내 답변**: ' + (ans || '(아직 작성하지 않음)') + '\n\n';
+        });
+      });
+      triggerDownload(new Blob([md], { type: 'text/markdown' }), '면접_예상질문_' + new Date().toISOString().slice(0, 10) + '.md');
+      ResumeWriter.notify('질문과 답변을 .md 파일로 저장했습니다.');
+    }
+  };
+  window.Interview = Interview;
+
+  // ===== Module: Versions (회사별 이력서 버전 관리) =====
+  var VERSION_STORAGE_KEY = 'resume-versions';
+  var VERSION_ACTIVE_KEY = 'resume-active-version';
+  var VERSION_LIMIT = 20;
+
+  var Versions = {
+    init: function() {
+      this.select = document.getElementById('version-select');
+      if (!this.select) return;
+      var self = this;
+      document.getElementById('version-save-btn').addEventListener('click', function() { self.saveNew(); });
+      document.getElementById('version-overwrite-btn').addEventListener('click', function() { self.overwrite(); });
+      document.getElementById('version-load-btn').addEventListener('click', function() { self.load(); });
+      document.getElementById('version-rename-btn').addEventListener('click', function() { self.rename(); });
+      document.getElementById('version-delete-btn').addEventListener('click', function() { self.remove(); });
+      this.select.addEventListener('change', function() { self.updateButtons(); });
+      this.render();
+    },
+
+    list: function() {
+      var list = Storage.load(VERSION_STORAGE_KEY);
+      return Array.isArray(list) ? list.filter(function(v) { return v && v.id && v.payload; }) : [];
+    },
+
+    persist: function(list) {
+      if (!Storage.save(VERSION_STORAGE_KEY, list)) {
+        alert('브라우저 저장 공간이 부족해 버전을 저장하지 못했습니다. 쓰지 않는 버전을 삭제하거나 "파일로 내보내기"로 백업해주세요.');
+        return false;
+      }
+      return true;
+    },
+
+    activeId: function() { return Storage.load(VERSION_ACTIVE_KEY); },
+    find: function(id) { return this.list().filter(function(v) { return v.id === id; })[0] || null; },
+
+    render: function(selectId) {
+      var list = this.list();
+      var active = this.activeId();
+      var current = selectId || this.select.value || active || '';
+      this.select.innerHTML = '';
+      var none = document.createElement('option');
+      none.value = '';
+      none.textContent = list.length ? '버전을 고르세요 (' + list.length + '/' + VERSION_LIMIT + ')' : '아직 저장한 버전이 없습니다';
+      this.select.appendChild(none);
+      list.forEach(function(v) {
+        var o = document.createElement('option');
+        o.value = v.id;
+        o.textContent = (v.id === active ? '● ' : '') + v.name + ' · ' + UI.formatSavedAt(v.savedAt).slice(2, 16);
+        this.select.appendChild(o);
+      }, this);
+      this.select.value = this.find(current) ? current : '';
+      var activeVersion = this.find(active);
+      document.getElementById('version-status').textContent = activeVersion
+        ? '지금 화면: "' + activeVersion.name + '"에서 불러옴. 고친 뒤 "이 버전에 덮어쓰기"를 눌러야 버전에 반영됩니다.'
+        : '회사마다 한줄 소개·About Me·프로젝트 순서를 바꿔 따로 저장해 두세요. (● 표시가 지금 화면의 버전)';
+      this.updateButtons();
+    },
+
+    updateButtons: function() {
+      var has = !!this.select.value;
+      ['version-load-btn', 'version-overwrite-btn', 'version-rename-btn', 'version-delete-btn'].forEach(function(id) {
+        document.getElementById(id).disabled = !has;
+      });
+    },
+
+    defaultName: function() {
+      var subtitle = FieldCollector.getFieldText('header-subtitle');
+      var base = subtitle && !hasPlaceholderText(subtitle) ? subtitle.split('|')[0].trim() : '기본';
+      return base.slice(0, 20) + ' 버전 ' + (this.list().length + 1);
+    },
+
+    saveAs: function(name) {
+      var list = this.list();
+      if (list.length >= VERSION_LIMIT) {
+        alert('버전은 최대 ' + VERSION_LIMIT + '개까지 저장할 수 있습니다. 쓰지 않는 버전을 삭제해주세요.');
+        return null;
+      }
+      var version = {
+        id: 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        name: normalizeWhitespace(name).slice(0, 40) || this.defaultName(),
+        savedAt: new Date().toISOString(),
+        payload: UI.buildContentPayload()
+      };
+      list.push(version);
+      if (!this.persist(list)) return null;
+      Storage.save(VERSION_ACTIVE_KEY, version.id);
+      this.render(version.id);
+      return version;
+    },
+
+    saveNew: function() {
+      var name = window.prompt('새 버전 이름을 입력하세요 (예: OO테크 백엔드, 풀스택용)', this.defaultName());
+      if (name === null) return;
+      var v = this.saveAs(name);
+      if (v) ResumeWriter.notify('"' + v.name + '" 버전으로 저장했습니다.');
+    },
+
+    overwrite: function() {
+      var id = this.select.value;
+      var v = this.find(id);
+      if (!v) return;
+      if (!window.confirm('"' + v.name + '" 버전을 지금 화면 내용으로 덮어쓸까요?')) return;
+      var list = this.list().map(function(item) {
+        if (item.id !== id) return item;
+        item.payload = UI.buildContentPayload();
+        item.savedAt = new Date().toISOString();
+        return item;
+      });
+      if (!this.persist(list)) return;
+      Storage.save(VERSION_ACTIVE_KEY, id);
+      this.render(id);
+      ResumeWriter.notify('"' + v.name + '" 버전을 덮어썼습니다.');
+    },
+
+    load: function() {
+      var v = this.find(this.select.value);
+      if (!v) return;
+      if (!window.confirm('"' + v.name + '" 버전을 불러올까요?\n지금 화면 내용은 바뀌지만 "방금 변경 되돌리기"로 되돌릴 수 있습니다.')) return;
+      var payload = normalizeStoredContentPayload(v.payload);
+      if (!payload) { alert('이 버전의 데이터를 읽을 수 없습니다.'); return; }
+      UI.captureUndoSnapshot();
+      UI.applySavedContent(payload, { skipFeedback: true });
+      UI.persistContent({ label: '"' + v.name + '" 불러옴' });
+      Storage.save(VERSION_ACTIVE_KEY, v.id);
+      this.render(v.id);
+      ResumeWriter.notify('"' + v.name + '" 버전을 불러왔습니다.');
+    },
+
+    rename: function() {
+      var id = this.select.value;
+      var v = this.find(id);
+      if (!v) return;
+      var name = window.prompt('새 이름을 입력하세요', v.name);
+      if (name === null || !normalizeWhitespace(name)) return;
+      var list = this.list().map(function(item) {
+        if (item.id === id) item.name = normalizeWhitespace(name).slice(0, 40);
+        return item;
+      });
+      if (this.persist(list)) this.render(id);
+    },
+
+    remove: function() {
+      var id = this.select.value;
+      var v = this.find(id);
+      if (!v) return;
+      if (!window.confirm('"' + v.name + '" 버전을 삭제할까요? 삭제하면 되돌릴 수 없습니다.')) return;
+      if (!this.persist(this.list().filter(function(item) { return item.id !== id; }))) return;
+      if (this.activeId() === id) Storage.remove(VERSION_ACTIVE_KEY);
+      this.render('');
+      ResumeWriter.notify('"' + v.name + '" 버전을 삭제했습니다.');
+    }
+  };
+  window.Versions = Versions;
+
+  // ===== Module: JobMatch (채용공고 맞춤 점검) =====
+  // 기술 사전(SKILL_DICTIONARY)에 없는, 채용공고에 자주 나오는 키워드
+  var JOB_KEYWORDS = [
+    { name: 'REST API', cat: 'backend', re: /rest\s*(ful)?\s*api|restful/i },
+    { name: 'CI/CD', cat: 'devops', re: /ci\s*\/\s*cd|지속적\s*(통합|배포)/i, resumeRe: /ci\s*\/\s*cd|github\s*actions|jenkins|자동\s*배포/i },
+    { name: 'AWS', cat: 'devops', re: /\baws\b|아마존\s*웹/i, resumeRe: /\baws\b|ec2|s3|rds|beanstalk|빈스톡/i },
+    { name: 'Linux', cat: 'devops', re: /linux|리눅스|ubuntu|우분투/i },
+    { name: 'Kubernetes', cat: 'devops', re: /kubernetes|k8s|쿠버네티스/i },
+    { name: 'Kafka', cat: 'backend', re: /kafka|카프카/i },
+    { name: 'RabbitMQ', cat: 'backend', re: /rabbitmq/i },
+    { name: 'Jenkins', cat: 'devops', re: /jenkins|젠킨스/i },
+    { name: 'MSA', cat: 'backend', re: /\bmsa\b|마이크로\s*서비스/i },
+    { name: 'Elasticsearch', cat: 'database', re: /elastic\s*search/i },
+    { name: 'Kotlin', cat: 'backend', re: /kotlin|코틀린/i },
+    { name: 'GCP', cat: 'devops', re: /\bgcp\b|google\s*cloud/i },
+    { name: 'Azure', cat: 'devops', re: /\bazure\b/i },
+    { name: 'Swagger', cat: 'devops', re: /swagger|openapi/i },
+    { name: '테스트 코드', re: /테스트\s*코드|단위\s*테스트|unit\s*test|tdd|테스트\s*주도/i, resumeRe: /테스트|junit|tdd/i },
+    { name: '코드 리뷰', re: /코드\s*리뷰|code\s*review/i, resumeRe: /리뷰|pr\b|pull\s*request/i },
+    { name: '대용량 트래픽', re: /대용량|트래픽|고가용성/i },
+    { name: '성능 개선', re: /성능|튜닝|최적화/i, resumeRe: /성능|n\+1|개선|최적화|타임아웃/i },
+    { name: 'AI·LLM', re: /\bllm\b|생성형|openai|\bgpt\b|ai\s*(서비스|기능|활용)|인공지능/i, resumeRe: /spring\s*ai|openrouter|\bai\b|llm/i },
+    { name: '자료구조·알고리즘', re: /알고리즘|자료\s*구조|코딩\s*테스트/i },
+    { name: '협업 도구', re: /jira|confluence|notion|노션|slack|슬랙/i },
+    { name: '정보처리기사', re: /정보처리기사/i }
+  ];
+
+  var JOBMATCH_SAMPLE =
+    '[OO테크] 백엔드 개발자 (신입)\n\n' +
+    '■ 담당 업무\n- Java/Spring Boot 기반 커머스 API 개발\n- AWS 환경에서 서비스 배포 및 운영\n- 생성형 AI를 활용한 상품 추천 기능 개발\n\n' +
+    '■ 자격 요건\n- Java, Spring Boot, JPA 사용 경험\n- RDBMS(MySQL) 이해와 SQL 작성 능력\n- REST API 설계 경험\n- Git을 이용한 협업 경험\n\n' +
+    '■ 우대 사항\n- AWS(EC2, S3, RDS) 배포 경험\n- GitHub Actions, Jenkins 등 CI/CD 구축 경험\n- 테스트 코드 작성 습관\n- Docker, Kubernetes 사용 경험\n- Redis 캐시 사용 경험\n- 정보처리기사 자격증\n';
+
+  var JobMatch = {
+    overlay: null,
+    last: null,
+
+    init: function() {
+      this.overlay = document.getElementById('jobmatch-overlay');
+      if (!this.overlay) return;
+      var self = this;
+      this.source = document.getElementById('jobmatch-source');
+      this.company = document.getElementById('jobmatch-company');
+      document.getElementById('jobmatch-open-btn').addEventListener('click', function() { self.open(); });
+      document.getElementById('jobmatch-close').addEventListener('click', function() { self.close(); });
+      this.overlay.addEventListener('click', function(e) { if (e.target === self.overlay) self.close(); });
+      document.getElementById('jobmatch-sample').addEventListener('click', function() {
+        if (self.source.value.trim() && !window.confirm('붙여넣은 공고를 예시로 바꿀까요?')) return;
+        self.source.value = JOBMATCH_SAMPLE;
+        if (!self.company.value) self.company.value = 'OO테크 백엔드 신입 (예시)';
+      });
+      document.getElementById('jobmatch-run').addEventListener('click', function() { self.run(); });
+      document.getElementById('jobmatch-ai').addEventListener('click', function() { self.runAI(); });
+      document.getElementById('jobmatch-save-version').addEventListener('click', function() { self.saveVersion(); });
+    },
+
+    open: function() {
+      this.showError('');
+      this.overlay.classList.add('active');
+      this.source.focus();
+    },
+    close: function() { this.overlay.classList.remove('active'); },
+    isOpen: function() { return this.overlay && this.overlay.classList.contains('active'); },
+
+    showError: function(msg) {
+      var el = document.getElementById('jobmatch-error');
+      el.textContent = msg || '';
+      el.style.display = msg ? 'block' : 'none';
+    },
+
+    // 공고를 줄 단위로 읽으며 "필수 / 담당 업무 / 우대" 구역을 나눈다
+    splitSections: function(text) {
+      var section = 'unknown';
+      var out = { required: '', duty: '', preferred: '', unknown: '' };
+      String(text || '').split(/\r?\n/).forEach(function(line) {
+        var t = normalizeWhitespace(line.replace(/[■□▶▷●○◆◇#*\[\]【】<>]/g, ' '));
+        if (!t) return;
+        if (t.length <= 30) {
+          if (/(우대|preferred|nice\s*to\s*have|plus)/i.test(t)) { section = 'preferred'; return; }
+          if (/(자격\s*요건|필수|필요\s*(역량|기술)|지원\s*자격|requirements?|qualifications?)/i.test(t)) { section = 'required'; return; }
+          if (/(담당\s*업무|주요\s*업무|업무\s*내용|하는\s*일|responsibilities)/i.test(t)) { section = 'duty'; return; }
+          if (/(복지|혜택|전형|절차|근무\s*(조건|지)|급여|채용\s*절차|기타)/i.test(t)) { section = 'other'; return; }
+        }
+        if (section !== 'other') out[section] += line + '\n';
+      });
+      return out;
+    },
+
+    keywordList: function() {
+      var list = SKILL_DICTIONARY.map(function(e) { return { name: e.name, re: e.re, cat: e.cat }; });
+      return list.concat(JOB_KEYWORDS);
+    },
+
+    analyze: function(postingText) {
+      var sections = this.splitSections(postingText);
+      var skills = ResumeReader.skills();
+      var skillsText = skills.join(' , ');
+      var resumeText = ResumeReader.text();
+      var weights = { required: 3, duty: 2, unknown: 2, preferred: 1 };
+      var labels = { required: '필수', duty: '업무', unknown: '공고', preferred: '우대' };
+      var rows = [];
+      var seen = {};
+      this.keywordList().forEach(function(k) {
+        var where = null;
+        ['required', 'duty', 'unknown', 'preferred'].some(function(sec) {
+          if (k.re.test(sections[sec])) { where = sec; return true; }
+          return false;
+        });
+        if (!where) return;
+        // 같은 개념이 사전과 키워드 목록에 겹치면 하나만 (예: 'AWS EC2'와 'AWS')
+        var key = k.name.toLowerCase();
+        if (seen[key]) return;
+        seen[key] = true;
+        var checkRe = k.resumeRe || k.re;
+        var status = checkRe.test(skillsText) ? 'have' : (checkRe.test(resumeText) ? 'mentioned' : 'missing');
+        rows.push({ name: k.name, cat: k.cat, section: where, label: labels[where], weight: weights[where], status: status });
+      });
+      rows.sort(function(a, b) {
+        var order = { missing: 0, mentioned: 1, have: 2 };
+        return (b.weight - a.weight) || (order[a.status] - order[b.status]);
+      });
+      var total = 0, got = 0;
+      rows.forEach(function(r) {
+        total += r.weight;
+        got += r.weight * (r.status === 'have' ? 1 : r.status === 'mentioned' ? 0.7 : 0);
+      });
+      var projects = ResumeReader.projects().map(function(p) {
+        var ptext = [p.name, p.desc, p.role, p.details.join(' '), p.result].join(' ');
+        var hits = rows.filter(function(r) {
+          var k = this.keywordList().filter(function(x) { return x.name === r.name; })[0];
+          return k && (k.resumeRe || k.re).test(ptext);
+        }, this).map(function(r) { return r.name; });
+        return { index: p.index, name: p.shortName || p.name, hits: hits };
+      }, this).sort(function(a, b) { return b.hits.length - a.hits.length; });
+      return {
+        rows: rows,
+        score: total ? Math.round(got / total * 100) : 0,
+        projects: projects,
+        position: this.detectPosition(postingText),
+        hasSections: !!(sections.required || sections.preferred)
+      };
+    },
+
+    detectPosition: function(text) {
+      var m = /(백엔드|백앤드|서버|프론트엔드|풀스택|웹|자바|Java|데이터|DevOps|클라우드|AI)\s*(개발자|엔지니어|개발)?/i.exec(text || '');
+      if (!m) return '백엔드';
+      var map = { '백앤드': '백엔드', '서버': '백엔드', '자바': 'Java 백엔드', 'java': 'Java 백엔드', '웹': '웹 개발' };
+      return map[m[1].toLowerCase()] || map[m[1]] || m[1];
+    },
+
+    run: function() {
+      var text = this.source.value.trim();
+      this.showError('');
+      if (text.length < 20) { this.showError('채용공고 내용을 붙여넣어 주세요. "예시 공고"로 형식을 볼 수 있습니다.'); return; }
+      if (!ResumeReader.skills().length && !ResumeReader.projects().length) {
+        this.showError('비교할 이력서 내용이 없습니다. 기술 스택과 프로젝트를 먼저 채워주세요.');
+        return;
+      }
+      this.last = this.analyze(text);
+      this.render(this.last);
+      document.getElementById('jobmatch-status').textContent = '요구 기술 ' + this.last.rows.length + '개를 찾았습니다.';
+    },
+
+    render: function(res) {
+      var self = this;
+      var box = document.getElementById('jobmatch-result');
+      box.innerHTML = '';
+      var el = function(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+      var score = el('div', 'jm-score');
+      score.appendChild(el('b', null, res.score + '%'));
+      var bar = el('div', 'jm-score-bar');
+      var fill = document.createElement('i');
+      fill.style.width = res.score + '%';
+      bar.appendChild(fill);
+      score.appendChild(bar);
+      box.appendChild(score);
+      box.appendChild(el('div', 'jm-muted', '일치도: 필수 3점·업무 2점·우대 1점, 기술 칸에 있으면 100%, 프로젝트 문장에만 있으면 70%로 계산' +
+        (res.hasSections ? '' : ' (공고에 필수/우대 제목이 없어 모두 "공고"로 봤습니다)')));
+
+      if (!res.rows.length) {
+        box.appendChild(el('div', 'tool-empty', '공고에서 아는 기술 키워드를 찾지 못했습니다. 자격 요건 부분이 들어갔는지 확인해주세요.'));
+        return;
+      }
+
+      box.appendChild(el('div', 'jm-h', '요구 기술 비교'));
+      var wrap = el('div', 'jm-table-wrap');
+      var table = el('table', 'jm-table');
+      var thead = document.createElement('tr');
+      ['구분', '기술', '내 이력서', '제안'].forEach(function(h) { thead.appendChild(el('th', null, h)); });
+      table.appendChild(thead);
+      res.rows.forEach(function(r) {
+        var tr = document.createElement('tr');
+        tr.appendChild(el('td', null, r.label));
+        tr.appendChild(el('td', null, r.name));
+        var st = { have: '✅ 기술 칸에 있음', mentioned: '🟡 프로젝트 문장에만 있음', missing: '❌ 없음' }[r.status];
+        tr.appendChild(el('td', null, st));
+        var tip = el('td');
+        if (r.status === 'have') tip.textContent = '좋습니다. 이 기술을 쓴 프로젝트 문장을 앞쪽에 두세요.';
+        else if (r.status === 'mentioned' && !r.cat) {
+          tip.textContent = '프로젝트 문장에 이미 있습니다. 면접에서 구체적인 사례로 설명할 수 있게 준비하세요.';
+        } else if (r.status === 'mentioned') {
+          tip.textContent = '기술 스택 칸에도 넣어야 한눈에 보입니다. ';
+          if (r.cat) {
+            var add = el('button', 'readme-action-btn secondary', '기술 칸에 추가');
+            add.type = 'button';
+            add.addEventListener('click', function() {
+              UI.captureUndoSnapshot();
+              var byCat = { backend: [], frontend: [], database: [], devops: [] };
+              byCat[r.cat].push(r.name);
+              ResumeWriter.addSkills(byCat, 'append');
+              ResumeWriter.afterChange('맞춤 점검: 기술 추가');
+              add.disabled = true;
+              add.textContent = '추가됨';
+              tr.children[2].textContent = '✅ 기술 칸에 있음';
+            });
+            tip.appendChild(add);
+          }
+        } else {
+          tip.textContent = r.section === 'required'
+            ? '필수 요건입니다. 써 본 적이 없다면 지어내지 말고, 공부 중이면 자기소개에 "학습 중" 한 줄과 면접 답변을 준비하세요.'
+            : '우대 사항입니다. 없어도 지원 가능하지만, 짧게 실습해 보면 강점이 됩니다.';
+        }
+        tr.appendChild(tip);
+        table.appendChild(tr);
+      });
+      wrap.appendChild(table);
+      box.appendChild(wrap);
+
+      if (res.projects.length) {
+        box.appendChild(el('div', 'jm-h', '앞에 내세울 프로젝트'));
+        var top = res.projects[0];
+        var pBox = el('div', 'jm-suggest');
+        res.projects.forEach(function(p) {
+          var line = el('div', null, '프로젝트 ' + p.index + ' "' + p.name + '" — 공고 키워드 ' + p.hits.length + '개' + (p.hits.length ? ' (' + p.hits.join(', ') + ')' : ''));
+          pBox.appendChild(line);
+        });
+        if (top.hits.length && top.index !== 1) {
+          pBox.appendChild(el('div', 'jm-muted', '→ 이 공고에는 프로젝트 ' + top.index + '이 대표 프로젝트(1번)보다 잘 맞습니다. 회사용 버전에서는 순서를 바꾸거나 1번의 구현 문장에 해당 기술을 강조해 보세요.'));
+        } else if (top.hits.length) {
+          pBox.appendChild(el('div', 'jm-muted', '→ 대표 프로젝트(1번)가 이 공고와 가장 잘 맞습니다.'));
+        }
+        box.appendChild(pBox);
+      }
+
+      var haveSkills = res.rows.filter(function(r) { return r.status !== 'missing'; }).map(function(r) { return r.name; });
+      if (haveSkills.length) {
+        box.appendChild(el('div', 'jm-h', '이 회사용 한줄 소개 제안'));
+        var headline = res.position + ' 지원 | ' + haveSkills.slice(0, 4).join(' · ');
+        box.appendChild(this.suggestBox(headline, 'header-subtitle', '한줄 소개에 적용'));
+      }
+      box.appendChild(el('div', 'jm-muted', 'AI 맞춤 문장 제안을 누르면 이 공고에 맞춘 About Me 초안도 만들어 줍니다.'));
+      box.appendChild(el('div', 'jm-h', '다음 단계'));
+      box.appendChild(el('div', 'jm-suggest', '① 위 제안을 적용하고 → ② 아래 "지금 이력서를 이 회사용 버전으로 저장" → ③ 면접 예상 질문에서 "우리 회사에 지원한 이유" 답변을 준비하세요.'));
+    },
+
+    suggestBox: function(text, fieldId, label, warn) {
+      var wrapEl = document.createElement('div');
+      wrapEl.className = 'jm-suggest';
+      var body = document.createElement('div');
+      body.textContent = text;
+      wrapEl.appendChild(body);
+      if (warn) {
+        var w = document.createElement('div');
+        w.className = 'tool-warn';
+        w.textContent = warn;
+        wrapEl.appendChild(w);
+      }
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'readme-action-btn primary';
+      btn.textContent = label;
+      btn.addEventListener('click', function() {
+        if (FieldCollector.hasRealContent(fieldId) && !window.confirm('지금 내용을 이 제안으로 바꿀까요? (되돌리기 가능)')) return;
+        UI.captureUndoSnapshot();
+        ResumeWriter.setText(fieldId, text);
+        ResumeWriter.afterChange('맞춤 점검 제안 적용');
+        btn.disabled = true;
+        btn.textContent = '적용됨';
+      });
+      wrapEl.appendChild(btn);
+      return wrapEl;
+    },
+
+    runAI: function() {
+      var self = this;
+      var text = this.source.value.trim();
+      this.showError('');
+      if (text.length < 20) { this.showError('채용공고 내용을 먼저 붙여넣어 주세요.'); return; }
+      if (!this.last) this.run();
+      if (!this.last) return;
+      var btn = document.getElementById('jobmatch-ai');
+      btn.disabled = true;
+      document.getElementById('jobmatch-ai-text').textContent = 'AI 제안 만드는 중...';
+      document.getElementById('jobmatch-ai-spinner').style.display = 'inline-block';
+      var resumeText = ResumeReader.textForAI();
+      var system = '당신은 신입 개발자의 이력서를 채용공고에 맞게 다듬는 커리어 코치입니다.\n' +
+        '규칙: 1) 이력서에 있는 사실·기술·숫자만 사용합니다. 이력서에 없는 기술 경험을 만들면 안 됩니다.\n' +
+        '2) headline은 "포지션 지원 | 기술1 · 기술2 · 기술3" 형식 한 줄, about은 공고의 업무와 내 경험을 연결한 2~3문장입니다.\n' +
+        '3) emphasize는 이 공고에 맞춰 강조할 내 프로젝트 경험 2~3개, study는 공고에는 있지만 이력서에 없는 기술의 짧은 학습 제안입니다.\n' +
+        '4) 아래 JSON만 한국어로 출력하세요.\n/no_think\n' +
+        '{"headline":"","about":"","emphasize":["",""],"study":["",""]}';
+      var user = '채용공고:\n' + maskContactInfo(text).slice(0, 5000) + '\n\n내 이력서:\n' + resumeText;
+      callOpenRouter(system, user, { title: 'Job Match', maxTokens: 1500 })
+        .then(function(content) {
+          var obj = extractJsonFromAI(content);
+          var str = function(v, max) { return typeof v === 'string' ? normalizeWhitespace(v).slice(0, max) : ''; };
+          var arr = function(v) { return Array.isArray(v) ? v.filter(function(x) { return typeof x === 'string' && x.trim(); }).map(function(x) { return str(x, 200); }).slice(0, 4) : []; };
+          self.renderAI({ headline: str(obj.headline, 120), about: str(obj.about, 600), emphasize: arr(obj.emphasize), study: arr(obj.study) }, resumeText);
+          document.getElementById('jobmatch-status').textContent = 'AI 제안을 아래에 추가했습니다. ⚠ 표시는 꼭 확인하세요.';
+        })
+        .catch(function(err) { self.showError(err.message); })
+        .finally(function() {
+          btn.disabled = false;
+          document.getElementById('jobmatch-ai-text').textContent = 'AI 맞춤 문장 제안';
+          document.getElementById('jobmatch-ai-spinner').style.display = 'none';
+        });
+    },
+
+    // AI 문장이 이력서에 없는 숫자·기술을 말하면 경고한다
+    verifyAgainstResume: function(sentence, resumeText) {
+      var warns = [];
+      // 숫자는 부분 문자열이 아니라 "숫자 토큰" 단위로 비교한다 (예: '3'이 '3.4' 안에 있다고 통과하면 안 됨)
+      var tokens = function(t) {
+        return (String(t).match(/\d+(?:[.,]\d+)*/g) || []).map(function(n) { return n.replace(/,/g, ''); });
+      };
+      var known = tokens(resumeText);
+      var nums = tokens(sentence).filter(function(n) { return known.indexOf(n) === -1; });
+      if (nums.length) warns.push('이력서에 없는 숫자: ' + dedupeMessages(nums).join(', '));
+      if (/\d+\s*년\s*(간|동안|차|이상|경력)/.test(sentence)) warns.push('경력 기간 표현이 있습니다 (신입 이력서와 맞는지 확인)');
+      var fake = this.keywordList().filter(function(k) {
+        return k.re.test(sentence) && !(k.resumeRe || k.re).test(resumeText);
+      }).map(function(k) { return k.name; });
+      if (fake.length) warns.push('이력서에 없는 기술: ' + dedupeMessages(fake).join(', ') + ' — 실제 경험이 아니면 빼세요');
+      return warns.length ? '⚠ ' + warns.join(' / ') : '';
+    },
+
+    renderAI: function(ai, resumeText) {
+      var box = document.getElementById('jobmatch-result');
+      var old = box.querySelector('.jm-ai');
+      if (old) old.remove();
+      var wrapEl = document.createElement('div');
+      wrapEl.className = 'jm-ai';
+      var h = document.createElement('div');
+      h.className = 'jm-h';
+      h.textContent = '🤖 AI 맞춤 제안';
+      wrapEl.appendChild(h);
+      if (ai.headline) wrapEl.appendChild(this.suggestBox(ai.headline, 'header-subtitle', '한줄 소개에 적용', this.verifyAgainstResume(ai.headline, resumeText)));
+      if (ai.about) wrapEl.appendChild(this.suggestBox(ai.about, 'about-summary', 'About Me에 적용', this.verifyAgainstResume(ai.about, resumeText)));
+      var addList = function(title, items) {
+        if (!items.length) return;
+        var b = document.createElement('div');
+        b.className = 'jm-suggest';
+        var t = document.createElement('strong');
+        t.textContent = title;
+        b.appendChild(t);
+        var ul = document.createElement('ul');
+        ul.style.margin = '4px 0 0';
+        ul.style.paddingLeft = '18px';
+        items.forEach(function(i) { var li = document.createElement('li'); li.textContent = i; ul.appendChild(li); });
+        b.appendChild(ul);
+        wrapEl.appendChild(b);
+      };
+      addList('강조할 경험', ai.emphasize);
+      addList('부족한 기술 학습 제안', ai.study);
+      // 일치도 점수 바로 아래(3번째 자리)에 넣어 먼저 보이게 한다
+      box.insertBefore(wrapEl, box.children[2] || null);
+    },
+
+    saveVersion: function() {
+      var name = normalizeWhitespace(this.company.value) || window.prompt('버전 이름(회사·공고 이름)을 입력하세요', '맞춤 버전');
+      if (!name) return;
+      var v = Versions.saveAs(name);
+      if (v) ResumeWriter.notify('지금 이력서를 "' + v.name + '" 버전으로 저장했습니다. 오른쪽 패널 "이력서 버전"에서 다시 불러올 수 있습니다.');
+    }
+  };
+  window.JobMatch = JobMatch;
+
   // ===== Initialize =====
   document.addEventListener('DOMContentLoaded', function() {
     UI.init();
@@ -7986,6 +9177,9 @@
     ReadmeGenerator.init();
     ExampleLibrary.init();
     Autofill.init();
+    Interview.init();
+    Versions.init();
+    JobMatch.init();
     PrintVisibility.init();
 
     // Auto-restore saved content
