@@ -1,0 +1,27 @@
+name: resume-helper 테스트
+
+on:
+  push:
+    branches: [main]
+    paths: ['resume-helper/**', '.github/workflows/resume-helper-test.yml']
+  pull_request:
+    paths: ['resume-helper/**', '.github/workflows/resume-helper-test.yml']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: resume-helper
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: 의존성 설치
+        run: npm install --no-audit --no-fund
+      - name: Chromium 설치
+        run: npx playwright install --with-deps chromium
+      - name: 회귀 테스트 실행
+        run: npm test
