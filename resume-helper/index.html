@@ -1540,8 +1540,83 @@
     .readme-card { height: 95vh; width: 100%; }
   }
 
+  /* ===== 예시 라이브러리 · AI 자동 입력 공통 ===== */
+  .tool-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,54,93,0.55); backdrop-filter: blur(4px);
+    z-index: 10001; justify-content: center; align-items: center;
+  }
+  .tool-overlay.active { display: flex; }
+  .tool-card {
+    background: #fff; border-radius: 14px; width: 95%; max-width: 1100px; height: 88vh;
+    display: flex; flex-direction: column; box-shadow: 0 8px 40px rgba(0,0,0,0.25); overflow: hidden;
+  }
+  .tool-tabs { display: flex; gap: 4px; padding: 10px 20px; border-bottom: 1px solid #e2e8f0; overflow-x: auto; flex-shrink: 0; }
+  .tool-tab {
+    padding: 6px 12px; border-radius: 16px; font-size: 9pt; font-weight: 600; white-space: nowrap;
+    cursor: pointer; border: 1px solid #d0d7e3; background: #f0f4fa; color: #555;
+  }
+  .tool-tab.active { background: #1a365d; color: #fff; border-color: #1a365d; }
+  .tool-tab .tool-tab-count { font-weight: 400; opacity: 0.8; margin-left: 3px; }
+  .tool-toolbar {
+    display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+    padding: 8px 20px; background: #f7f9fc; border-bottom: 1px solid #e2e8f0; flex-shrink: 0; font-size: 8.5pt;
+  }
+  .tool-filters { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tool-filter {
+    padding: 3px 10px; border-radius: 12px; border: 1px solid #d0d7e3; background: #fff;
+    font-size: 8pt; cursor: pointer; color: #4a5568;
+  }
+  .tool-filter.active { background: #4a6fa5; border-color: #4a6fa5; color: #fff; }
+  .tool-target, .tool-mode { display: flex; align-items: center; gap: 6px; color: #1a365d; font-weight: 600; }
+  .tool-target select, .tool-source-footer select { font-size: 8.5pt; padding: 3px 6px; border: 1px solid #d0d7e3; border-radius: 6px; max-width: 260px; }
+  .tool-mode label { font-weight: 500; cursor: pointer; }
+  .tool-desc { padding: 8px 20px 0; font-size: 8.5pt; color: #4a5568; flex-shrink: 0; }
+  .tool-list { flex: 1; overflow-y: auto; padding: 8px 20px 12px; }
+  .tool-item {
+    display: flex; gap: 10px; align-items: flex-start; padding: 9px 12px; margin-bottom: 6px;
+    border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; font-size: 9pt; line-height: 1.55; color: #2d3748;
+  }
+  .tool-item:hover { border-color: #4a6fa5; background: #f7f9fc; }
+  .tool-item.selected { border-color: #1a365d; background: #eef3fb; }
+  .tool-item input { margin-top: 3px; flex-shrink: 0; }
+  .tool-item-body { flex: 1; min-width: 0; }
+  .tool-item-title { font-weight: 700; color: #1a365d; }
+  .tool-item-sub { color: #718096; font-size: 8pt; margin-top: 2px; }
+  .tool-item ul { margin: 4px 0 0; padding-left: 18px; }
+  .tool-badges { display: inline-flex; gap: 3px; margin-left: 6px; vertical-align: middle; }
+  .tool-badge { font-size: 7pt; padding: 1px 6px; border-radius: 8px; background: #edf2f7; color: #4a5568; font-weight: 600; }
+  .tool-count { font-size: 8pt; color: #718096; }
+  .tool-note { padding: 6px 20px 10px; font-size: 7.5pt; color: #8a6d3b; background: #fffaf0; border-top: 1px solid #f6e5c3; flex-shrink: 0; }
+  .tool-source-footer { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-top: 1px solid #e2e8f0; font-size: 8.5pt; color: #1a365d; font-weight: 600; flex-shrink: 0; }
+  .tool-source-footer .tool-count { margin-left: auto; font-weight: 400; }
+  .tool-source-actions { display: flex; gap: 6px; padding: 8px 14px 10px; flex-shrink: 0; flex-wrap: wrap; }
+  .tool-result { flex: 1; overflow-y: auto; padding: 12px 16px; }
+  .tool-empty { color: #999; text-align: center; padding: 40px 10px; font-size: 9.5pt; line-height: 1.7; }
+  .tool-field { border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; }
+  .tool-field-head { display: flex; align-items: center; gap: 6px; font-size: 8.5pt; font-weight: 700; color: #1a365d; margin-bottom: 4px; }
+  .tool-field textarea {
+    width: 100%; border: 1px solid #d0d7e3; border-radius: 6px; padding: 6px 8px;
+    font-size: 9pt; line-height: 1.5; resize: vertical; font-family: inherit;
+  }
+  .tool-field.off { opacity: 0.5; }
+  .tool-warn { font-size: 8pt; color: #b7791f; margin-top: 3px; }
+  .tool-source-tag { font-size: 7pt; font-weight: 600; padding: 1px 6px; border-radius: 8px; background: #e6fffa; color: #2c7a7b; margin-left: auto; }
+  .tool-card .readme-footer { flex-wrap: wrap; gap: 6px; }
+  @media (max-width: 768px) {
+    .tool-card { height: 95vh; width: 100%; }
+    #autofill-source { min-height: 180px; }
+    #autofill-overlay .readme-content { overflow-y: auto; }
+    #autofill-overlay .readme-editor-pane, #autofill-overlay .readme-preview-pane { flex: none; overflow: visible; }
+    #autofill-overlay .tool-result { overflow: visible; }
+    .tool-toolbar { padding: 8px 12px; }
+    .tool-list, .tool-result { padding: 8px 12px; }
+  }
+
   /* ===== Print: hide all AI UI ===== */
   @media print {
+    .tool-overlay { display: none !important; }
+    #app-toast { display: none !important; }
     .page { padding: 0; max-width: none; }
     .guide { display: none !important; }
     #ai-control-panel { display: none !important; }
@@ -1623,6 +1698,21 @@
     <div class="panel-section">
       <button id="pdf-guide-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600;">PDF로 저장하기</button>
       <div class="panel-hint">저장 전에 필수 항목 누락과 한 페이지 초과 가능성을 먼저 확인합니다.</div>
+    </div>
+
+    <div class="panel-divider"></div>
+    <div class="panel-group-title">빠른 입력</div>
+    <div class="panel-section">
+      <button id="example-library-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600; background:#eef3fb; border-color:#4a6fa5; color:#1a365d;" type="button">
+        예시 라이브러리 (섹션별 10개+)
+      </button>
+      <div class="panel-hint">한줄 소개, About Me, 프로젝트 구현·성과, 기술, 교육, 자격증, 자기소개 예시를 여러 개 골라 한 번에 넣습니다.</div>
+    </div>
+    <div class="panel-section">
+      <button id="autofill-open-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600;" type="button">
+        AI 자동 입력 (README·메모 → 이력서)
+      </button>
+      <div class="panel-hint">프로젝트 README나 메모를 붙여넣으면 프로젝트·기술 스택·소개 문장을 뽑아 채웁니다. API 키가 없어도 README 형식이면 동작합니다.</div>
     </div>
 
     <div class="panel-divider"></div>
@@ -1796,6 +1886,7 @@
               <span id="readme-ai-spinner" class="spinner" style="display:none;"></span>
             </button>
             <button id="readme-template-btn" class="readme-action-btn secondary">템플릿으로 시작</button>
+            <button id="readme-to-resume-btn" class="readme-action-btn secondary" type="button" title="편집기의 README 내용을 분석해 이력서 프로젝트 칸에 채웁니다">→ 이력서에 자동 입력</button>
           </div>
         </div>
         <textarea id="readme-editor" class="readme-textarea" placeholder="여기에 README 내용을 작성하세요..."></textarea>
@@ -1817,6 +1908,91 @@
       </div>
     </div>
     <div id="readme-error" class="error-text" style="display:none; padding:0 20px 10px;"></div>
+  </div>
+</div>
+
+<!-- ===== 예시 라이브러리 ===== -->
+<div id="example-overlay" class="tool-overlay" role="dialog" aria-modal="true" aria-labelledby="example-title">
+  <div class="tool-card">
+    <div class="readme-header">
+      <span class="readme-title" id="example-title">예시 라이브러리</span>
+      <button id="example-close" class="readme-close-btn" type="button" aria-label="닫기">&times;</button>
+    </div>
+    <div class="tool-tabs" id="example-tabs" role="tablist"></div>
+    <div class="tool-toolbar">
+      <div class="tool-filters" id="example-filters"></div>
+      <div class="tool-target" id="example-target-row">
+        <label for="example-target">넣을 위치</label>
+        <select id="example-target"></select>
+      </div>
+      <div class="tool-mode" id="example-mode-row">
+        <label><input type="radio" name="example-mode" value="replace" checked> 기존 내용 바꾸기</label>
+        <label><input type="radio" name="example-mode" value="append"> 뒤에 추가</label>
+      </div>
+    </div>
+    <div class="tool-desc" id="example-desc"></div>
+    <div class="tool-list" id="example-list"></div>
+    <div class="readme-footer">
+      <div class="readme-footer-left">
+        <button id="example-select-all" class="readme-action-btn secondary" type="button">보이는 항목 모두 선택</button>
+        <button id="example-clear" class="readme-action-btn secondary" type="button">선택 해제</button>
+      </div>
+      <div class="readme-footer-right" style="display:flex;align-items:center;gap:8px;">
+        <span id="example-count" class="tool-count">0개 선택</span>
+        <button id="example-apply" class="readme-action-btn primary" type="button" disabled>선택한 예시 넣기</button>
+      </div>
+    </div>
+    <div class="tool-note">예시의 숫자·프로젝트명·링크는 그대로 쓰지 말고 <strong>본인 경험과 실제 측정값</strong>으로 바꾸세요. 넣은 뒤에도 "방금 변경 되돌리기"로 되돌릴 수 있습니다.</div>
+  </div>
+</div>
+
+<!-- ===== AI 자동 입력 ===== -->
+<div id="autofill-overlay" class="tool-overlay" role="dialog" aria-modal="true" aria-labelledby="autofill-title">
+  <div class="tool-card">
+    <div class="readme-header">
+      <span class="readme-title" id="autofill-title">AI 자동 입력 · README·메모로 이력서 채우기</span>
+      <button id="autofill-close" class="readme-close-btn" type="button" aria-label="닫기">&times;</button>
+    </div>
+    <div class="readme-content">
+      <div class="readme-editor-pane">
+        <div class="readme-editor-toolbar">
+          <span class="readme-editor-label">1. 원문 붙여넣기</span>
+          <div class="readme-editor-actions">
+            <button id="autofill-from-readme" class="readme-action-btn secondary" type="button">README 편집기에서 가져오기</button>
+            <button id="autofill-sample" class="readme-action-btn secondary" type="button">예시 원문</button>
+          </div>
+        </div>
+        <textarea id="autofill-source" class="readme-textarea" maxlength="12000" placeholder="GitHub README, 노션 회고, 프로젝트 메모, 기획서 내용을 그대로 붙여넣으세요.&#10;&#10;예)&#10;# 부산 로컬 맛집 리뷰&#10;> Spring Boot 3.4 + 타임리프 + MySQL 8 맛집 리뷰 서비스&#10;- 기간: 2026.11.05 ~ 2026.11.30 / 팀 5명&#10;## 주요 기능&#10;- 리뷰 작성·별점, 찜&#10;- Spring AI로 리뷰 3줄 요약"></textarea>
+        <div class="tool-source-footer">
+          <label for="autofill-target">넣을 프로젝트</label>
+          <select id="autofill-target"></select>
+          <span id="autofill-length" class="tool-count">0 / 12000자</span>
+        </div>
+        <div class="tool-source-actions">
+          <button id="autofill-ai-btn" class="readme-action-btn primary" type="button">
+            <span id="autofill-ai-text">AI로 분석하기</span>
+            <span id="autofill-ai-spinner" class="spinner" style="display:none;"></span>
+          </button>
+          <button id="autofill-local-btn" class="readme-action-btn secondary" type="button">AI 없이 분석하기 (README 형식)</button>
+        </div>
+      </div>
+      <div class="readme-preview-pane">
+        <div class="readme-preview-toolbar">
+          <span class="readme-editor-label">2. 결과 확인·수정 후 넣기</span>
+        </div>
+        <div id="autofill-result" class="tool-result">
+          <div class="tool-empty">왼쪽에 원문을 붙여넣고 분석 버튼을 누르세요.<br>뽑아낸 내용을 여기서 고친 뒤 원하는 항목만 이력서에 넣을 수 있습니다.</div>
+        </div>
+      </div>
+    </div>
+    <div id="autofill-error" class="error-text" style="display:none; padding:6px 20px;"></div>
+    <div class="readme-footer">
+      <div class="readme-footer-left"><span id="autofill-status" class="readme-status"></span></div>
+      <div class="readme-footer-right">
+        <button id="autofill-apply" class="readme-action-btn primary" type="button" disabled>선택 항목 이력서에 넣기</button>
+      </div>
+    </div>
+    <div class="tool-note">AI로 보낼 때 이메일·전화번호는 가립니다. AI가 원문에 없는 숫자를 만들면 ⚠ 표시로 알려주고, 원문에 없는 기술·링크는 자동으로 뺍니다.</div>
   </div>
 </div>
 
@@ -3346,6 +3522,8 @@
           return;
         }
         if (e.key === 'Escape') {
+          if (typeof ExampleLibrary !== 'undefined' && ExampleLibrary.isOpen()) { ExampleLibrary.close(); return; }
+          if (typeof Autofill !== 'undefined' && Autofill.isOpen()) { Autofill.close(); return; }
           var readme = document.getElementById('readme-overlay');
           if (readme && readme.classList.contains('active')) { ReadmeGenerator.close(); return; }
           var pdf = document.getElementById('pdf-guide-overlay');
@@ -3462,6 +3640,9 @@
         if (toggleBtn) toggleBtn.textContent = '숨기기';
       }
       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // 프로그램이 옮긴 포커스에서는 되돌리기 지점을 새로 만들지 않는다.
+      // (예시·추천 문장을 넣은 직후 포커스하면 '넣은 후' 상태가 저장돼 되돌리기가 동작하지 않았다)
+      this.lastFocusedEditable = target;
       if (target.focus) target.focus();
     },
 
@@ -4165,10 +4346,11 @@
 
   // #7 스킬 옵션 + 툴팁 설명
   var SKILL_OPTIONS = {
-    Backend: ['Java 17', 'Spring Boot 3.x', 'Spring Data JPA', 'Spring Security', 'QueryDSL', 'Lombok', 'ModelMapper', 'Bean Validation'],
-    Frontend: ['Thymeleaf', 'Thymeleaf Layout Dialect', 'HTML5/CSS3', 'JavaScript', 'Bootstrap'],
-    Database: ['MySQL', 'H2', 'JPA/Hibernate', 'JPQL'],
-    DevOps: ['Git/GitHub', 'Maven', 'IntelliJ IDEA']
+    // 파이널 프로젝트 공통 기술 스택(Java 21, Spring Boot 3.4, Spring AI, AWS, GitHub Actions)을 앞에 둔다
+    Backend: ['Java 21', 'Spring Boot 3.4', 'Spring Data JPA', 'Spring Security', 'JWT', 'OAuth2 (Google)', 'Spring AI', 'JUnit5', 'Java 17', 'Spring Boot 3.x', 'QueryDSL', 'Lombok', 'Bean Validation'],
+    Frontend: ['Thymeleaf', 'Bootstrap 5', 'HTML5/CSS3', 'JavaScript', 'Thymeleaf Layout Dialect'],
+    Database: ['MySQL 8', 'MySQL', 'H2', 'AWS RDS', 'JPA/Hibernate', 'JPQL'],
+    DevOps: ['Git/GitHub', 'GitHub Actions', 'AWS EC2', 'AWS S3', 'Elastic Beanstalk', 'Gradle', 'Maven', 'Postman', 'IntelliJ IDEA']
   };
 
   var SKILL_TIPS = {
@@ -4191,7 +4373,22 @@
     'JPQL': '엔티티 객체 쿼리 언어',
     'Git/GitHub': '코드 버전 관리',
     'Maven': '빌드 및 의존성 관리',
-    'IntelliJ IDEA': 'Java 통합 개발 환경'
+    'IntelliJ IDEA': 'Java 통합 개발 환경',
+    'Java 21': '파이널 프로젝트 공통 Java 버전 (LTS)',
+    'Spring Boot 3.4': '파이널 프로젝트 공통 프레임워크',
+    'JWT': 'API 토큰 인증',
+    'OAuth2 (Google)': '구글 로그인 연동',
+    'Spring AI': 'OpenRouter 무료 모델로 AI 기능 구현',
+    'JUnit5': '단위·통합 테스트',
+    'Bootstrap 5': '반응형 화면 CSS 프레임워크',
+    'MySQL 8': '파이널 프로젝트 공통 DB',
+    'AWS RDS': 'AWS 관리형 MySQL (빈스톡 실습)',
+    'GitHub Actions': 'CI/CD 자동 빌드·배포',
+    'AWS EC2': '웹 서버 (Ubuntu)',
+    'AWS S3': '사진 파일 저장소',
+    'Elastic Beanstalk': 'AWS 배포 자동화 서비스',
+    'Gradle': '빌드 도구 (./gradlew bootJar)',
+    'Postman': 'API 테스트·명세 공유'
   };
 
   // #8 결과 칩 확장
@@ -4200,7 +4397,10 @@
     '팀 내 백엔드 전담', 'CRUD 전체 구현', 'Spring Security 인증/인가 적용',
     'Thymeleaf 레이아웃 구성', '회원/주문/장바구니 구현', 'DTO 12개 설계',
     'Pageable 페이징 처리', '로그인/회원가입 구현', '이미지 업로드 기능',
-    'BaseEntity Auditing 적용', '관리자 페이지 구현'
+    'BaseEntity Auditing 적용', '관리자 페이지 구현',
+    '목록 SQL 51회 → 1회 (N+1 해결)', '동시 요청 100건 테스트 통과', 'AI 리뷰 요약 구현',
+    'GitHub Actions 자동 배포', '수동 배포 15분 → 자동 4분', 'AWS EC2·S3 배포',
+    '전화번호 마스킹 적용', '외부 API 타임아웃 2초 적용', '미션 테스트 15개 통과'
   ];
 
   var STEPS = [
@@ -5890,9 +6090,13 @@
         if (hasData) availableProjects.push(projectIndex - 1);
       }
 
-      if (availableProjects.length > 0 && availableProjects.indexOf(this.activeProject) === -1) {
+      if (this.activeProject !== 'portfolio' && availableProjects.length > 0 && availableProjects.indexOf(this.activeProject) === -1) {
         this.activeProject = availableProjects[0];
       }
+
+      // 이력서 전체로 만드는 포트폴리오(GitHub 프로필 README) 탭
+      html += '<button type="button" class="readme-project-tab' + (this.activeProject === 'portfolio' ? ' active' : '') +
+        '" onclick="ReadmeGenerator.switchProject(\'portfolio\')" title="이력서 전체 내용으로 GitHub 프로필용 포트폴리오 README를 만듭니다">📁 포트폴리오(전체)</button>';
 
       for (var j = 0; j < projectIndices.length; j++) {
         var currentIndex = projectIndices[j];
@@ -5917,7 +6121,12 @@
 
     loadProjectReadme: function(idx) {
       this.activeProject = idx;
+      var isPortfolio = idx === 'portfolio';
+      document.getElementById('readme-template-btn').textContent = isPortfolio ? '이력서로 초안 다시 만들기' : '템플릿으로 시작';
+      document.getElementById('readme-to-resume-btn').style.display = isPortfolio ? 'none' : '';
       var saved = this.data[idx] || '';
+      // 포트폴리오 탭을 처음 열면 이력서 내용으로 초안을 바로 만들어 준다
+      if (isPortfolio && !saved) saved = Portfolio.build();
       this.editor.value = saved;
       this.renderPreview(saved);
     },
@@ -5934,6 +6143,14 @@
       this.overlay.addEventListener('click', function(e) { if (e.target === self.overlay) self.close(); });
       document.getElementById('readme-ai-generate').addEventListener('click', function() { self.generateWithAI(); });
       document.getElementById('readme-template-btn').addEventListener('click', function() { self.insertTemplate(); });
+      document.getElementById('readme-to-resume-btn').addEventListener('click', function() {
+        var text = self.editor.value.trim();
+        if (!text) { self.showError('편집기가 비어 있습니다. README를 붙여넣거나 작성한 뒤 눌러주세요.'); return; }
+        self.saveCurrentReadme();
+        self.overlay.classList.remove('active');
+        var target = typeof self.activeProject === 'number' ? self.activeProject + 1 : null;
+        Autofill.open(text, target);
+      });
       document.getElementById('readme-copy-btn').addEventListener('click', function() { self.copyToClipboard(); });
       document.getElementById('readme-download-btn').addEventListener('click', function() { self.downloadReadme(); });
     },
@@ -6057,19 +6274,28 @@
         this.showError('API 키가 필요합니다. 우측 패널에서 OpenRouter API 키를 먼저 저장해주세요.');
         return;
       }
-      var pd = this.getProjectData(this.activeProject);
-      if (!pd.name || pd.name.indexOf('[') !== -1) {
-        this.showError('선택한 프로젝트의 정보가 아직 작성되지 않았습니다. 이력서에서 프로젝트 정보를 먼저 입력해주세요.');
-        return;
+      var messages;
+      if (this.activeProject === 'portfolio') {
+        // 포트폴리오: 이력서로 만든 초안(편집기 내용이 있으면 그것)을 AI가 다듬는다
+        var draft = this.editor.value.trim() || Portfolio.build();
+        var pp = Portfolio.buildAIPrompt(draft);
+        messages = [{ role: 'system', content: pp.system }, { role: 'user', content: pp.user }];
+      } else {
+        var pd = this.getProjectData(this.activeProject);
+        if (!pd.name || pd.name.indexOf('[') !== -1) {
+          this.showError('선택한 프로젝트의 정보가 아직 작성되지 않았습니다. 이력서에서 프로젝트 정보를 먼저 입력해주세요.');
+          return;
+        }
+        messages = [
+          { role: 'system', content: this.buildSystemPrompt() },
+          { role: 'user', content: maskContactInfo(this.buildUserPrompt(pd)) }
+        ];
       }
       var self = this;
       this.setLoading(true);
       var body = {
         model: MODEL,
-        messages: [
-          { role: 'system', content: this.buildSystemPrompt() },
-          { role: 'user', content: this.buildUserPrompt(pd) }
-        ],
+        messages: messages,
         temperature: 0.4,
         max_tokens: 4000
       };
@@ -6195,6 +6421,15 @@
     },
 
     insertTemplate: function() {
+      if (this.activeProject === 'portfolio') {
+        if (this.editor.value.trim() && !window.confirm('편집기의 현재 내용을 이력서로 만든 포트폴리오 초안으로 바꿀까요?')) return;
+        var portfolio = Portfolio.build();
+        this.editor.value = portfolio;
+        this.renderPreview(portfolio);
+        this.saveCurrentReadme();
+        this.setStatus('이력서 내용으로 포트폴리오 초안을 만들었습니다.');
+        return;
+      }
       var pd = this.getProjectData(this.activeProject);
       var name = (pd.name && pd.name.indexOf('[') === -1) ? pd.name.split(' - ')[0] : 'My Project';
       var desc = (pd.desc && pd.desc.indexOf('[') === -1) ? pd.desc : '프로젝트 설명 작성';
@@ -6213,7 +6448,8 @@
       var allSkills = [skills.backend, skills.frontend, skills.database, skills.devops].join(' ');
       var usesGradle = /gradle/i.test(allSkills);
       var runCmd = usesGradle ? './gradlew bootRun' : './mvnw spring-boot:run';
-      var buildCmd = usesGradle ? './gradlew build' : './mvnw clean package';
+      // 수업 기준: ./gradlew bootJar → build/libs/프로젝트명.jar
+      var buildCmd = usesGradle ? './gradlew bootJar' : './mvnw clean package';
       var extraRows = (skills.extra || []).map(function(item) {
         return '| ' + cell(item.category) + ' | ' + cell(item.value) + ' | [TODO] |\n';
       }).join('');
@@ -6338,12 +6574,1418 @@
   };
   window.ReadmeGenerator = ReadmeGenerator;
 
+  // ===== Module: Example Library 데이터 =====
+  // 수업 자료(파이널 프로젝트 공지, 12장 빈스톡 배포, 13장 GitHub Actions CI/CD, AI 코드 검증 자습서)의
+  // 기술 스택·인프라·결함 사례를 바탕으로 만든 섹션별 예시. 숫자는 예시이므로 반드시 본인 측정값으로 바꾼다.
+  var EXAMPLE_THEMES = [
+    { key: 'all', label: '전체' },
+    { key: 'food', label: '🍽️ 맛집 리뷰' },
+    { key: 'trip', label: '🧳 여행 코스' },
+    { key: 'crm', label: '📊 고객 관리' },
+    { key: 'shop', label: '🛒 쇼핑몰' },
+    { key: 'devops', label: '☁️ 배포·CI/CD' },
+    { key: 'ai', label: '🤖 AI' },
+    { key: 'quality', label: '🛡️ 성능·보안·테스트' },
+    { key: 'common', label: '공통' }
+  ];
+
+  var EXAMPLE_LIBRARY = {
+    headline: {
+      label: '한줄 소개', field: 'header-subtitle', single: true,
+      desc: '이름 아래 한 줄입니다. 지원 포지션 | 핵심 기술 3~4개 형식이 가장 잘 읽힙니다.',
+      items: [
+        { text: '웹 백엔드 지원 | Java 21 · Spring Boot 3.4 · Spring Data JPA · MySQL 8', tags: ['common'] },
+        { text: '풀스택 지원 | Spring Boot · 타임리프 · Bootstrap 5 · AWS EC2/S3', tags: ['common'] },
+        { text: '백엔드 지원 | Spring Security · JWT · 구글 OAuth2 로그인', tags: ['quality'] },
+        { text: '백엔드 지원 | Spring AI · OpenRouter · Spring Boot · MySQL', tags: ['ai'] },
+        { text: '백엔드 지원 | Spring Boot · AWS Elastic Beanstalk · RDS · GitHub Actions CI/CD', tags: ['devops'] },
+        { text: '백엔드 지원 | JPA 성능 개선(N+1) · 동시성 제어 · 테스트 자동화', tags: ['quality'] },
+        { text: '서비스 개발 지원 | Spring Boot · 외부 공공 API 연동 · AI 일정 생성', tags: ['trip', 'ai'] },
+        { text: '백엔드 지원 | Spring Boot · SQL 집계 대시보드 · 개인정보 마스킹', tags: ['crm'] },
+        { text: '웹 개발 지원 | Spring Boot · 타임리프 · S3 이미지 업로드 · AI 리뷰 요약', tags: ['food', 'ai'] },
+        { text: 'Java 백엔드 지원 | Spring Data JPA · QueryDSL · Spring Security', tags: ['shop'] },
+        { text: '클라우드 백엔드 지원 | Spring Boot · AWS EC2(Ubuntu) · S3 · GitHub Actions', tags: ['devops'] },
+        { text: '신입 백엔드 지원 | AI 초안 코드를 테스트로 검증하고 숫자로 개선하는 개발자', tags: ['ai', 'quality'] }
+      ]
+    },
+
+    about: {
+      label: 'About Me', field: 'about-summary', single: true,
+      desc: '2~3문장: 교육·배경 → 핵심 기술/프로젝트 경험 → 일하는 방식. 하나만 골라 넣고 내 경험에 맞게 고치세요.',
+      items: [
+        { text: 'K-Digital Training 클라우드 네이티브 풀스택 과정에서 Java 21과 Spring Boot 3.4로 웹 서비스를 설계부터 배포까지 완성했습니다. 팀 프로젝트에서 Spring Data JPA 기반 도메인 설계와 타임리프 화면을 맡았고, AWS EC2·S3에 배포해 실제로 접속되는 서비스로 시연했습니다. 요구사항을 기능 명세와 ERD로 먼저 정리한 뒤 구현하는 개발자를 지향합니다.', tags: ['common', 'devops'] },
+        { text: 'Spring Boot와 MySQL 8로 부산 로컬 맛집 리뷰 서비스를 만들며 리뷰·별점·찜 기능과 Spring AI 리뷰 요약을 구현했습니다. AI가 만든 초안 코드를 그대로 쓰지 않고, 테스트 데이터로 SQL 수를 측정해 N+1 문제를 51번에서 1번 조회로 줄였습니다. 측정하고 검증한 뒤 고치는 습관을 강점으로 삼고 있습니다.', tags: ['food', 'quality', 'ai'] },
+        { text: '공공 관광 API와 Spring AI를 연동해 부산 여행 코스를 자동으로 만들어주는 서비스를 개발했습니다. 외부 API가 느려도 화면이 멈추지 않도록 타임아웃과 대체 응답을 넣었고, AI가 지어낸 관광지는 DB와 대조해 걸러냈습니다. 외부 연동이 실패해도 서비스가 버티게 만드는 데 관심이 많습니다.', tags: ['trip', 'ai', 'quality'] },
+        { text: '매장 사장님이 단골 고객의 방문·포인트·쿠폰을 관리하는 CRM 서비스를 만들었습니다. 고객 전화번호를 화면에 보내기 전에 마스킹하고, 다른 매장 고객 데이터에 접근하지 못하게 권한 검사를 추가했습니다. SQL 집계로 재방문율 대시보드를 만들며 데이터를 서비스 지표로 바꾸는 경험을 했습니다.', tags: ['crm', 'quality'] },
+        { text: 'GitHub Actions로 푸시 한 번에 빌드·테스트·jar 생성(CI)과 Elastic Beanstalk 배포(CD)가 자동으로 실행되게 구성했습니다. IAM 역할과 액세스 키를 분리하고 키는 GitHub Secrets에만 저장해, 코드 저장소에 비밀값이 올라가지 않게 관리했습니다. 기능 구현뿐 아니라 배포와 운영 흐름까지 이해하는 백엔드 개발자를 목표로 합니다.', tags: ['devops'] },
+        { text: 'Spring Security로 세션 로그인(화면)과 JWT(API), 구글 OAuth2 로그인을 함께 구현했습니다. 주소의 번호만 바꿔 남의 글을 수정하던 IDOR 결함을 테스트로 재현하고 작성자 검사로 막았습니다. 보안 요구사항을 테스트 코드로 증명하는 개발자를 지향합니다.', tags: ['quality'] },
+        { text: '비전공으로 시작해 900시간의 Java 웹 개발 과정에서 Spring Boot, JPA, 타임리프, MySQL을 익혔습니다. 팀 프로젝트에서 회원 도메인과 JWT 인증을 맡아 기능 명세서의 필수 항목을 모두 구현했고, PR 리뷰와 CI 초록불을 거쳐 develop 브랜치에 병합하는 협업 흐름을 지켰습니다. 꾸준히 기록하며 배우는 개발자입니다.', tags: ['common'] },
+        { text: 'Spring Boot 기반 쇼핑몰에서 상품·주문·장바구니 기능을 구현하며 JPA 연관관계와 QueryDSL 동적 검색을 익혔습니다. 이후 파이널 프로젝트에서는 같은 구조에 AI 기능과 AWS 배포를 더해 실제 사용자가 접속하는 서비스로 발전시켰습니다. 작은 기능도 끝까지 완성해 배포하는 것을 중요하게 생각합니다.', tags: ['shop', 'devops'] },
+        { text: 'Spring AI와 OpenRouter 무료 모델로 리뷰 요약·맛집 추천 기능을 만들며, AI 응답을 그대로 믿지 않고 검증하는 구조를 설계했습니다. AI 결과는 th:text로 글자만 출력하고, 하루 사용 횟수와 입력 길이를 제한해 비용과 보안 위험을 줄였습니다. AI를 안전하게 서비스에 녹이는 개발자를 목표로 합니다.', tags: ['ai', 'quality'] },
+        { text: '동시에 100명이 찜을 누르면 숫자가 100이 안 되는 갱신 유실 문제를 테스트로 재현했습니다. DB 원자적 업데이트와 유니크 제약으로 고친 뒤 동시성 테스트를 3번 반복해 통과를 확인했습니다. 혼자 쓸 때가 아니라 여러 사람이 동시에 쓸 때를 먼저 생각하는 백엔드 개발자입니다.', tags: ['food', 'quality'] },
+        { text: '12장 Elastic Beanstalk 배포와 13장 GitHub Actions CI/CD 실습을 거쳐, 팀 프로젝트의 배포 담당(부팀장)으로 EC2·S3·MySQL 서버를 구성했습니다. 배포 오류는 web.stdout.log와 Actions 로그의 Error 줄부터 확인하는 절차로 해결했습니다. 문제를 로그로 좁혀가는 디버깅 습관을 갖고 있습니다.', tags: ['devops'] },
+        { text: '팀장으로 일정 관리, 매일 아침 5분 스크럼, PR 최종 머지와 공통 레이아웃을 맡아 4주 만에 서비스를 배포했습니다. 기능별 브랜치와 커밋 규칙(feat/fix/test/ci/docs)을 정해 기여도를 기록으로 남겼습니다. 기술과 협업을 함께 챙기는 개발자를 지향합니다.', tags: ['common'] }
+      ]
+    },
+
+    projectPreset: {
+      label: '프로젝트 통째로', single: true, target: 'project',
+      desc: '프로젝트 하나(이름·기간·역할·구현·성과·링크)를 한 번에 채웁니다. 넣을 위치에서 프로젝트 칸을 고르세요.',
+      items: [
+        { title: '부산 로컬 맛집 리뷰 - 리뷰·별점·찜 + AI 리뷰 요약/맛집 추천', tags: ['food', 'ai'],
+          project: { name: '부산 로컬 맛집 리뷰 - 리뷰·별점·찜 + AI 리뷰 요약', meta: '2026.11.05 ~ 2026.11.30 | 팀 5명', desc: 'Spring Boot 3.4 + 타임리프 + MySQL 8 + Spring AI 기반 맛집 리뷰 서비스',
+            role: '리뷰 도메인 + AI (Spring Boot, Spring Data JPA, Spring AI, 타임리프)',
+            details: ['리뷰 작성·수정·삭제와 별점 평균 계산, 작성자 본인만 수정하도록 서버에서 권한 검사', 'Spring AI + OpenRouter 무료 모델로 리뷰 3줄 요약, 결과는 th:text로만 출력해 스크립트 실행 차단', '맛집 목록 N+1 문제를 DTO 조회로 바꿔 SQL 51번 → 1번으로 감소', 'AWS S3에 맛집 사진 업로드, GitHub Actions로 EC2 자동 배포'],
+            result: '성과: 목록 SQL 51회 → 1회, 기능 명세 필수 항목 100% 구현, 11.30 배포 주소로 시연', link: 'github.com/[your-id]/busan-matzip' } },
+        { title: 'AI 부산 여행 코스 - 관광지 검색·지도·코스 + AI 일정 생성', tags: ['trip', 'ai'],
+          project: { name: 'AI 부산 여행 코스 - 관광지 검색·코스 만들기 + AI 일정 생성', meta: '2026.11.05 ~ 2026.11.30 | 팀 6명', desc: '공공 관광 API(TourAPI)·날씨 API와 Spring AI로 여행 코스를 만드는 서비스',
+            role: '코스 도메인 + AI 일정 생성 (Spring Boot, Spring AI, WebClient)',
+            details: ['TourAPI로 관광지 검색·지도 표시, 응답을 캐시해 같은 요청 재호출 방지', 'Spring AI로 일정 생성, AI가 고른 관광지 ID를 DB와 대조해 없는 관광지는 제거', '날씨 API에 타임아웃 2초와 대체 응답을 넣어 외부 서버가 느려도 화면이 멈추지 않게 개선', '북마크 연타 시 중복 저장되던 문제를 유니크 제약 + 예외 처리로 해결'],
+            result: '성과: 외부 API 지연 시 화면 응답 5초+ → 2초 이내, AI 환각 관광지로 인한 500 에러 0건', link: 'github.com/[your-id]/busan-trip' } },
+        { title: '단골 고객 관리(CRM) - 고객·방문·포인트·쿠폰 + SQL 대시보드', tags: ['crm', 'ai'],
+          project: { name: '단골 고객 관리(CRM) - 방문·포인트·쿠폰 + 분석 대시보드', meta: '2026.11.05 ~ 2026.11.30 | 팀 5명', desc: '매장 사장님용 고객 관리 서비스 (Spring Boot + MySQL 8 + Bootstrap 5)',
+            role: '방문·포인트·쿠폰 도메인 (Spring Boot, Spring Data JPA, MySQL)',
+            details: ['포인트 적립·사용을 DB 원자적 업데이트로 바꿔 동시 요청 시 잔액이 틀리던 문제 해결', '쿠폰 사용을 조건부 UPDATE로 처리해 같은 쿠폰이 동시에 여러 번 쓰이지 않게 보장', '고객 전화번호를 화면 전송 전 010-****-1234로 마스킹, 다른 매장 고객 접근은 403 처리', 'SQL 집계로 월별 재방문율·포인트 사용 대시보드, AI로 재방문 유도 문구 생성'],
+            result: '성과: 동시 요청 100건 테스트 3회 연속 통과, 매장 간 고객 데이터 노출 0건', link: 'github.com/[your-id]/dangol-crm' } },
+        { title: '쇼핑몰 웹 애플리케이션 - 상품·주문·장바구니', tags: ['shop'],
+          project: { name: '쇼핑몰 웹 애플리케이션 - 상품·주문·장바구니', meta: '2026.10.01 ~ 2026.10.28 | 개인', desc: 'Spring Boot + JPA + 타임리프 기반 쇼핑몰 (파이널 프로젝트 사전 실습)',
+            role: '풀스택 (Spring Boot, Spring Data JPA, QueryDSL, Spring Security, 타임리프)',
+            details: ['JPA Entity 9개 설계 및 연관관계 매핑, BaseEntity로 생성·수정 시각 자동 기록', 'QueryDSL 동적 검색 + Pageable 페이징으로 상품 검색 구현', 'Spring Security 폼 로그인 + 회원 Role 기반 관리자 페이지 접근 제어', '주문 시 재고 감소를 트랜잭션으로 묶어 주문·재고 불일치 방지'],
+            result: '성과: Entity 9개·API 20개 구현, 상품 1,000건 검색 응답 0.3초 이내', link: 'github.com/[your-id]/shop' } },
+        { title: '블로그 AWS 배포 - Elastic Beanstalk + RDS + S3 (12장)', tags: ['devops'],
+          project: { name: '스프링 부트 블로그 AWS 배포 - Elastic Beanstalk + RDS + S3', meta: '2026.10 | 개인', desc: '로컬에서 만든 블로그를 AWS에 올려 실제 주소로 공개',
+            role: '배포 전체 (AWS IAM, Elastic Beanstalk, RDS MySQL, S3)',
+            details: ['EC2용·빈스톡 서비스용 IAM 역할 2개를 만들고 최소 권한으로 구성', 'Elastic Beanstalk 환경 + RDS(MySQL) 연결, DB 접속 정보는 환경 속성으로 분리', 'S3 버킷 정책과 EC2 역할 권한을 설정해 게시글 이미지를 S3에 저장', '배포 오류를 web.stdout.log로 추적해 환경 속성 누락 문제 해결'],
+            result: '성과: 로컬 전용 서비스를 공개 URL로 배포, 실습 후 리소스 정리로 추가 비용 0원', link: 'github.com/[your-id]/blog' } },
+        { title: 'GitHub Actions CI/CD - 푸시하면 자동 빌드·배포 (13장)', tags: ['devops'],
+          project: { name: 'GitHub Actions CI/CD 파이프라인 구축', meta: '2026.10 | 개인', desc: '푸시 한 번으로 빌드·테스트·jar 생성(CI)과 빈스톡 배포(CD)를 자동화',
+            role: 'CI/CD 구성 (GitHub Actions, AWS IAM, Elastic Beanstalk)',
+            details: ['ci.yml로 PR마다 Gradle 빌드·테스트 자동 실행, 실패하면 머지 차단', 'bootJar만 만들도록 설정해 jar 파일 1개만 배포되게 정리', '배포 전용 IAM 사용자를 만들고 액세스 키는 GitHub Secrets에만 저장', 'cicd.yml로 main 머지 시 Elastic Beanstalk에 자동 배포'],
+            result: '성과: 수동 배포 약 15분 → 푸시 후 자동 배포 약 4분, 비밀값 저장소 노출 0건', link: 'github.com/[your-id]/blog' } },
+        { title: 'AI 코드 검증 - AI 초안 코드의 결함 11개 찾아 고치기', tags: ['quality', 'ai'],
+          project: { name: 'AI 코드 검증 실습 - AI 초안 코드의 결함 11개 측정·개선', meta: '2026.10 | 개인', desc: '맛집·여행·고객 관리 기능이 담긴 실습 프로젝트에서 성능·동시성·보안 결함을 테스트로 측정하고 수정',
+            role: '결함 분석·수정·테스트 (Spring Boot, JPA, JUnit5, MySQL)',
+            details: ['N+1: 맛집 50개 목록에 SQL 51번 → DTO 조회로 1번', '갱신 유실: 동시 찜 100건에서 숫자가 틀리던 문제를 원자적 UPDATE로 해결', 'IDOR·XSS: 남의 리뷰 수정 차단, th:utext → th:text로 스크립트 실행 차단', '외부 API 타임아웃·AI 환각 관광지 필터로 500 에러 제거'],
+            result: '성과: 미션 테스트 15개 전부 통과(Before 실패 11개 → After 0개), 검증일지에 전후 수치 기록', link: 'github.com/[your-id]/defect-lab' } },
+        { title: '회원·인증 모듈 - 세션 로그인 + JWT + 구글 로그인', tags: ['common', 'quality'],
+          project: { name: '회원·인증 모듈 - 세션 로그인 + JWT API + 구글 로그인', meta: '2026.11.05 ~ 2026.11.30 | 팀 5명', desc: '팀 프로젝트 공통 회원 기능 (화면은 세션, API는 JWT)',
+            role: '회원 도메인 담당 (Spring Security, JWT, OAuth2 Client)',
+            details: ['회원가입·로그인, BCrypt 비밀번호 암호화와 입력값 검증(@Valid)', 'SecurityFilterChain을 화면용(세션)과 /api용(JWT) 두 개로 분리', '구글 OAuth2 로그인 연동, 배포 주소용 리디렉션 URI 추가', '권한 없는 API 호출은 401/403으로 응답하는 통합 테스트 작성'],
+            result: '성과: 인증 관련 테스트 12개 작성·통과, 평가 항목 "권한 없는 접근 거부" 시연', link: 'github.com/[your-id]/final-project' } },
+        { title: '팀장 - 공통 레이아웃·홈 화면·PR 관리', tags: ['common'],
+          project: { name: '팀 프로젝트 팀장 - 홈 화면·공통 레이아웃·PR 관리', meta: '2026.11.05 ~ 2026.11.30 | 팀 5명', desc: '일정·역할 관리와 화면 통일을 맡은 팀장 역할',
+            role: '팀장 (타임리프 레이아웃, Bootstrap 5, GitHub PR 리뷰·머지)',
+            details: ['타임리프 레이아웃으로 헤더·푸터·메뉴를 공통화해 화면 디자인 통일', '홈 화면 요약 카드와 인기 목록 구현', 'main ← develop ← feature 브랜치 전략과 커밋 규칙을 정하고 PR 최종 머지 담당', '매일 아침 5분 스크럼으로 막힌 부분을 공유하고 주간보고서 작성'],
+            result: '성과: 4주간 PR 60여 건 리뷰·머지, CI 빨간불 상태 머지 0건', link: 'github.com/[your-id]/final-project' } },
+        { title: '부팀장 - 배포·CI/CD·테스트 담당', tags: ['devops'],
+          project: { name: '팀 프로젝트 부팀장 - CI/CD·AWS 배포·테스트', meta: '2026.11.05 ~ 2026.11.30 | 팀 6명', desc: 'GitHub Actions와 AWS EC2·S3로 팀 서비스 자동 배포 구성',
+            role: '부팀장 (GitHub Actions, AWS EC2 Ubuntu, S3, MySQL 8, JUnit5)',
+            details: ['브랜치 보호 규칙과 CI(ci.yml)로 테스트 실패 PR 머지 차단', 'EC2(Ubuntu)에 MySQL 8 설치·설정, S3 버킷과 IAM 권한 구성', 'main 머지 시 jar 빌드 후 EC2에 자동 배포하는 CD 구성', '예산 알림을 설정하고 발표 후 EC2·S3 리소스 정리'],
+            result: '성과: 첫 자동 배포 3주차 완료, 최종 배포까지 수동 배포 0회', link: 'github.com/[your-id]/final-project' } }
+      ]
+    },
+
+    projectRole: {
+      label: '담당 역할', single: true, target: 'project', part: 'role',
+      desc: '맡은 영역 + 사용 기술을 함께 적어야 기여도가 보입니다.',
+      items: [
+        { text: '풀스택 (Spring Boot 3.4, Spring Data JPA, 타임리프, Bootstrap 5)', tags: ['common'] },
+        { text: '팀장 · 홈 화면과 공통 레이아웃, PR 리뷰·최종 머지, 일정 관리', tags: ['common'] },
+        { text: '부팀장 · GitHub Actions CI/CD, AWS EC2·S3, MySQL 서버, 테스트', tags: ['devops'] },
+        { text: '회원 도메인 · 회원가입/로그인, Spring Security, JWT, 구글 로그인', tags: ['quality'] },
+        { text: '맛집·사진 도메인 CRUD, AWS S3 이미지 업로드', tags: ['food'] },
+        { text: '리뷰 도메인 + AI 리뷰 요약 (Spring AI, OpenRouter)', tags: ['food', 'ai'] },
+        { text: '찜 기능 + AI 맛집 추천 (Spring AI)', tags: ['food', 'ai'] },
+        { text: '관광지·지도 도메인 · TourAPI 공공 데이터 연동', tags: ['trip'] },
+        { text: '코스 도메인 + AI 일정 생성 (Spring AI, 외부 API 타임아웃 처리)', tags: ['trip', 'ai'] },
+        { text: '고객·매장 도메인 · 전화번호 마스킹, 매장별 접근 권한 검사', tags: ['crm', 'quality'] },
+        { text: '방문·포인트·쿠폰 도메인 · 동시성 제어 (원자적 UPDATE)', tags: ['crm', 'quality'] },
+        { text: '분석 대시보드 (SQL 집계) + AI 재방문 문구 생성', tags: ['crm', 'ai'] },
+        { text: '백엔드 · 배포 담당 (Spring Boot, AWS Elastic Beanstalk, RDS MySQL)', tags: ['devops'] }
+      ]
+    },
+
+    projectDetail: {
+      label: '구현 내용', target: 'project', part: 'detail',
+      desc: '여러 개를 골라 한 번에 넣을 수 있습니다. 프로젝트마다 3~4줄이 가장 읽기 좋습니다.',
+      items: [
+        { text: 'JPA Entity 설계 및 연관관계 매핑(@ManyToOne LAZY), BaseEntity로 생성·수정 시각 자동 기록', tags: ['common'] },
+        { text: 'Controller → Service → Repository 계층 분리, 요청/응답은 DTO로 변환해 Entity 노출 방지', tags: ['common'] },
+        { text: '타임리프 레이아웃 + Bootstrap 5로 공통 헤더·푸터와 반응형 화면 구성', tags: ['common'] },
+        { text: 'Spring Security 세션 로그인(화면) + JWT(API) 이중 인증, BCrypt 비밀번호 암호화', tags: ['quality'] },
+        { text: '구글 OAuth2 로그인 연동, 배포 주소용 리디렉션 URI 등록', tags: ['quality'] },
+        { text: '@Valid 입력값 검증과 @RestControllerAdvice 공통 예외 처리로 오류 응답 형식 통일', tags: ['common'] },
+        { text: '리뷰 작성·수정·삭제와 별점 평균 계산, 작성자 본인만 수정하도록 서버에서 권한 검사', tags: ['food', 'quality'] },
+        { text: '찜 수를 DB 원자적 UPDATE로 증가시키고 (회원, 맛집) 유니크 제약으로 중복 찜 방지', tags: ['food', 'quality'] },
+        { text: '맛집 사진을 AWS S3에 업로드하고 DB에는 파일 URL만 저장', tags: ['food', 'devops'] },
+        { text: 'Spring AI로 리뷰 3줄 요약 생성, 결과는 th:text로만 출력해 스크립트 실행 차단', tags: ['food', 'ai', 'quality'] },
+        { text: 'AI 맛집 추천: AI가 고른 맛집 ID를 DB와 대조해 없는 맛집은 결과에서 제외', tags: ['food', 'ai'] },
+        { text: 'TourAPI로 관광지 검색, 응답을 캐시해 같은 조건의 반복 호출 감소', tags: ['trip'] },
+        { text: '지도 API로 관광지 위치 표시, 코스 순서 드래그로 변경', tags: ['trip'] },
+        { text: 'Spring AI로 여행 일정 생성, 응답 JSON 형식 검증 후 실패 시 재요청 안내', tags: ['trip', 'ai'] },
+        { text: '날씨 API 호출에 타임아웃 2초와 대체 응답 적용, 외부 서버 지연 시에도 화면 정상 표시', tags: ['trip', 'quality'] },
+        { text: '북마크 중복 저장을 유니크 제약 + DataIntegrityViolationException 처리로 해결', tags: ['trip', 'quality'] },
+        { text: '고객 전화번호를 서버에서 010-****-1234 형태로 마스킹한 뒤 화면에 전달', tags: ['crm', 'quality'] },
+        { text: '매장 사장님은 자기 매장 고객만 조회하도록 Service에서 소유자 검사(IDOR 방지)', tags: ['crm', 'quality'] },
+        { text: '포인트 적립·사용을 조건부 UPDATE로 처리해 동시 요청 시 잔액 오류 해결', tags: ['crm', 'quality'] },
+        { text: '쿠폰 사용 여부를 UPDATE ... WHERE used = false 로 처리해 1회만 사용되게 보장', tags: ['crm', 'quality'] },
+        { text: 'SQL GROUP BY 집계로 월별 방문·재방문율·포인트 사용 대시보드 구현', tags: ['crm'] },
+        { text: 'AI로 재방문 유도 문구 생성, 고객 이름·전화번호는 AI에 보내지 않음', tags: ['crm', 'ai', 'quality'] },
+        { text: 'QueryDSL 동적 검색(BooleanExpression) + Pageable 페이징 처리', tags: ['shop'] },
+        { text: '주문 시 재고 감소를 하나의 트랜잭션으로 묶어 주문·재고 불일치 방지', tags: ['shop'] },
+        { text: '장바구니 → 주문 전환, 주문 취소 시 재고 복구', tags: ['shop'] },
+        { text: '목록 화면 N+1 문제를 DTO 조회(COUNT)로 바꿔 SQL 51번 → 1번으로 감소', tags: ['quality'] },
+        { text: '동시 요청 100건 테스트(ExecutorService + CountDownLatch)로 갱신 유실 재현 후 수정', tags: ['quality'] },
+        { text: 'MySQL 테스트 전용 DB를 분리하고 @SpringBootTest 통합 테스트 작성', tags: ['quality'] },
+        { text: 'AI 기능 하루 사용 횟수(1인 5회)와 입력 길이(300자) 제한으로 비용·남용 방지', tags: ['ai', 'quality'] },
+        { text: 'OpenRouter :free 모델만 사용하고 API 키는 환경 변수로 분리', tags: ['ai', 'devops'] },
+        { text: 'GitHub Actions ci.yml로 PR마다 Gradle 빌드·테스트 자동 실행, 실패 시 머지 차단', tags: ['devops'] },
+        { text: 'cicd.yml로 main 머지 시 jar 빌드 후 AWS에 자동 배포', tags: ['devops'] },
+        { text: 'bootJar만 생성하도록 설정해 배포 jar를 1개로 정리 (plain jar 비활성화)', tags: ['devops'] },
+        { text: '배포 전용 IAM 사용자와 최소 권한 정책, 액세스 키는 GitHub Secrets에만 저장', tags: ['devops', 'quality'] },
+        { text: 'Elastic Beanstalk + RDS(MySQL) 환경 구성, DB 접속 정보는 환경 속성으로 분리', tags: ['devops'] },
+        { text: 'AWS EC2(Ubuntu)에 Java 21·MySQL 8 설치, jar 실행 서비스 등록', tags: ['devops'] },
+        { text: 'S3 버킷 정책과 EC2 IAM 역할로 이미지 업로드 권한 구성', tags: ['devops'] },
+        { text: '배포 오류를 web.stdout.log·Actions 로그로 추적해 환경 변수 누락 해결', tags: ['devops'] },
+        { text: 'main ← develop ← feature 브랜치 전략과 feat/fix/test/ci/docs 커밋 규칙 적용', tags: ['common'] },
+        { text: 'Postman으로 API 명세서 작성 및 팀 공유, MySQL Workbench로 ERD 관리', tags: ['common'] }
+      ]
+    },
+
+    projectResult: {
+      label: '성과 문장', target: 'project', part: 'result',
+      desc: '숫자가 들어간 문장이 가장 강합니다. 여러 개를 고르면 쉼표로 이어 붙입니다 (1~2개 권장).',
+      items: [
+        { text: '목록 조회 SQL 51회 → 1회 (N+1 해결)', tags: ['quality', 'food'] },
+        { text: '동시 찜 100건 테스트에서 찜 수 정확도 100% (3회 연속 통과)', tags: ['quality', 'food'] },
+        { text: '외부 API 지연 시 화면 응답 5초 이상 → 2초 이내', tags: ['trip', 'quality'] },
+        { text: 'AI 환각 관광지로 인한 500 에러 0건', tags: ['trip', 'ai'] },
+        { text: '동시 포인트 사용 100건에서 잔액 오차 0원', tags: ['crm', 'quality'] },
+        { text: '쿠폰 중복 사용 0건 (동시 요청 테스트 통과)', tags: ['crm', 'quality'] },
+        { text: '매장 간 고객 정보 노출 0건, 전화번호 마스킹 100% 적용', tags: ['crm', 'quality'] },
+        { text: '미션 테스트 15개 전부 통과 (Before 실패 11개 → After 0개)', tags: ['quality'] },
+        { text: '수동 배포 약 15분 → 푸시 후 자동 배포 약 4분', tags: ['devops'] },
+        { text: 'GitHub Secrets로 비밀값 관리, 저장소 키 노출 0건', tags: ['devops', 'quality'] },
+        { text: '기능 명세 필수 항목 100% 구현, 배포 주소로 발표 시연', tags: ['common'] },
+        { text: 'REST API 20개 설계·구현, Postman 명세서 공유', tags: ['common'] },
+        { text: 'Entity 9개·DTO 12개 설계, 통합 테스트 30개 작성', tags: ['common', 'shop'] },
+        { text: '상품 1,000건 검색 응답 0.3초 이내 (QueryDSL + 페이징)', tags: ['shop'] },
+        { text: 'PR 60여 건 리뷰·머지, CI 빨간불 머지 0건', tags: ['common', 'devops'] },
+        { text: 'AI 기능 하루 5회 제한으로 무료 모델 한도 초과 0건', tags: ['ai'] }
+      ]
+    },
+
+    skills: {
+      label: '기술 스택', target: 'skills',
+      desc: '여러 개 골라 해당 카테고리 칸에 한 번에 추가합니다. 실제로 쓴 기술만, 전체 7~12개를 권장합니다.',
+      items: [
+        { text: 'Java 21', cat: 'backend', tags: ['common'] },
+        { text: 'Spring Boot 3.4', cat: 'backend', tags: ['common'] },
+        { text: 'Spring Security', cat: 'backend', tags: ['quality'] },
+        { text: 'Spring Data JPA', cat: 'backend', tags: ['common'] },
+        { text: 'JWT', cat: 'backend', tags: ['quality'] },
+        { text: 'OAuth2 (Google)', cat: 'backend', tags: ['quality'] },
+        { text: 'Spring AI', cat: 'backend', tags: ['ai'] },
+        { text: 'QueryDSL', cat: 'backend', tags: ['shop'] },
+        { text: 'JUnit5', cat: 'backend', tags: ['quality'] },
+        { text: 'Thymeleaf', cat: 'frontend', tags: ['common'] },
+        { text: 'Bootstrap 5', cat: 'frontend', tags: ['common'] },
+        { text: 'JavaScript', cat: 'frontend', tags: ['common'] },
+        { text: 'HTML5/CSS3', cat: 'frontend', tags: ['common'] },
+        { text: 'MySQL 8', cat: 'database', tags: ['common'] },
+        { text: 'H2', cat: 'database', tags: ['quality'] },
+        { text: 'AWS RDS', cat: 'database', tags: ['devops'] },
+        { text: 'AWS EC2', cat: 'devops', tags: ['devops'] },
+        { text: 'AWS S3', cat: 'devops', tags: ['devops'] },
+        { text: 'Elastic Beanstalk', cat: 'devops', tags: ['devops'] },
+        { text: 'GitHub Actions', cat: 'devops', tags: ['devops'] },
+        { text: 'Gradle', cat: 'devops', tags: ['devops'] },
+        { text: 'Git/GitHub', cat: 'devops', tags: ['common'] },
+        { text: 'OpenRouter', cat: 'devops', tags: ['ai'] },
+        { text: 'Postman', cat: 'devops', tags: ['common'] },
+        { text: 'IntelliJ IDEA', cat: 'devops', tags: ['common'] }
+      ]
+    },
+
+    education: {
+      label: '교육', target: 'education',
+      desc: '여러 개를 고르면 교육 칸에 위에서부터 차례로 넣고, 칸이 모자라면 자동으로 추가합니다. [ ] 부분은 본인 정보로 바꾸세요.',
+      items: [
+        { row: { period: '2026.05 ~ 2026.11', name: '[교육기관명]', detail: 'K-Digital Training 클라우드 네이티브 풀스택 개발자 과정 (900시간) - Spring Boot, JPA, AWS' }, tags: ['common'] },
+        { row: { period: '2026.05 ~ 2026.11', name: '[교육기관명]', detail: 'Java 기반 웹 개발자 양성과정 (960시간) - Spring Boot, 타임리프, MySQL' }, tags: ['common'] },
+        { row: { period: '2026.10 ~ 2026.11', name: '[교육기관명] 심화', detail: 'AWS 배포(Elastic Beanstalk·RDS·S3) + GitHub Actions CI/CD 실습' }, tags: ['devops'] },
+        { row: { period: '2026.10', name: '[교육기관명] 특강', detail: 'AI 코드 검증 실습 - 성능·동시성·보안 결함 11개 측정·개선' }, tags: ['quality', 'ai'] },
+        { row: { period: '[20XX.03 ~ 20XX.02]', name: '[OO대학교]', detail: '컴퓨터공학과 졸업 (4년제) | 학점 [X.X]/4.5' }, tags: ['common'] },
+        { row: { period: '[20XX.03 ~ 20XX.02]', name: '[OO대학교]', detail: '[경영학과] 졸업 (비전공, 4년제) | 학점 [X.X]/4.5' }, tags: ['common'] },
+        { row: { period: '[20XX.03 ~ 20XX.02]', name: '[OO전문대학]', detail: '[학과명] 졸업 (2년제)' }, tags: ['common'] },
+        { row: { period: '[20XX.03 ~ 재학중]', name: '[OO사이버대학교]', detail: '컴퓨터공학과 재학 (원격, 일과 병행)' }, tags: ['common'] },
+        { row: { period: '2026.03 ~ 2026.04', name: '온라인 강의 (자기주도)', detail: '스프링 부트·JPA 기본 강의 수강, 실습 코드 GitHub 정리' }, tags: ['common'] },
+        { row: { period: '2026.06 ~ 2026.09', name: '스터디 (주 1회)', detail: '알고리즘·SQL 스터디 운영, 문제 풀이 100개 GitHub 기록' }, tags: ['common'] },
+        { row: { period: '2026.08', name: '[교육기관명]', detail: 'Spring AI + OpenRouter 생성형 AI 서비스 개발 실습 (16시간)' }, tags: ['ai'] }
+      ]
+    },
+
+    certification: {
+      label: '자격증', target: 'certification',
+      desc: '실제로 취득한 IT 자격증만 고르세요. 취득일은 [ ] 부분을 바꿔야 합니다.',
+      items: [
+        { row: { date: '[20XX.XX]', name: '정보처리기사', issuer: '한국산업인력공단' }, tags: ['common'] },
+        { row: { date: '[20XX.XX]', name: '정보처리산업기사', issuer: '한국산업인력공단' }, tags: ['common'] },
+        { row: { date: '[20XX.XX]', name: 'SQLD (SQL 개발자)', issuer: '한국데이터산업진흥원' }, tags: ['common'] },
+        { row: { date: '[20XX.XX]', name: 'SQLP (SQL 전문가)', issuer: '한국데이터산업진흥원' }, tags: ['common'] },
+        { row: { date: '[20XX.XX]', name: 'ADsP (데이터분석 준전문가)', issuer: '한국데이터산업진흥원' }, tags: ['crm'] },
+        { row: { date: '[20XX.XX]', name: '리눅스마스터 2급', issuer: '한국정보통신진흥협회' }, tags: ['devops'] },
+        { row: { date: '[20XX.XX]', name: '네트워크관리사 2급', issuer: '한국정보통신자격협회' }, tags: ['devops'] },
+        { row: { date: '[20XX.XX]', name: 'AWS Certified Cloud Practitioner', issuer: 'Amazon Web Services' }, tags: ['devops'] },
+        { row: { date: '[20XX.XX]', name: 'AWS Certified Solutions Architect - Associate', issuer: 'Amazon Web Services' }, tags: ['devops'] },
+        { row: { date: '[20XX.XX]', name: 'Oracle Certified Professional: Java SE 17 Developer', issuer: 'Oracle' }, tags: ['common'] },
+        { row: { date: '[20XX.XX]', name: '정보보안기사', issuer: '한국인터넷진흥원' }, tags: ['quality'] },
+        { row: { date: '[20XX.XX]', name: '컴퓨터활용능력 1급', issuer: '대한상공회의소' }, tags: ['common'] }
+      ]
+    },
+
+    intro: {
+      label: '자기소개', field: 'intro-text', single: true,
+      desc: '3~4문장: 왜 개발자인가 → 무엇을 해냈나 → 강점 → 입사 후 방향. About Me와 다른 내용을 고르세요.',
+      items: [
+        { text: '사용자가 매일 쓰는 서비스를 직접 만들고 싶어 개발을 시작했습니다. 파이널 프로젝트에서 맛집 리뷰 서비스를 만들며, AI가 만든 초안 코드를 테스트로 검증해 목록 SQL을 51번에서 1번으로 줄였습니다. 동작하는 코드보다 측정해서 증명한 코드를 중요하게 생각합니다. 입사 후에도 데이터가 쌓였을 때 무엇이 깨지는지 먼저 확인하는 개발자가 되겠습니다.', tags: ['food', 'quality'] },
+        { text: '여행을 계획할 때마다 여러 앱을 오가는 불편을 줄이고 싶어 AI 여행 코스 서비스를 만들었습니다. 외부 API가 느려지면 화면이 멈추는 문제를 타임아웃과 대체 응답으로 해결하며, 서비스는 바깥 시스템이 실패할 때도 버텨야 한다는 것을 배웠습니다. 문제를 로그와 숫자로 좁혀가는 끈기가 강점입니다. 입사 후 안정적인 외부 연동을 책임지는 백엔드 개발자로 성장하겠습니다.', tags: ['trip', 'quality'] },
+        { text: '아르바이트하던 가게에서 단골 손님을 수기로 관리하는 모습을 보고 고객 관리 서비스를 기획했습니다. 개인정보인 전화번호를 마스킹하고 다른 매장 데이터 접근을 막으며 보안이 기능만큼 중요하다는 것을 체감했습니다. 사용자의 실제 불편에서 출발해 기능을 정의하는 것이 강점입니다. 입사 후 현장의 문제를 데이터로 푸는 개발자가 되겠습니다.', tags: ['crm', 'quality'] },
+        { text: '로컬에서만 돌던 블로그를 AWS에 처음 배포해 친구가 접속했을 때, 코드가 서비스가 되는 순간의 기쁨을 느꼈습니다. 이후 GitHub Actions로 자동 배포를 구성하며 수동 배포 15분을 4분으로 줄였습니다. 반복 작업을 자동화하는 데서 보람을 느낍니다. 입사 후 팀의 배포와 운영을 편하게 만드는 개발자로 성장하겠습니다.', tags: ['devops'] },
+        { text: '비전공자로 시작했기 때문에 모르는 것을 기록하고 다시 확인하는 습관을 먼저 들였습니다. 900시간의 교육과 4주 팀 프로젝트 동안 매일 막힌 부분과 해결 과정을 정리했고, 회원·인증 기능을 맡아 테스트 12개로 동작을 증명했습니다. 꾸준함과 기록이 저의 가장 큰 강점입니다. 입사 후에도 배운 것을 팀과 공유하는 개발자가 되겠습니다.', tags: ['common'] },
+        { text: 'AI가 코드를 빠르게 써 주는 시대에 개발자의 역할이 무엇인지 고민했습니다. AI 코드 검증 실습에서 화면은 멀쩡하지만 동시에 100명이 쓰면 숫자가 틀리는 결함을 찾아 고치며, 검증과 책임이 개발자의 몫이라는 답을 얻었습니다. AI 초안은 활용하되 결과는 테스트로 확인하는 것이 강점입니다. 입사 후 AI를 안전하게 쓰는 팀 문화를 만드는 데 기여하겠습니다.', tags: ['ai', 'quality'] },
+        { text: '팀장을 맡아 5명이 4주 안에 서비스를 배포해야 했습니다. 매일 아침 5분 스크럼과 브랜치·커밋 규칙을 정해 충돌을 줄였고, CI가 실패한 PR은 머지하지 않는 원칙을 지켜 마지막 주에도 배포가 깨지지 않았습니다. 일정과 품질을 함께 챙기는 조율 능력이 강점입니다. 입사 후 팀이 함께 빨라지는 방법을 찾는 개발자가 되겠습니다.', tags: ['common'] },
+        { text: '부팀장으로 팀의 배포와 테스트를 맡았습니다. EC2와 S3, MySQL 서버를 구성하고 CI/CD를 만들어 팀원들이 기능 개발에만 집중할 수 있게 했습니다. 다른 사람의 작업이 막히지 않게 기반을 만드는 일에서 보람을 느낍니다. 입사 후 개발 환경과 배포 파이프라인을 개선하는 백엔드 개발자로 성장하겠습니다.', tags: ['devops'] },
+        { text: '쇼핑몰 실습에서 주문과 재고가 어긋나는 버그를 직접 겪으며 트랜잭션의 중요성을 처음 이해했습니다. 이후 프로젝트마다 데이터가 틀어질 수 있는 지점을 먼저 표시하고 테스트를 작성하는 습관을 들였습니다. 꼼꼼함이 저의 강점입니다. 입사 후 신뢰할 수 있는 데이터를 다루는 개발자가 되겠습니다.', tags: ['shop', 'quality'] },
+        { text: '생성형 AI 기능을 실제 서비스에 넣으며, AI가 그럴듯하게 틀린 답을 만든다는 것을 경험했습니다. AI가 고른 결과를 DB와 대조하고 화면에는 글자로만 출력하도록 설계해 안전하게 기능을 완성했습니다. 새로운 기술을 빠르게 익히되 위험을 먼저 따져보는 것이 강점입니다. 입사 후 AI 기능을 책임감 있게 만드는 개발자가 되겠습니다.', tags: ['ai'] },
+        { text: '사용자가 직접 불편을 말해주는 화면을 만드는 일이 즐거워 웹 개발을 선택했습니다. 타임리프와 Bootstrap 5로 화면을 만들고 Spring Boot로 API를 연결하며 화면부터 DB까지 전체 흐름을 경험했습니다. 처음 보는 오류도 로그부터 차근차근 읽는 침착함이 강점입니다. 입사 후 사용자 경험과 서버 안정성을 함께 고민하는 개발자가 되겠습니다.', tags: ['common'] },
+        { text: '면접관이 "AI를 썼는데 본인은 무엇을 했나요?"라고 묻는다면, 초안은 AI가 썼지만 검증과 개선은 제가 했다고 답하겠습니다. 결함을 테스트로 재현하고 고치기 전후 숫자를 검증일지와 커밋으로 남겼기 때문입니다. 근거를 남기며 일하는 것이 강점입니다. 입사 후에도 결과를 숫자와 기록으로 설명하는 개발자가 되겠습니다.', tags: ['ai', 'quality'] }
+      ]
+    }
+  };
+
+  var EXAMPLE_CATEGORY_ORDER = ['headline', 'about', 'projectPreset', 'projectRole', 'projectDetail', 'projectResult', 'skills', 'education', 'certification', 'intro'];
+  var EXAMPLE_SECTION_DEFAULT = {
+    header: 'headline', about: 'about', skills: 'skills', projects: 'projectDetail',
+    education: 'education', certification: 'certification', intro: 'intro'
+  };
+
+  // ===== Module: ResumeWriter (예시 라이브러리·AI 자동 입력이 이력서에 쓰는 공통 함수) =====
+  var SKILL_FIELD_BY_CAT = { backend: 'skills-backend', frontend: 'skills-frontend', database: 'skills-database', devops: 'skills-devops' };
+
+  var ResumeWriter = {
+    // 작업 결과를 화면 아래에 잠깐 보여준다 (API 키 상태 칸과 섞이지 않게 별도 알림 사용)
+    notify: function(message) {
+      var toast = document.getElementById('app-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'app-toast';
+        toast.setAttribute('role', 'status');
+        toast.setAttribute('aria-live', 'polite');
+        toast.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:min(560px,calc(100% - 32px));' +
+          'background:#1a365d;color:#fff;padding:10px 16px;border-radius:8px;font-size:9.5pt;line-height:1.5;z-index:10050;' +
+          'box-shadow:0 4px 16px rgba(0,0,0,0.25);display:none;';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.style.display = 'block';
+      clearTimeout(this.toastTimer);
+      this.toastTimer = setTimeout(function() { toast.style.display = 'none'; }, 4500);
+    },
+
+    afterChange: function(label) {
+      UI.refreshPlaceholders();
+      if (typeof PrintVisibility !== 'undefined' && PrintVisibility.sync) PrintVisibility.sync();
+      if (typeof WritingHelper !== 'undefined' && WritingHelper.refresh) WritingHelper.refresh();
+      UI.updateCompleteness();
+      UI.persistContent({ label: label || '자동 입력 저장' });
+    },
+
+    // 숨김 처리된 섹션(예: 자격증 건너뛰기)에 넣을 때는 다시 보이게 한다
+    showSection: function(sectionKey) {
+      var section = document.querySelector('.section[data-section-toggle="' + sectionKey + '"]');
+      if (!section) return;
+      UI.getSectionContents(section).forEach(function(c) { c.classList.remove('hidden-section'); });
+      var btn = section.querySelector('.section-toggle-btn');
+      if (btn) btn.textContent = '숨기기';
+      var state = Storage.load(STORAGE_KEYS.SECTION_TOGGLE) || {};
+      if (state[sectionKey] === 'hidden') {
+        state[sectionKey] = 'visible';
+        Storage.save(STORAGE_KEYS.SECTION_TOGGLE, state);
+      }
+    },
+
+    getProjectOptions: function() {
+      return getProjectIndices().map(function(idx) {
+        var name = FieldCollector.getFieldText('project-' + idx + '-name');
+        var label = '프로젝트 ' + idx + (idx === 1 ? ' (대표)' : '');
+        if (name && !hasPlaceholderText(name)) label += ' - ' + name.split(' - ')[0].slice(0, 18);
+        else label += ' (비어 있음)';
+        return { value: String(idx), label: label };
+      }).concat([{ value: 'new', label: '+ 새 프로젝트 추가' }]);
+    },
+
+    firstEmptyProject: function() {
+      var indices = getProjectIndices();
+      var fields = FieldCollector.getAllFields();
+      for (var i = 0; i < indices.length; i++) {
+        if (!FieldCollector.hasRealContent('project-' + indices[i] + '-name', fields)) return String(indices[i]);
+      }
+      return 'new';
+    },
+
+    ensureProject: function(target) {
+      var idx = target === 'new' ? getMaxProjectIndex() + 1 : parseInt(target, 10);
+      if (!idx || idx < 1) idx = 1;
+      if (!FieldCollector.getFieldEl('project-' + idx + '-name')) {
+        UI.addProjectBlock('team', { index: idx, skipUndo: true, skipSave: true, skipScroll: true });
+      }
+      var nameEl = FieldCollector.getFieldEl('project-' + idx + '-name');
+      var item = nameEl && nameEl.closest('.project-item');
+      if (item) item.style.display = '';
+      this.showSection('projects');
+      return idx;
+    },
+
+    setText: function(fieldId, text) {
+      var el = FieldCollector.getFieldEl(fieldId);
+      if (!el || !text) return false;
+      el.innerText = text;
+      return true;
+    },
+
+    setHtml: function(fieldId, html) {
+      var el = FieldCollector.getFieldEl(fieldId);
+      if (!el || !html) return false;
+      el.innerHTML = sanitizeRichText(html);
+      return true;
+    },
+
+    // 현재 구현 내용 목록에서 placeholder가 아닌 줄만 꺼낸다
+    getDetailLines: function(idx) {
+      var el = FieldCollector.getFieldEl('project-' + idx + '-detail');
+      if (!el) return [];
+      var lis = el.querySelectorAll('li');
+      var lines = lis.length ? Array.prototype.map.call(lis, function(li) { return normalizeWhitespace(li.innerText); })
+                             : String(el.innerText || '').split(/\n+/).map(normalizeWhitespace);
+      return lines.filter(function(l) { return l && !hasPlaceholderText(l); });
+    },
+
+    setProjectDetail: function(idx, lines, mode) {
+      var list = (mode === 'append' ? this.getDetailLines(idx) : []).concat(lines || []);
+      var seen = {};
+      list = list.filter(function(l) { l = normalizeWhitespace(l); if (!l || seen[l]) return false; seen[l] = true; return true; });
+      if (!list.length) return false;
+      return this.setHtml('project-' + idx + '-detail', list.map(function(l) { return '<li>' + escapeHtml(l) + '</li>'; }).join(''));
+    },
+
+    setProjectRole: function(idx, role) {
+      if (!role) return false;
+      var clean = normalizeWhitespace(role).replace(/^담당\s*[:：]\s*/, '');
+      return this.setHtml('project-' + idx + '-role', '<strong>담당:</strong> ' + escapeHtml(clean));
+    },
+
+    setProjectResult: function(idx, result, mode) {
+      if (!result) return false;
+      var clean = normalizeWhitespace(result).replace(/^성과\s*[:：]\s*/, '');
+      var fieldId = 'project-' + idx + '-result';
+      if (mode === 'append' && FieldCollector.hasRealContent(fieldId)) {
+        clean = FieldCollector.getFieldText(fieldId).replace(/^성과\s*[:：]\s*/, '') + ', ' + clean;
+      }
+      return this.setText(fieldId, '성과: ' + clean);
+    },
+
+    setProjectLink: function(idx, link) {
+      if (!link) return false;
+      return this.setText('project-' + idx + '-link', 'GitHub: ' + stripLinkLabel(link).replace(/^https?:\/\//, ''));
+    },
+
+    // 프로젝트 1개를 통째로 채운다. 이 템플릿에 없는 칸(예: 3번 프로젝트의 설명/성과)은 건너뛰고 알려준다
+    applyProject: function(target, p) {
+      var idx = this.ensureProject(target);
+      var skipped = [];
+      var self = this;
+      var tryApply = function(label, fieldId, fn) {
+        if (!FieldCollector.getFieldEl(fieldId)) { skipped.push(label); return; }
+        fn();
+      };
+      if (p.name) tryApply('이름', 'project-' + idx + '-name', function() { self.setText('project-' + idx + '-name', p.name); });
+      if (p.meta) tryApply('기간/인원', 'project-' + idx + '-meta', function() { self.setText('project-' + idx + '-meta', p.meta); });
+      if (p.desc) tryApply('설명', 'project-' + idx + '-desc', function() { self.setText('project-' + idx + '-desc', p.desc); });
+      if (p.role) tryApply('담당', 'project-' + idx + '-role', function() { self.setProjectRole(idx, p.role); });
+      if (p.details && p.details.length) tryApply('구현 내용', 'project-' + idx + '-detail', function() { self.setProjectDetail(idx, p.details, 'replace'); });
+      if (p.result) tryApply('성과', 'project-' + idx + '-result', function() { self.setProjectResult(idx, p.result, 'replace'); });
+      if (p.link) tryApply('GitHub', 'project-' + idx + '-link', function() { self.setProjectLink(idx, p.link); });
+      return { index: idx, skipped: skipped };
+    },
+
+    // 'Thymeleaf'와 '타임리프', 'MySQL'과 'MySQL 8'처럼 같은 기술은 하나로 본다
+    skillKey: function(name) {
+      return String(name || '').toLowerCase()
+        .replace(/타임리프/g, 'thymeleaf').replace(/부트스트랩/g, 'bootstrap')
+        .replace(/\s*\d+(?:\.\d+)*(?:\.x)?\s*$/, '')
+        .replace(/[\s()]/g, '');
+    },
+
+    addSkills: function(itemsByCat, mode) {
+      var added = 0;
+      var self = this;
+      Object.keys(itemsByCat).forEach(function(cat) {
+        var fieldId = SKILL_FIELD_BY_CAT[cat];
+        if (!fieldId || !itemsByCat[cat].length) return;
+        var existing = mode === 'replace' ? [] : FieldCollector.getSkillItems(fieldId).filter(function(s) { return !hasPlaceholderText(s); });
+        var keys = existing.map(function(s) { return self.skillKey(s); });
+        itemsByCat[cat].forEach(function(s) {
+          var pos = keys.indexOf(self.skillKey(s));
+          if (pos === -1) { existing.push(s); keys.push(self.skillKey(s)); added++; }
+          else if (/\d/.test(s) && !/\d/.test(existing[pos])) existing[pos] = s; // 버전이 있는 이름으로 교체
+        });
+        ResumeWriter.setHtml(fieldId, existing.map(function(s) { return '<span class="skill-tag">' + escapeHtml(s) + '</span>'; }).join(''));
+      });
+      this.showSection('skills');
+      return added;
+    },
+
+    // 교육·자격증처럼 행 단위인 항목: replace면 1번 행부터, append면 빈 행부터 채우고 모자라면 행을 추가한다
+    fillRows: function(prefix, parts, rows, mode, addRowFn, keyPart) {
+      var indices = getIndexedFieldNumbers(prefix);
+      var fields = FieldCollector.getAllFields();
+      var slots = indices.slice();
+      if (mode === 'append') {
+        slots = indices.filter(function(i) { return !FieldCollector.hasRealContent(prefix + '-' + i + '-' + keyPart, fields); });
+      }
+      rows.forEach(function(row, n) {
+        var idx = slots[n];
+        if (idx === undefined) {
+          idx = (getIndexedFieldNumbers(prefix).pop() || 0) + 1;
+          addRowFn(idx);
+        }
+        parts.forEach(function(part) {
+          if (row[part]) ResumeWriter.setText(prefix + '-' + idx + '-' + part, row[part]);
+        });
+      });
+    }
+  };
+
+  // ===== Module: Example Library (섹션별 예시 10개+를 골라 한 번에 넣기) =====
+  var ExampleLibrary = {
+    overlay: null,
+    category: 'headline',
+    theme: 'all',
+    selected: {},
+
+    init: function() {
+      this.overlay = document.getElementById('example-overlay');
+      if (!this.overlay) return;
+      var self = this;
+      document.getElementById('example-library-btn').addEventListener('click', function() { self.open(); });
+      document.getElementById('example-close').addEventListener('click', function() { self.close(); });
+      this.overlay.addEventListener('click', function(e) { if (e.target === self.overlay) self.close(); });
+      document.getElementById('example-select-all').addEventListener('click', function() { self.selectVisible(); });
+      document.getElementById('example-clear').addEventListener('click', function() { self.selected = {}; self.renderList(); });
+      document.getElementById('example-apply').addEventListener('click', function() { self.apply(); });
+      this.addSectionButtons();
+    },
+
+    // 각 섹션 제목 옆 "예시 보기" 옆에 "예시 10개+" 버튼을 붙인다
+    addSectionButtons: function() {
+      var self = this;
+      document.querySelectorAll('.section[data-section-toggle]').forEach(function(section) {
+        var key = section.getAttribute('data-section-toggle');
+        var actions = section.querySelector('.section-actions');
+        if (!actions || actions.querySelector('.example-lib-btn') || !EXAMPLE_SECTION_DEFAULT[key]) return;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'inline-sample-btn example-lib-btn';
+        btn.textContent = '예시 10개+';
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          self.open(EXAMPLE_SECTION_DEFAULT[key]);
+        });
+        actions.insertBefore(btn, actions.firstChild);
+      });
+    },
+
+    open: function(category) {
+      if (category && EXAMPLE_LIBRARY[category]) this.category = category;
+      this.selected = {};
+      this.theme = 'all';
+      this.renderTabs();
+      this.renderFilters();
+      this.renderTargets();
+      this.renderList();
+      this.overlay.classList.add('active');
+    },
+
+    close: function() { this.overlay.classList.remove('active'); },
+    isOpen: function() { return this.overlay && this.overlay.classList.contains('active'); },
+
+    renderTabs: function() {
+      var self = this;
+      var box = document.getElementById('example-tabs');
+      box.innerHTML = '';
+      EXAMPLE_CATEGORY_ORDER.forEach(function(key) {
+        var cat = EXAMPLE_LIBRARY[key];
+        var tab = document.createElement('button');
+        tab.type = 'button';
+        tab.className = 'tool-tab' + (key === self.category ? ' active' : '');
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('aria-selected', key === self.category ? 'true' : 'false');
+        tab.textContent = cat.label;
+        var count = document.createElement('span');
+        count.className = 'tool-tab-count';
+        count.textContent = cat.items.length;
+        tab.appendChild(count);
+        tab.addEventListener('click', function() {
+          self.category = key;
+          self.selected = {};
+          self.renderTabs();
+          self.renderTargets();
+          self.renderList();
+        });
+        box.appendChild(tab);
+      });
+    },
+
+    renderFilters: function() {
+      var self = this;
+      var box = document.getElementById('example-filters');
+      box.innerHTML = '';
+      EXAMPLE_THEMES.forEach(function(t) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'tool-filter' + (t.key === self.theme ? ' active' : '');
+        b.textContent = t.label;
+        b.addEventListener('click', function() {
+          self.theme = t.key;
+          self.renderFilters();
+          self.renderList();
+        });
+        box.appendChild(b);
+      });
+    },
+
+    renderTargets: function() {
+      var cat = EXAMPLE_LIBRARY[this.category];
+      var row = document.getElementById('example-target-row');
+      var modeRow = document.getElementById('example-mode-row');
+      var select = document.getElementById('example-target');
+      row.style.display = cat.target === 'project' ? '' : 'none';
+      // 통째로 넣기/역할은 항상 바꾸기라서 모드 선택을 숨긴다
+      modeRow.style.display = (this.category === 'projectPreset' || this.category === 'projectRole') ? 'none' : '';
+      document.getElementById('example-desc').textContent = cat.desc || '';
+      if (cat.target !== 'project') return;
+      var prev = select.value;
+      select.innerHTML = '';
+      ResumeWriter.getProjectOptions().forEach(function(opt) {
+        var o = document.createElement('option');
+        o.value = opt.value;
+        o.textContent = opt.label;
+        select.appendChild(o);
+      });
+      var preferred = this.category === 'projectPreset' ? ResumeWriter.firstEmptyProject() : '1';
+      select.value = prev && select.querySelector('option[value="' + prev + '"]') ? prev : preferred;
+    },
+
+    getVisibleItems: function() {
+      var cat = EXAMPLE_LIBRARY[this.category];
+      var theme = this.theme;
+      return cat.items.map(function(item, i) { return { item: item, index: i }; }).filter(function(entry) {
+        return theme === 'all' || (entry.item.tags || []).indexOf(theme) !== -1;
+      });
+    },
+
+    themeLabel: function(key) {
+      for (var i = 0; i < EXAMPLE_THEMES.length; i++) if (EXAMPLE_THEMES[i].key === key) return EXAMPLE_THEMES[i].label;
+      return key;
+    },
+
+    renderList: function() {
+      var self = this;
+      var cat = EXAMPLE_LIBRARY[this.category];
+      var list = document.getElementById('example-list');
+      list.innerHTML = '';
+      var visible = this.getVisibleItems();
+      if (!visible.length) {
+        var empty = document.createElement('div');
+        empty.className = 'tool-empty';
+        empty.textContent = '이 분류에는 예시가 없습니다. 위에서 "전체"를 눌러보세요.';
+        list.appendChild(empty);
+      }
+      visible.forEach(function(entry) {
+        var item = entry.item;
+        var row = document.createElement('label');
+        row.className = 'tool-item' + (self.selected[entry.index] ? ' selected' : '');
+        var input = document.createElement('input');
+        input.type = cat.single ? 'radio' : 'checkbox';
+        input.name = 'example-pick';
+        input.checked = !!self.selected[entry.index];
+        input.addEventListener('change', function() {
+          if (cat.single) self.selected = {};
+          if (input.checked) self.selected[entry.index] = true; else delete self.selected[entry.index];
+          self.renderList();
+        });
+        row.appendChild(input);
+
+        var body = document.createElement('div');
+        body.className = 'tool-item-body';
+        var main = document.createElement('div');
+        if (item.project) {
+          main.className = 'tool-item-title';
+          main.textContent = item.title;
+        } else if (item.row) {
+          main.textContent = [item.row.period || item.row.date, item.row.name, item.row.detail || item.row.issuer].filter(Boolean).join('  |  ');
+        } else {
+          main.textContent = item.text;
+        }
+        var badges = document.createElement('span');
+        badges.className = 'tool-badges';
+        if (item.cat) {
+          var catBadge = document.createElement('span');
+          catBadge.className = 'tool-badge';
+          catBadge.textContent = { backend: 'Backend', frontend: 'Frontend', database: 'Database', devops: 'DevOps' }[item.cat];
+          badges.appendChild(catBadge);
+        }
+        (item.tags || []).forEach(function(t) {
+          var b = document.createElement('span');
+          b.className = 'tool-badge';
+          b.textContent = self.themeLabel(t);
+          badges.appendChild(b);
+        });
+        main.appendChild(badges);
+        body.appendChild(main);
+        if (item.project) {
+          var sub = document.createElement('div');
+          sub.className = 'tool-item-sub';
+          sub.textContent = item.project.meta + ' · 담당: ' + item.project.role;
+          body.appendChild(sub);
+          var ul = document.createElement('ul');
+          item.project.details.concat([item.project.result]).forEach(function(d) {
+            var li = document.createElement('li');
+            li.textContent = d;
+            ul.appendChild(li);
+          });
+          body.appendChild(ul);
+        }
+        row.appendChild(body);
+        list.appendChild(row);
+      });
+      var count = Object.keys(this.selected).length;
+      document.getElementById('example-count').textContent = count + '개 선택 · 이 분류 ' + cat.items.length + '개';
+      document.getElementById('example-apply').disabled = count === 0;
+      document.getElementById('example-select-all').style.display = cat.single ? 'none' : '';
+    },
+
+    selectVisible: function() {
+      var self = this;
+      if (EXAMPLE_LIBRARY[this.category].single) return;
+      this.getVisibleItems().forEach(function(entry) { self.selected[entry.index] = true; });
+      this.renderList();
+    },
+
+    getMode: function() {
+      var checked = this.overlay.querySelector('input[name="example-mode"]:checked');
+      return checked ? checked.value : 'replace';
+    },
+
+    apply: function() {
+      var cat = EXAMPLE_LIBRARY[this.category];
+      var picks = Object.keys(this.selected).map(Number).sort(function(a, b) { return a - b; }).map(function(i) { return cat.items[i]; });
+      if (!picks.length) return;
+      var mode = this.getMode();
+      var target = document.getElementById('example-target').value;
+      var message = '';
+
+      if (cat.field) {
+        var fieldId = cat.field;
+        var joined = picks.map(function(p) { return p.text; }).join(' ');
+        if (mode === 'replace' && FieldCollector.hasRealContent(fieldId) && !window.confirm(cat.label + '에 작성한 내용이 있습니다. 예시로 바꿀까요?')) return;
+        UI.captureUndoSnapshot();
+        var current = FieldCollector.hasRealContent(fieldId) ? FieldCollector.getFieldText(fieldId) : '';
+        ResumeWriter.setText(fieldId, mode === 'append' && current ? current + ' ' + joined : joined);
+        ResumeWriter.afterChange('예시 적용 저장');
+        message = cat.label + '에 넣었습니다.';
+        this.close();
+        UI.scrollToField(fieldId);
+      } else if (cat.target === 'project') {
+        UI.captureUndoSnapshot();
+        var idx;
+        if (this.category === 'projectPreset') {
+          var res = ResumeWriter.applyProject(target, picks[0].project);
+          idx = res.index;
+          message = '프로젝트 ' + idx + '에 예시를 통째로 넣었습니다.' + (res.skipped.length ? ' (이 칸에는 ' + res.skipped.join(', ') + ' 항목이 없어 건너뛰었습니다)' : '');
+        } else {
+          idx = ResumeWriter.ensureProject(target);
+          var texts = picks.map(function(p) { return p.text; });
+          var fieldOk = true;
+          if (cat.part === 'role') fieldOk = ResumeWriter.setProjectRole(idx, texts[0]);
+          if (cat.part === 'detail') fieldOk = ResumeWriter.setProjectDetail(idx, texts, mode);
+          if (cat.part === 'result') fieldOk = !!FieldCollector.getFieldEl('project-' + idx + '-result') && ResumeWriter.setProjectResult(idx, texts.join(', '), mode);
+          message = fieldOk ? '프로젝트 ' + idx + '의 ' + cat.label + '에 ' + texts.length + '개를 넣었습니다.'
+                            : '프로젝트 ' + idx + '에는 ' + cat.label + ' 칸이 없습니다. 다른 프로젝트를 고르거나 새 프로젝트를 추가하세요.';
+        }
+        ResumeWriter.afterChange('예시 적용 저장');
+        this.close();
+        UI.scrollToField('project-' + idx + '-name');
+      } else if (cat.target === 'skills') {
+        UI.captureUndoSnapshot();
+        var byCat = { backend: [], frontend: [], database: [], devops: [] };
+        picks.forEach(function(p) { byCat[p.cat].push(p.text); });
+        var added = ResumeWriter.addSkills(byCat, mode);
+        ResumeWriter.afterChange('예시 적용 저장');
+        message = '기술 ' + added + '개를 넣었습니다.';
+        this.close();
+        UI.scrollToField('skills-backend');
+      } else if (cat.target === 'education' || cat.target === 'certification') {
+        UI.captureUndoSnapshot();
+        var rows = picks.map(function(p) { return p.row; });
+        if (cat.target === 'education') {
+          ResumeWriter.fillRows('edu', ['period', 'name', 'detail'], rows, mode, function(i) {
+            UI.addEducationRow({ index: i, skipUndo: true, skipSave: true, skipScroll: true });
+          }, 'name');
+        } else {
+          ResumeWriter.showSection('certification');
+          ResumeWriter.fillRows('cert', ['date', 'name', 'issuer'], rows, mode, function(i) {
+            UI.addCertificationRow({ index: i, skipUndo: true, skipSave: true, skipScroll: true });
+          }, 'name');
+        }
+        ResumeWriter.afterChange('예시 적용 저장');
+        message = cat.label + ' ' + rows.length + '개를 넣었습니다. [ ] 부분을 본인 정보로 바꿔주세요.';
+        this.close();
+        UI.scrollToField(cat.target === 'education' ? 'edu-1-name' : 'cert-1-name');
+      }
+      if (message) ResumeWriter.notify(message);
+    }
+  };
+  window.ExampleLibrary = ExampleLibrary;
+
+  // ===== Module: Autofill (README·메모 → 이력서 자동 입력) =====
+  // 원문에서 찾을 기술 사전. 카테고리별로 이력서 기술 칸에 들어간다.
+  var SKILL_DICTIONARY = [
+    { name: 'Java', cat: 'backend', re: /\bjava\s*(\d{1,2})?\b(?!\s*script)/i, version: true },
+    { name: 'Spring Boot', cat: 'backend', re: /spring\s*boot\s*(\d(?:\.\d+)?(?:\.x)?)?/i, version: true },
+    { name: 'Spring Security', cat: 'backend', re: /spring\s*security/i },
+    { name: 'Spring Data JPA', cat: 'backend', re: /spring\s*data\s*jpa|\bjpa\b/i },
+    { name: 'Spring AI', cat: 'backend', re: /spring\s*ai\b/i },
+    { name: 'QueryDSL', cat: 'backend', re: /querydsl/i },
+    { name: 'MyBatis', cat: 'backend', re: /mybatis/i },
+    { name: 'JWT', cat: 'backend', re: /\bjwt\b/i },
+    { name: 'OAuth2', cat: 'backend', re: /oauth\s*2?|구글 로그인|소셜 로그인/i },
+    { name: 'WebSocket', cat: 'backend', re: /websocket|웹소켓|stomp/i },
+    { name: 'JUnit5', cat: 'backend', re: /junit\s*5?/i },
+    { name: 'Lombok', cat: 'backend', re: /lombok/i },
+    { name: 'Node.js', cat: 'backend', re: /node\.?js/i },
+    { name: 'Python', cat: 'backend', re: /\bpython\b/i },
+    { name: 'Thymeleaf', cat: 'frontend', re: /thymeleaf|타임리프/i },
+    { name: 'Bootstrap 5', cat: 'frontend', re: /bootstrap\s*5?|부트스트랩/i },
+    { name: 'JavaScript', cat: 'frontend', re: /javascript|\bjs\b|자바스크립트/i },
+    { name: 'TypeScript', cat: 'frontend', re: /typescript/i },
+    { name: 'React', cat: 'frontend', re: /\breact\b/i },
+    { name: 'Vue.js', cat: 'frontend', re: /\bvue/i },
+    { name: 'jQuery', cat: 'frontend', re: /jquery/i },
+    { name: 'HTML5/CSS3', cat: 'frontend', re: /\bhtml5?\b|\bcss3?\b/i },
+    { name: 'MySQL', cat: 'database', re: /mysql\s*(\d)?/i, version: true },
+    { name: 'MariaDB', cat: 'database', re: /mariadb/i },
+    { name: 'Oracle DB', cat: 'database', re: /\boracle\b(?!\s*certified)/i },
+    { name: 'PostgreSQL', cat: 'database', re: /postgre/i },
+    { name: 'H2', cat: 'database', re: /\bh2\b/i },
+    { name: 'Redis', cat: 'database', re: /redis/i },
+    { name: 'AWS RDS', cat: 'database', re: /\brds\b/i },
+    { name: 'AWS EC2', cat: 'devops', re: /\bec2\b/i },
+    { name: 'AWS S3', cat: 'devops', re: /\bs3\b/i },
+    { name: 'Elastic Beanstalk', cat: 'devops', re: /beanstalk|빈스톡/i },
+    { name: 'GitHub Actions', cat: 'devops', re: /github\s*actions|깃허브\s*액션/i },
+    { name: 'Docker', cat: 'devops', re: /docker|도커/i },
+    { name: 'Nginx', cat: 'devops', re: /nginx/i },
+    { name: 'Gradle', cat: 'devops', re: /gradle/i },
+    { name: 'Maven', cat: 'devops', re: /maven/i },
+    { name: 'Git/GitHub', cat: 'devops', re: /\bgit(hub)?\b|깃허브/i },
+    { name: 'OpenRouter', cat: 'devops', re: /openrouter/i },
+    { name: 'Postman', cat: 'devops', re: /postman/i }
+  ];
+
+  var AUTOFILL_FIELDS = [
+    { key: 'name', label: '프로젝트 이름 - 한줄 요약', group: 'project' },
+    { key: 'meta', label: '기간 | 인원', group: 'project' },
+    { key: 'desc', label: '한줄 설명', group: 'project' },
+    { key: 'role', label: '담당 역할', group: 'project' },
+    { key: 'details', label: '구현 내용 (한 줄에 하나)', group: 'project', multiline: true },
+    { key: 'result', label: '성과', group: 'project' },
+    { key: 'link', label: 'GitHub 저장소', group: 'project' },
+    { key: 'skills_backend', label: '기술 · Backend (쉼표로 구분)', group: 'skills', cat: 'backend' },
+    { key: 'skills_frontend', label: '기술 · Frontend', group: 'skills', cat: 'frontend' },
+    { key: 'skills_database', label: '기술 · Database', group: 'skills', cat: 'database' },
+    { key: 'skills_devops', label: '기술 · DevOps/Tool', group: 'skills', cat: 'devops' },
+    { key: 'about', label: 'About Me 초안 (선택)', group: 'text', multiline: true, field: 'about-summary' },
+    { key: 'intro', label: '자기소개 초안 (선택)', group: 'text', multiline: true, field: 'intro-text' }
+  ];
+
+  var AUTOFILL_SAMPLE =
+    '# 부산 로컬 맛집 리뷰 🍽️\n' +
+    '> Spring Boot 3.4 + 타임리프 + MySQL 8 + Spring AI로 만든 맛집 리뷰 서비스\n\n' +
+    '- 기간: 2026.11.05 ~ 2026.11.30\n' +
+    '- 인원: 팀 5명 (리뷰·AI 담당)\n' +
+    '- 배포: AWS EC2 + S3, GitHub Actions 자동 배포\n\n' +
+    '## 주요 기능\n' +
+    '- 맛집 등록·검색, 사진 S3 업로드\n' +
+    '- 리뷰 작성·별점·찜, 작성자만 수정 가능\n' +
+    '- Spring AI 리뷰 3줄 요약 · AI 맛집 추천\n' +
+    '- 세션 로그인 + JWT API + 구글 로그인\n\n' +
+    '## 기술 스택\n' +
+    '| 구분 | 기술 |\n|---|---|\n| Backend | Java 21, Spring Boot 3.4, Spring Security, Spring Data JPA, Spring AI |\n| Frontend | Thymeleaf, Bootstrap 5 |\n| DB | MySQL 8 |\n| Infra | AWS EC2, S3, GitHub Actions, Gradle |\n\n' +
+    '## 트러블슈팅\n' +
+    '- 맛집 목록 N+1: 50개 조회에 SQL 51번 → DTO 조회로 1번\n' +
+    '- 찜 동시성: 100명 동시 찜 시 숫자 누락 → 원자적 UPDATE로 해결\n\n' +
+    '## 저장소\nhttps://github.com/your-id/busan-matzip\n';
+
+  function stripMarkdownInline(text) {
+    return normalizeWhitespace(String(text || '')
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+      .replace(/[*_`~]+/g, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/^[\s>#|:-]+/, '')
+      .replace(/[\u2600-\u27BF\uFE0F\u200D]|[\uD83C-\uDBFF][\uDC00-\uDFFF]/g, ''));
+  }
+
+  function maskContactInfo(text) {
+    return String(text || '')
+      .replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, '[이메일]')
+      .replace(/0\d{1,2}[-.\s]?\d{3,4}[-.\s]?\d{4}/g, '[전화번호]');
+  }
+
+  var Autofill = {
+    overlay: null,
+    result: null,
+
+    init: function() {
+      this.overlay = document.getElementById('autofill-overlay');
+      if (!this.overlay) return;
+      var self = this;
+      this.source = document.getElementById('autofill-source');
+      document.getElementById('autofill-open-btn').addEventListener('click', function() { self.open(); });
+      document.getElementById('autofill-close').addEventListener('click', function() { self.close(); });
+      this.overlay.addEventListener('click', function(e) { if (e.target === self.overlay) self.close(); });
+      document.getElementById('autofill-sample').addEventListener('click', function() {
+        if (self.source.value.trim() && !window.confirm('붙여넣은 원문을 예시로 바꿀까요?')) return;
+        self.source.value = AUTOFILL_SAMPLE;
+        self.updateLength();
+      });
+      document.getElementById('autofill-from-readme').addEventListener('click', function() {
+        var editor = document.getElementById('readme-editor');
+        var saved = Storage.load(README_STORAGE_KEY) || {};
+        var text = (editor && editor.value.trim()) || saved[ReadmeGenerator.activeProject] || '';
+        if (!text) { self.showError('README 편집기에 내용이 없습니다. "프로젝트 README 도구"에서 먼저 작성하거나 여기에 직접 붙여넣으세요.'); return; }
+        self.source.value = text;
+        self.updateLength();
+      });
+      document.getElementById('autofill-local-btn').addEventListener('click', function() { self.runLocal(); });
+      document.getElementById('autofill-ai-btn').addEventListener('click', function() { self.runAI(); });
+      document.getElementById('autofill-apply').addEventListener('click', function() { self.apply(); });
+      this.source.addEventListener('input', function() { self.updateLength(); });
+    },
+
+    open: function(prefill, target) {
+      if (typeof prefill === 'string' && prefill.trim()) {
+        this.source.value = prefill;
+        this.result = null;
+        document.getElementById('autofill-result').innerHTML = '<div class="tool-empty">README를 가져왔습니다. 분석 버튼을 누르세요.</div>';
+        document.getElementById('autofill-apply').disabled = true;
+        this.setStatus('');
+      }
+      this.renderTargets(target);
+      this.updateLength();
+      this.hideError();
+      this.overlay.classList.add('active');
+      this.source.focus();
+    },
+
+    close: function() { this.overlay.classList.remove('active'); },
+    isOpen: function() { return this.overlay && this.overlay.classList.contains('active'); },
+
+    renderTargets: function(preferred) {
+      var select = document.getElementById('autofill-target');
+      select.innerHTML = '';
+      ResumeWriter.getProjectOptions().forEach(function(opt) {
+        var o = document.createElement('option');
+        o.value = opt.value;
+        o.textContent = opt.label;
+        select.appendChild(o);
+      });
+      var value = preferred ? String(preferred) : ResumeWriter.firstEmptyProject();
+      select.value = select.querySelector('option[value="' + value + '"]') ? value : 'new';
+    },
+
+    updateLength: function() {
+      document.getElementById('autofill-length').textContent = this.source.value.length + ' / 12000자';
+    },
+
+    showError: function(msg) {
+      var el = document.getElementById('autofill-error');
+      el.textContent = msg;
+      el.style.display = 'block';
+    },
+    hideError: function() { document.getElementById('autofill-error').style.display = 'none'; },
+    setStatus: function(msg) { document.getElementById('autofill-status').textContent = msg || ''; },
+
+    // ---- AI 없이: README 형식(제목, 인용문, ## 섹션, 목록, 표)을 규칙으로 읽는다 ----
+    parseLocal: function(text) {
+      var lines = String(text || '').replace(/\r/g, '').split('\n');
+      var out = { name: '', meta: '', desc: '', role: '', details: [], result: '', link: '', skills: {}, about: '', intro: '' };
+      var section = '';
+      var sectionKind = function(h) {
+        if (/기술|stack|스택|tech|사용\s*기술|환경/i.test(h)) return 'stack';
+        if (/성과|결과|트러블|문제\s*해결|troubleshoot|개선|성능|배운/i.test(h)) return 'result';
+        if (/역할|담당|role|기여/i.test(h)) return 'role';
+        if (/기능|feature|구현|핵심|주요/i.test(h)) return 'feature';
+        if (/소개|개요|about|overview/i.test(h)) return 'intro';
+        if (/실행|설치|시작|quick|getting|구조|structure|api|라이선스|license|스크린샷|목차/i.test(h)) return 'skip';
+        return 'other';
+      };
+      var featureLines = [], otherBullets = [], resultLines = [], roleLines = [], introLines = [];
+      var inCode = false;
+      for (var i = 0; i < lines.length; i++) {
+        var raw = lines[i];
+        if (/^\s*```/.test(raw)) { inCode = !inCode; continue; }
+        if (inCode) continue;
+        var h1 = /^#\s+(.+)/.exec(raw);
+        if (h1 && !out.name) { out.name = stripMarkdownInline(h1[1]); continue; }
+        var h = /^#{2,4}\s+(.+)/.exec(raw);
+        if (h) { section = sectionKind(h[1]); continue; }
+        var quote = /^>\s*(.+)/.exec(raw);
+        if (quote && !out.desc) { out.desc = stripMarkdownInline(quote[1]); continue; }
+        var bullet = /^\s*(?:[-*+]|\d+[.)])\s+(.+)/.exec(raw);
+        var line = stripMarkdownInline(bullet ? bullet[1] : raw);
+        if (!line || /^\|?\s*-{3,}/.test(raw)) continue;
+        var kv = /^(기간|인원|팀|역할|담당|성과|배포)\s*[:：]\s*(.+)$/.exec(line);
+        if (kv) {
+          if (/역할|담당/.test(kv[1])) roleLines.push(kv[2]);
+          if (/성과/.test(kv[1])) resultLines.push(kv[2]);
+          continue;
+        }
+        if (section === 'feature' && bullet) featureLines.push(line);
+        else if (section === 'result') resultLines.push(line);
+        else if (section === 'role') roleLines.push(line);
+        else if (section === 'intro' && !bullet) introLines.push(line);
+        else if (section !== 'stack' && section !== 'skip' && bullet) otherBullets.push(line);
+        if (!out.desc && !bullet && !/^\|/.test(raw) && line.length >= 12 && line.length <= 120 && out.name && section === '') out.desc = line;
+      }
+      var all = String(text || '');
+      // 기간: 2026.11.05 ~ 2026.11.30 / 2026-11 ~ 2026-12 / 2026.11 ~ 현재
+      var period = /(20\d{2})[.\-\/년\s]+(\d{1,2})(?:[.\-\/월\s]+(\d{1,2}))?\.?\s*일?\s*[~\-–]\s*(?:(20\d{2})[.\-\/년\s]+(\d{1,2})(?:[.\-\/월\s]+(\d{1,2}))?|(현재|진행\s*중))/.exec(all);
+      var pad = function(n) { return ('0' + n).slice(-2); };
+      var periodText = '';
+      if (period) {
+        periodText = period[1] + '.' + pad(period[2]) + (period[3] ? '.' + pad(period[3]) : '') + ' ~ ' +
+          (period[7] ? '현재' : period[4] + '.' + pad(period[5]) + (period[6] ? '.' + pad(period[6]) : ''));
+      }
+      var team = /팀\s*(\d{1,2})\s*명|(\d{1,2})\s*명\s*(?:팀|이서|이 함께)|인원\s*[:：]?\s*(?:팀\s*)?(\d{1,2})\s*명/.exec(all);
+      var personal = /개인\s*프로젝트|1인\s*개발|솔로/.test(all);
+      var teamText = team ? '팀 ' + (team[1] || team[2] || team[3]) + '명' : (personal ? '개인' : '');
+      out.meta = [periodText, teamText].filter(Boolean).join(' | ');
+      var gh = /(?:https?:\/\/)?(?:www\.)?github\.com\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)/.exec(all);
+      if (gh) out.link = 'github.com/' + gh[1] + '/' + gh[2].replace(/\.git$/, '');
+
+      var details = featureLines.length ? featureLines : otherBullets.filter(function(l) { return /(구현|개발|적용|연동|설계|처리|기능|작성|구성|도입)/.test(l); });
+      out.details = details.map(function(l) { return l.slice(0, 140); }).slice(0, 6);
+      var metricRe = /\d[\d,.]*\s*(?:개|건|명|회|번|%|ms|초|분|배|원|줄|화면|페이지)|→|->/;
+      var results = resultLines.concat(otherBullets).filter(function(l) { return metricRe.test(l); });
+      out.result = results.slice(0, 2).map(function(l) { return l.replace(/^성과\s*[:：]\s*/, ''); }).join(', ').slice(0, 160);
+      if (roleLines.length) out.role = roleLines[0].slice(0, 120);
+      else {
+        var roleMatch = /\(([^)]*(?:담당|역할)[^)]*)\)/.exec(all);
+        if (roleMatch) out.role = roleMatch[1].replace(/(담당|역할)\s*/g, '').trim();
+      }
+      if (introLines.length && !out.desc) out.desc = introLines[0].slice(0, 120);
+      if (out.name && out.desc && out.name.indexOf(' - ') === -1 && out.desc.length <= 40) out.name = out.name + ' - ' + out.desc;
+      out.skills = this.detectSkills(all);
+      return out;
+    },
+
+    detectSkills: function(text) {
+      var found = { backend: [], frontend: [], database: [], devops: [] };
+      var src = String(text || '');
+      SKILL_DICTIONARY.forEach(function(entry) {
+        var m = entry.re.exec(src);
+        if (!m) return;
+        var name = entry.name;
+        if (entry.version && m[1]) name = entry.name + ' ' + m[1];
+        if (found[entry.cat].indexOf(name) === -1) found[entry.cat].push(name);
+      });
+      // JPA가 있으면 'Spring Data JPA'로, Git과 GitHub Actions가 함께 있으면 둘 다 남긴다
+      return found;
+    },
+
+    runLocal: function() {
+      var text = this.source.value.trim();
+      this.hideError();
+      if (!text) { this.showError('원문을 먼저 붙여넣으세요. "예시 원문" 버튼으로 형식을 확인할 수 있습니다.'); return; }
+      var parsed = this.parseLocal(text);
+      this.result = this.toFields(parsed, text, 'local');
+      this.renderResult();
+      var filled = this.result.filter(function(f) { return f.value; }).length;
+      this.setStatus('AI 없이 ' + filled + '개 항목을 찾았습니다. 비어 있는 칸은 직접 쓰거나 AI 분석을 써보세요.');
+    },
+
+    // ---- AI로: 자유 형식 메모에서도 뽑아낸다 ----
+    buildPrompt: function(text) {
+      var system = '당신은 신입 개발자의 프로젝트 기록을 이력서 항목으로 정리하는 도우미입니다.\n' +
+        '규칙:\n' +
+        '1. 원문에 있는 사실만 사용하세요. 원문에 없는 숫자, 기술, 링크, 기간은 절대 만들지 말고 빈 문자열로 두세요.\n' +
+        '2. 이력서 문장은 "~ 구현", "~ 개선"처럼 명사형으로 짧게(한 줄 80자 이내) 씁니다.\n' +
+        '3. details는 구현한 기능 3~5개, result는 숫자가 있는 성과 1~2개를 쉼표로 이은 한 문장입니다.\n' +
+        '4. about은 2~3문장, intro는 3~4문장(동기 → 경험 → 강점 → 입사 후 방향)으로, 원문에 근거가 있을 때만 씁니다.\n' +
+        '5. 모든 값은 한국어 문자열이며, 아래 JSON 형식만 출력하세요. 다른 설명은 쓰지 마세요.\n' +
+        '/no_think\n' +
+        '{"name":"프로젝트명 - 한줄 요약","meta":"YYYY.MM ~ YYYY.MM | 팀 N명","desc":"한줄 설명","role":"담당 영역 (사용 기술)",' +
+        '"details":["구현 내용"],"result":"성과 문장","link":"github.com/아이디/저장소",' +
+        '"skills":{"backend":[],"frontend":[],"database":[],"devops":[]},"about":"","intro":""}';
+      var user = '아래 원문을 위 JSON으로 정리해주세요. 개인정보는 [이메일], [전화번호]로 가려져 있습니다.\n\n' + maskContactInfo(text).slice(0, 8000);
+      return { system: system, user: user };
+    },
+
+    runAI: function() {
+      var self = this;
+      var text = this.source.value.trim();
+      this.hideError();
+      if (!text) { this.showError('원문을 먼저 붙여넣으세요.'); return; }
+      var apiKey = Storage.load(STORAGE_KEYS.API_KEY);
+      if (!apiKey) {
+        this.showError('AI 분석에는 OpenRouter API 키가 필요합니다. 오른쪽 패널 "AI 설정"에서 키를 저장하거나, "AI 없이 분석하기"를 사용하세요.');
+        return;
+      }
+      var prompt = this.buildPrompt(text);
+      this.setLoading(true);
+      fetchWithTimeout(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + apiKey,
+          'HTTP-Referer': 'https://resume-ai-feedback.local',
+          'X-Title': 'Resume Autofill'
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          messages: [{ role: 'system', content: prompt.system }, { role: 'user', content: prompt.user }],
+          temperature: 0.2,
+          max_tokens: 2500
+        })
+      }, AI_TIMEOUT_MS)
+      .then(function(r) {
+        if (!r.ok) {
+          if (r.status === 401) throw new Error('API 키가 올바르지 않습니다.');
+          if (r.status === 429) throw new Error('요청이 많거나 무료 모델이 혼잡합니다. 1분 뒤 다시 시도하거나 "AI 없이 분석하기"를 써보세요.');
+          if (r.status === 402) throw new Error('OpenRouter 계정의 무료 사용량을 초과했습니다.');
+          throw new Error('AI 서버 응답 오류입니다 (HTTP ' + r.status + '). "AI 없이 분석하기"를 써보세요.');
+        }
+        return r.json();
+      })
+      .then(function(data) {
+        var content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+        if (!content) throw new Error('AI 응답이 비어 있습니다. 다시 시도해주세요.');
+        var parsed = self.parseAIResponse(content);
+        // AI가 비워 둔 칸은 규칙 기반 결과로 채운다 (예: 기간·링크)
+        var local = self.parseLocal(text);
+        ['name', 'meta', 'desc', 'role', 'result', 'link'].forEach(function(k) { if (!parsed[k] && local[k]) parsed[k] = local[k]; });
+        if (!parsed.details.length) parsed.details = local.details;
+        self.result = self.toFields(parsed, text, 'ai', local);
+        self.renderResult();
+        self.setStatus('AI 분석 완료. ⚠ 표시가 있는 항목은 원문과 꼭 비교하세요.');
+      })
+      .catch(function(err) {
+        var msg = err && err.message ? err.message : String(err);
+        if (err instanceof TypeError) msg = 'AI 서버에 연결하지 못했습니다. 인터넷 연결을 확인하거나 "AI 없이 분석하기"를 써보세요.';
+        self.showError(msg);
+      })
+      .finally(function() { self.setLoading(false); });
+    },
+
+    parseAIResponse: function(content) {
+      var cleaned = String(content).trim();
+      var thinkEnd = cleaned.indexOf('</think>');
+      if (thinkEnd !== -1) cleaned = cleaned.substring(thinkEnd + 8).trim();
+      var start = cleaned.indexOf('{');
+      var end = cleaned.lastIndexOf('}');
+      if (start === -1 || end === -1) throw new Error('AI 응답을 읽을 수 없습니다. 다시 시도하거나 "AI 없이 분석하기"를 써보세요.');
+      var obj;
+      try { obj = JSON.parse(cleaned.substring(start, end + 1)); }
+      catch (e) { throw new Error('AI 응답 형식이 올바르지 않습니다. 다시 시도해주세요.'); }
+      var str = function(v, max) { return typeof v === 'string' ? normalizeWhitespace(v).slice(0, max || 300) : ''; };
+      var arr = function(v, max, len) {
+        return Array.isArray(v) ? v.filter(function(x) { return typeof x === 'string' && x.trim(); }).map(function(x) { return normalizeWhitespace(x).slice(0, len || 140); }).slice(0, max) : [];
+      };
+      var skills = obj.skills && typeof obj.skills === 'object' ? obj.skills : {};
+      return {
+        name: str(obj.name, 100), meta: str(obj.meta, 60), desc: str(obj.desc, 140), role: str(obj.role, 140),
+        details: arr(obj.details, 6), result: str(obj.result, 200), link: str(obj.link, 120),
+        skills: { backend: arr(skills.backend, 8, 40), frontend: arr(skills.frontend, 6, 40), database: arr(skills.database, 4, 40), devops: arr(skills.devops, 8, 40) },
+        about: str(obj.about, 600), intro: str(obj.intro, 800)
+      };
+    },
+
+    // AI 결과 검증: 원문에 없는 숫자는 경고, 원문에 없는 기술·링크는 버린다 (수업 규칙: AI 결과는 원본과 대조)
+    verify: function(key, value, sourceText, origin) {
+      var warn = '';
+      var src = String(sourceText || '');
+      if (!value) return { value: value, warn: '' };
+      if (key === 'link') {
+        var ok = /^(?:https?:\/\/)?(?:www\.)?github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+/.test(value);
+        var path = value.replace(/^(?:https?:\/\/)?(?:www\.)?/, '').replace(/\/$/, '');
+        if (!ok || src.indexOf(path) === -1) return { value: '', warn: origin === 'ai' ? 'AI가 원문에 없는 링크를 만들어 뺐습니다.' : '' };
+        return { value: path, warn: '' };
+      }
+      if (origin === 'ai') {
+        var numbers = String(value).match(/\d[\d,.]*/g) || [];
+        var srcDigits = src.replace(/,/g, '');
+        var missing = numbers.filter(function(n) { return srcDigits.indexOf(n.replace(/,/g, '').replace(/\.$/, '')) === -1; });
+        if (missing.length) warn = '⚠ 원문에 없는 숫자: ' + dedupeMessages(missing).join(', ') + ' — 실제 값인지 확인하세요.';
+      }
+      return { value: value, warn: warn };
+    },
+
+    toFields: function(parsed, sourceText, origin, local) {
+      var self = this;
+      var srcLower = String(sourceText || '').toLowerCase();
+      var localSkills = (local && local.skills) || this.detectSkills(sourceText);
+      return AUTOFILL_FIELDS.map(function(def) {
+        var value = '';
+        var warn = '';
+        if (def.group === 'skills') {
+          var list = (parsed.skills && parsed.skills[def.cat]) || [];
+          var dropped = [];
+          if (origin === 'ai') {
+            // 원문에 이름(첫 단어 기준)이 없는 기술은 AI가 추측한 것이므로 뺀다
+            list = list.filter(function(s) {
+              var key = s.toLowerCase().split(/[\s(/]/)[0];
+              var hit = key && (srcLower.indexOf(key) !== -1 || localSkills[def.cat].some(function(l) { return l.toLowerCase().indexOf(key) === 0; }));
+              if (!hit) dropped.push(s);
+              return hit;
+            });
+            localSkills[def.cat].forEach(function(l) {
+              var lk = l.toLowerCase().split(' ')[0];
+              if (!list.some(function(s) { return s.toLowerCase().indexOf(lk) !== -1; })) list.push(l);
+            });
+          }
+          value = list.join(', ');
+          if (dropped.length) warn = '원문에 없는 기술이라 뺐습니다: ' + dropped.join(', ');
+        } else if (def.key === 'details') {
+          value = (parsed.details || []).join('\n');
+          warn = self.verify('details', value, sourceText, origin).warn;
+        } else {
+          var checked = self.verify(def.key, parsed[def.key] || '', sourceText, origin);
+          value = checked.value;
+          warn = checked.warn;
+        }
+        var enabled = !!value && def.group !== 'text';
+        if (def.group === 'text' && value) enabled = !FieldCollector.hasRealContent(def.field);
+        return { def: def, value: value, warn: warn, enabled: enabled, origin: origin };
+      });
+    },
+
+    renderResult: function() {
+      var box = document.getElementById('autofill-result');
+      box.innerHTML = '';
+      var self = this;
+      this.result.forEach(function(f) {
+        var wrap = document.createElement('div');
+        wrap.className = 'tool-field' + (f.enabled ? '' : ' off');
+        var head = document.createElement('label');
+        head.className = 'tool-field-head';
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = f.enabled;
+        cb.addEventListener('change', function() {
+          f.enabled = cb.checked;
+          wrap.classList.toggle('off', !cb.checked);
+          self.updateApplyButton();
+        });
+        head.appendChild(cb);
+        head.appendChild(document.createTextNode(f.def.label));
+        if (f.value) {
+          var tag = document.createElement('span');
+          tag.className = 'tool-source-tag';
+          tag.textContent = f.origin === 'ai' ? 'AI' : '규칙';
+          head.appendChild(tag);
+        }
+        wrap.appendChild(head);
+        var ta = document.createElement('textarea');
+        ta.rows = f.def.multiline ? 4 : 1;
+        ta.value = f.value;
+        ta.placeholder = '찾지 못했습니다. 직접 입력하면 함께 넣습니다.';
+        ta.addEventListener('input', function() {
+          f.value = ta.value;
+          if (ta.value.trim() && !cb.checked) { cb.checked = true; f.enabled = true; wrap.classList.remove('off'); }
+          self.updateApplyButton();
+        });
+        wrap.appendChild(ta);
+        if (f.def.group === 'text' && f.value && FieldCollector.hasRealContent(f.def.field)) {
+          var note = document.createElement('div');
+          note.className = 'tool-warn';
+          note.textContent = '이미 작성한 내용이 있어 기본으로 체크하지 않았습니다. 체크하면 바꿉니다.';
+          wrap.appendChild(note);
+        }
+        if (f.warn) {
+          var w = document.createElement('div');
+          w.className = 'tool-warn';
+          w.textContent = f.warn;
+          wrap.appendChild(w);
+        }
+        box.appendChild(wrap);
+      });
+      this.updateApplyButton();
+    },
+
+    updateApplyButton: function() {
+      var any = (this.result || []).some(function(f) { return f.enabled && normalizeWhitespace(f.value); });
+      document.getElementById('autofill-apply').disabled = !any;
+    },
+
+    apply: function() {
+      if (!this.result) return;
+      var picked = {};
+      this.result.forEach(function(f) { if (f.enabled && normalizeWhitespace(f.value)) picked[f.def.key] = f.value; });
+      if (!Object.keys(picked).length) return;
+      var target = document.getElementById('autofill-target').value;
+      var projectKeys = ['name', 'meta', 'desc', 'role', 'details', 'result', 'link'].filter(function(k) { return picked[k]; });
+      var targetIdx = target === 'new' ? null : parseInt(target, 10);
+      if (projectKeys.length && targetIdx && FieldCollector.hasRealContent('project-' + targetIdx + '-name') &&
+          !window.confirm('프로젝트 ' + targetIdx + '에 작성한 내용이 있습니다. 선택한 항목으로 바꿀까요?')) return;
+
+      UI.captureUndoSnapshot();
+      var applied = [];
+      if (projectKeys.length) {
+        var res = ResumeWriter.applyProject(target, {
+          name: picked.name, meta: picked.meta, desc: picked.desc, role: picked.role,
+          details: picked.details ? picked.details.split(/\n+/).map(normalizeWhitespace).filter(Boolean) : null,
+          result: picked.result, link: picked.link
+        });
+        applied.push('프로젝트 ' + res.index + (res.skipped.length ? ' (' + res.skipped.join(', ') + ' 칸 없음)' : ''));
+        targetIdx = res.index;
+      }
+      var byCat = { backend: [], frontend: [], database: [], devops: [] };
+      var skillCount = 0;
+      this.result.forEach(function(f) {
+        if (f.def.group === 'skills' && picked[f.def.key]) {
+          picked[f.def.key].split(/\s*,\s*/).map(normalizeWhitespace).filter(Boolean).forEach(function(s) { byCat[f.def.cat].push(s); skillCount++; });
+        }
+      });
+      if (skillCount) applied.push('기술 ' + ResumeWriter.addSkills(byCat, 'append') + '개');
+      if (picked.about) { ResumeWriter.setText('about-summary', picked.about); applied.push('About Me'); }
+      if (picked.intro) { ResumeWriter.setText('intro-text', picked.intro); applied.push('자기소개'); }
+      ResumeWriter.afterChange('AI 자동 입력 저장');
+      this.close();
+      if (targetIdx) UI.scrollToField('project-' + targetIdx + '-name');
+      ResumeWriter.notify('자동 입력 완료: ' + applied.join(', ') + '. 빠른 점검으로 확인해보세요.');
+    },
+
+    setLoading: function(loading) {
+      document.getElementById('autofill-ai-btn').disabled = loading;
+      document.getElementById('autofill-local-btn').disabled = loading;
+      document.getElementById('autofill-ai-text').textContent = loading ? 'AI 분석 중... (최대 45초)' : 'AI로 분석하기';
+      document.getElementById('autofill-ai-spinner').style.display = loading ? 'inline-block' : 'none';
+    }
+  };
+  window.Autofill = Autofill;
+
+  // ===== Module: Portfolio (이력서 전체 → 포트폴리오 README) =====
+  var Portfolio = {
+    clean: function(fieldId) {
+      var text = FieldCollector.getFieldText(fieldId);
+      return text && !hasPlaceholderText(text) ? normalizeWhitespace(text) : '';
+    },
+
+    build: function() {
+      var c = this.clean.bind(this);
+      var name = c('header-name') || '[이름]';
+      var md = '# 안녕하세요, ' + name + '입니다 👋\n\n';
+      var headline = c('header-subtitle');
+      if (headline) md += '> ' + headline + '\n\n';
+      var links = [];
+      var gh = stripLinkLabel(c('header-github'));
+      if (gh) links.push('[GitHub](https://' + gh.replace(/^https?:\/\//, '') + ')');
+      var blog = stripLinkLabel(c('header-blog'));
+      if (blog) links.push('[Blog](https://' + blog.replace(/^https?:\/\//, '') + ')');
+      if (links.length) md += links.join(' · ') + '\n\n';
+      // 이메일·전화번호는 공개 저장소에 올라가므로 넣지 않는다
+
+      var about = c('about-summary');
+      if (about) md += '## About Me\n\n' + about + '\n\n';
+
+      var skillRows = [['Backend', 'skills-backend'], ['Frontend', 'skills-frontend'], ['Database', 'skills-database'], ['DevOps / Tool', 'skills-devops']]
+        .map(function(r) { return [r[0], FieldCollector.getSkillItems(r[1]).filter(function(s) { return !hasPlaceholderText(s); })]; })
+        .filter(function(r) { return r[1].length; });
+      getCustomSkillFieldIds().forEach(function(fid) {
+        var m = /^skills-extra-(\d+)/.exec(fid);
+        var label = m ? c(getCustomSkillLabelFieldId(m[1])) : '';
+        var items = FieldCollector.getSkillItems(fid).filter(function(s) { return !hasPlaceholderText(s); });
+        if (label && items.length) skillRows.push([label, items]);
+      });
+      if (skillRows.length) {
+        md += '## 기술 스택\n\n| 구분 | 기술 |\n|------|------|\n';
+        skillRows.forEach(function(r) { md += '| ' + r[0].replace(/\|/g, '/') + ' | ' + r[1].join(', ').replace(/\|/g, '/') + ' |\n'; });
+        md += '\n';
+      }
+
+      var projects = getProjectIndices().filter(function(i) { return c('project-' + i + '-name'); });
+      if (projects.length) {
+        md += '## 프로젝트\n\n';
+        projects.forEach(function(i) {
+          var p = 'project-' + i + '-';
+          md += '### ' + c(p + 'name') + '\n\n';
+          var meta = c(p + 'meta');
+          if (meta) md += '- **기간/인원**: ' + meta + '\n';
+          var role = c(p + 'role').replace(/^담당\s*[:：]\s*/, '');
+          if (role) md += '- **담당**: ' + role + '\n';
+          var link = stripLinkLabel(c(p + 'link'));
+          if (link) md += '- **저장소**: [' + link + '](https://' + link.replace(/^https?:\/\//, '') + ')\n';
+          var desc = c(p + 'desc');
+          if (desc) md += '\n' + desc + '\n';
+          var details = ResumeWriter.getDetailLines(i);
+          if (details.length) md += '\n' + details.map(function(d) { return '- ' + d; }).join('\n') + '\n';
+          var result = c(p + 'result');
+          if (result) md += '\n> 🏆 ' + result + '\n';
+          md += '\n';
+        });
+      }
+
+      var eduRows = getIndexedFieldNumbers('edu').map(function(i) {
+        return [c('edu-' + i + '-period'), c('edu-' + i + '-name'), c('edu-' + i + '-detail')];
+      }).filter(function(r) { return r[1]; });
+      if (eduRows.length) {
+        md += '## 교육\n\n' + eduRows.map(function(r) { return '- ' + r.filter(Boolean).join(' | '); }).join('\n') + '\n\n';
+      }
+      var certRows = getIndexedFieldNumbers('cert').map(function(i) {
+        return [c('cert-' + i + '-date'), c('cert-' + i + '-name'), c('cert-' + i + '-issuer')];
+      }).filter(function(r) { return r[1]; });
+      if (certRows.length) {
+        md += '## 자격증\n\n' + certRows.map(function(r) { return '- ' + r.filter(Boolean).join(' | '); }).join('\n') + '\n\n';
+      }
+      var intro = c('intro-text');
+      if (intro) md += '## 이런 개발자가 되겠습니다\n\n' + intro + '\n\n';
+      md += '---\n\n_이 README는 이력서 작성 도우미로 이력서 내용에서 자동 생성했습니다. 숫자와 링크가 실제와 같은지 확인한 뒤 GitHub 프로필 저장소(아이디/아이디)의 README.md에 붙여넣으세요._\n';
+      return md;
+    },
+
+    buildAIPrompt: function(draft) {
+      return {
+        system: '당신은 신입 개발자의 GitHub 프로필 README(포트폴리오)를 다듬는 시니어 개발자입니다.\n' +
+          '규칙: 1) 초안에 있는 사실만 쓰고 숫자·기술·링크·회사명은 새로 만들지 않습니다. 2) 프로젝트마다 "문제 → 내가 한 일 → 결과(숫자)"가 보이게 정리합니다.\n' +
+          '3) 첫 화면에 한줄 소개, 대표 프로젝트, 기술 스택이 보이게 순서를 정합니다. 4) 과장된 표현(혁신적인, 완벽한 등)은 빼고 한국어 마크다운만 출력합니다.\n/no_think',
+        user: '아래 초안을 포트폴리오 README로 다듬어주세요.\n\n' + maskContactInfo(draft)
+      };
+    }
+  };
+  window.Portfolio = Portfolio;
+
   // ===== Initialize =====
   document.addEventListener('DOMContentLoaded', function() {
     UI.init();
     WritingHelper.init();
     SampleResume.init();
     ReadmeGenerator.init();
+    ExampleLibrary.init();
+    Autofill.init();
     PrintVisibility.init();
 
     // Auto-restore saved content
