@@ -2123,6 +2123,8 @@
         <input id="report-commits" class="report-num" type="number" min="0" max="9999" placeholder="선택">
         <label for="report-prs">PR 수</label>
         <input id="report-prs" class="report-num" type="number" min="0" max="9999" placeholder="선택">
+        <label for="report-verify">검증일지</label>
+        <input id="report-verify" class="report-num" type="number" min="0" max="999" placeholder="줄 수">
       </div>
       <div class="iv-actions">
         <button id="report-build" class="readme-action-btn secondary" type="button">다시 만들기</button>
@@ -2300,6 +2302,7 @@
               <option value="readme">README·메모</option>
               <option value="commits">Git 커밋 기록</option>
               <option value="weekly">주간보고서</option>
+              <option value="verify">AI 코드 검증일지</option>
             </select>
             <button id="autofill-sample" class="readme-action-btn secondary" type="button">예시 원문</button>
           </div>
@@ -2368,7 +2371,7 @@
       <button class="section-toggle-btn" data-toggle-target="about">숨기기</button>
     </div>
     <div class="summary" contenteditable="true" data-field-id="about-summary" data-required="true" data-max-lines="3" data-guide-type="about">
-      KH정보교육원에서 약 900시간의 Java 웹 개발 과정을 수료하며 Spring Boot 3.x + JPA + Thymeleaf 기반 프로젝트를 수행했습니다.
+      KH정보교육원 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미(1,053시간)에서 Java·SQL부터 Spring Boot·AWS·GitHub Actions까지 익히며 Spring Boot 3.x + JPA + Thymeleaf 기반 프로젝트를 수행했습니다.
       대표 프로젝트에서는 Spring Data JPA/QueryDSL 동적 검색, Spring Security 인증/인가, MySQL 연동과 Thymeleaf 레이아웃 화면 구현을 맡아 Entity 설계부터 화면까지 풀스택으로 개발했습니다.
       계층 구조(Layer Architecture)를 이해하고 요구사항을 안정적으로 완성하는 웹 백엔드 개발자를 지향합니다.
     </div>
@@ -2495,9 +2498,9 @@
       <button class="section-toggle-btn" data-toggle-target="education">숨기기</button>
     </div>
     <div class="edu-row">
-      <span class="edu-period" contenteditable="true" data-field-id="edu-1-period" data-required="true" data-max-lines="1" data-guide-type="date-range">[2025.09 ~ 2026.04]</span>
-      <span class="edu-name" contenteditable="true" data-field-id="edu-1-name" data-required="true" data-max-lines="1" data-guide-type="education-name">KH정보교육원 부산지원</span>
-      <span class="edu-detail" contenteditable="true" data-field-id="edu-1-detail" data-required="true" data-max-lines="1" data-guide-type="education-detail">Java 기반 웹 개발자 양성과정 (900시간) - Spring Boot, JPA, Thymeleaf, Spring Security</span>
+      <span class="edu-period" contenteditable="true" data-field-id="edu-1-period" data-required="true" data-max-lines="1" data-guide-type="date-range">[2026.05 ~ 2026.12]</span>
+      <span class="edu-name" contenteditable="true" data-field-id="edu-1-name" data-required="true" data-max-lines="1" data-guide-type="education-name">KH정보교육원AX 부산지원</span>
+      <span class="edu-detail" contenteditable="true" data-field-id="edu-1-detail" data-required="true" data-max-lines="1" data-guide-type="education-detail">K-디지털 트레이닝 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 5회차 (1,053시간) - Java, Spring Boot, React, Docker·K8s, AWS</span>
     </div>
     <div class="edu-row">
       <span class="edu-period" contenteditable="true" data-field-id="edu-2-period" data-required="true" data-max-lines="1" data-guide-type="date-range">[20XX.03 ~ 20XX.02]</span>
@@ -4781,12 +4784,12 @@
     {
       id: 'training', title: '교육과정',
       question: '수료한 교육과정 정보를 입력하세요.',
-      tip: '<strong>Tip:</strong> 국비과정은 총 수업시간(900시간 등)을 꼭 넣으세요. 학습량의 증거입니다.',
+      tip: '<strong>Tip:</strong> 국비과정은 총 수업시간(예: 1,053시간)과 프로젝트 시간(예: 360시간)을 꼭 넣으세요. 학습량의 증거입니다.',
       fields: [
-        { key: 'trainingOrg', label: '교육기관', type: 'text', placeholder: 'KH정보교육원 부산지원' },
-        { key: 'trainingName', label: '과정명', type: 'text', placeholder: '클라우드 네이티브 풀스택 & DevOps 개발자 아카데미' },
-        { key: 'trainingPeriod', label: '기간', type: 'text', placeholder: '2025.09 ~ 2026.04' },
-        { key: 'trainingHours', label: '총 시간', type: 'text', placeholder: '900시간' }
+        { key: 'trainingOrg', label: '교육기관', type: 'text', placeholder: 'KH정보교육원AX 부산지원' },
+        { key: 'trainingName', label: '과정명', type: 'text', placeholder: 'K-디지털 트레이닝 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 5회차' },
+        { key: 'trainingPeriod', label: '기간', type: 'text', placeholder: '2026.05.26 ~ 2026.12.04' },
+        { key: 'trainingHours', label: '총 시간', type: 'text', placeholder: '1,053시간 (프로젝트 360시간)' }
       ]
     },
     {
@@ -5002,7 +5005,7 @@
       var intro = this.data.intro || {};
       var parts = [
         { key: 'why', label: '왜 개발자가 되고 싶나요?', placeholder: '어릴 때부터 문제를 코드로 해결하는 것에 매력을 느꼈고, 사용자에게 가치를 전달하는 서비스를 만들고 싶어 개발자를 지망하게 되었습니다.' },
-        { key: 'growth', label: '교육과정에서 가장 성장한 경험은?', placeholder: '900시간의 교육 과정에서 팀 프로젝트를 통해 백엔드부터 배포까지 전체 개발 사이클을 경험하며 실전 역량을 키웠습니다.' },
+        { key: 'growth', label: '교육과정에서 가장 성장한 경험은?', placeholder: '1,053시간의 교육 과정에서 팀 프로젝트를 통해 백엔드부터 배포까지 전체 개발 사이클을 경험하며 실전 역량을 키웠습니다.' },
         { key: 'strength', label: '나의 강점은?', placeholder: '꼼꼼한 코드 리뷰 습관과 팀원과의 적극적 소통으로 프로젝트를 기한 내 완성한 경험이 있습니다.' },
         { key: 'future', label: '어떤 개발자가 되고 싶나요?', placeholder: '사용자 관점에서 문제를 정의하고, 기술로 해결하는 풀스택 개발자로 성장하겠습니다.' }
       ];
@@ -5545,7 +5548,7 @@
               '</div>' +
               '<div class="s-section">' +
                 '<div class="s-section-title">About Me</div>' +
-                '<div style="font-size:7.5pt;line-height:1.6;">KH정보교육원에서 약 900시간의 Java 웹 개발 과정을 수료하며 Spring Boot 3.x + JPA + Thymeleaf 기반 프로젝트를 수행했습니다. ' +
+                '<div style="font-size:7.5pt;line-height:1.6;">KH정보교육원 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미(1,053시간)를 수료하며 Spring Boot 3.x + JPA + Thymeleaf 기반 프로젝트를 수행했습니다. ' +
                 '대표 프로젝트에서는 Spring Data JPA/QueryDSL 동적 검색, Spring Security 인증/인가, MySQL 연동과 Thymeleaf 레이아웃 화면 구현을 맡아 Entity 설계부터 화면까지 풀스택으로 개발했습니다. ' +
                 '계층 구조(Layer Architecture)를 이해하고 요구사항을 안정적으로 완성하는 웹 백엔드 개발자를 목표로 합니다.</div>' +
               '</div>' +
@@ -5597,7 +5600,7 @@
               '</div>' +
               '<div class="s-section">' +
                 '<div class="s-section-title">교육</div>' +
-                '<div class="s-edu-row"><span class="s-edu-period">2025.07 ~ 2026.03</span><span class="s-edu-name">KH정보교육원 부산지원</span><span>Java 기반 웹 개발자 양성과정 (900시간) - Spring Boot, JPA, Thymeleaf, Spring Security</span></div>' +
+                '<div class="s-edu-row"><span class="s-edu-period">2026.05 ~ 2026.12</span><span class="s-edu-name">KH정보교육원 부산지원</span><span>클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 (1,053시간) - Spring Boot, JPA, Thymeleaf, Spring Security</span></div>' +
                 '<div class="s-edu-row"><span class="s-edu-period">2019.03 ~ 2023.02</span><span class="s-edu-name">동아대학교</span><span>경영학과 졸업 (4년제) | 학점 3.7/4.5</span></div>' +
               '</div>' +
               '<div class="s-section">' +
@@ -5618,7 +5621,7 @@
             },
             {
               title: 'About Me',
-              example: '<strong>작성 예시:</strong> KH정보교육원 900시간 과정에서 Spring Boot 3.x + JPA + Thymeleaf 기반 쇼핑몰 프로젝트를 수행했습니다. JPA Entity 설계, QueryDSL 동적 검색, Spring Security 인증/인가, Thymeleaf 레이아웃 화면 개발을 맡으며 계층 구조(Layer Architecture) 전반을 경험했습니다.',
+              example: '<strong>작성 예시:</strong> KH정보교육원 1,053시간 과정에서 Spring Boot 3.x + JPA + Thymeleaf 기반 쇼핑몰 프로젝트를 수행했습니다. JPA Entity 설계, QueryDSL 동적 검색, Spring Security 인증/인가, Thymeleaf 레이아웃 화면 개발을 맡으며 계층 구조(Layer Architecture) 전반을 경험했습니다.',
               tip: '<strong>Tip:</strong> 2~3문장으로 배경 → 핵심 역량 → 문제 해결 방식을 보여주세요. 기술만 나열하지 말고 직무 적합도를 먼저 드러내세요.'
             },
             {
@@ -5633,7 +5636,7 @@
             },
             {
               title: '교육',
-              example: '<strong>작성 예시:</strong> 2025.07 ~ 2026.03 | KH정보교육원 부산지원 | Java 기반 웹 개발자 양성과정 (900시간)',
+              example: '<strong>작성 예시:</strong> 2026.05 ~ 2026.12 | KH정보교육원 부산지원 | 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 (1,053시간)',
               tip: '<strong>Tip:</strong> 교육은 기관명, 과정명, 기간, 총 시간처럼 근거 정보만 짧게 남기세요. 설명이 길어지면 프로젝트가 묻힙니다.'
             },
             {
@@ -5659,7 +5662,7 @@
               'header-university': '동아대학교 졸업<br>경영학과 (비전공)'
             },
             about: {
-              'about-summary': 'KH정보교육원에서 약 900시간의 Java 웹 개발 과정을 수료하며 Spring Boot 3.x + JPA + Thymeleaf 기반 프로젝트를 수행했습니다. 대표 프로젝트에서는 Spring Data JPA/QueryDSL 동적 검색, Spring Security 인증/인가, MySQL 연동과 Thymeleaf 레이아웃 화면 구현을 맡아 Entity 설계부터 화면까지 풀스택으로 개발했습니다. 계층 구조(Layer Architecture)를 이해하고 요구사항을 안정적으로 완성하는 웹 백엔드 개발자를 목표로 합니다.'
+              'about-summary': 'KH정보교육원 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미(1,053시간)를 수료하며 Spring Boot 3.x + JPA + Thymeleaf 기반 프로젝트를 수행했습니다. 대표 프로젝트에서는 Spring Data JPA/QueryDSL 동적 검색, Spring Security 인증/인가, MySQL 연동과 Thymeleaf 레이아웃 화면 구현을 맡아 Entity 설계부터 화면까지 풀스택으로 개발했습니다. 계층 구조(Layer Architecture)를 이해하고 요구사항을 안정적으로 완성하는 웹 백엔드 개발자를 목표로 합니다.'
             },
             skills: {
               'skills-backend': '<span class=\"skill-tag\">Java 17</span><span class=\"skill-tag\">Spring Boot 3.x</span><span class=\"skill-tag\">Spring Data JPA</span><span class=\"skill-tag\">Spring Security</span>',
@@ -5684,9 +5687,9 @@
               'project-2-link': 'GitHub: github.com/jiwon-dev/member-service'
             },
             education: {
-              'edu-1-period': '2025.07 ~ 2026.03',
+              'edu-1-period': '2026.05 ~ 2026.12',
               'edu-1-name': 'KH정보교육원 부산지원',
-              'edu-1-detail': 'Java 기반 웹 개발자 양성과정 (900시간) - Spring Boot, JPA, Thymeleaf, Spring Security',
+              'edu-1-detail': '클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 (1,053시간) - Spring Boot, JPA, Thymeleaf, Spring Security',
               'edu-2-period': '2019.03 ~ 2023.02',
               'edu-2-name': '동아대학교',
               'edu-2-detail': '경영학과 졸업 (4년제) | 학점 3.7/4.5'
@@ -5771,7 +5774,7 @@
               '</div>' +
               '<div class="s-section">' +
                 '<div class="s-section-title">교육</div>' +
-                '<div class="s-edu-row"><span class="s-edu-period">2025.06 ~ 2026.02</span><span class="s-edu-name">KH정보교육원 부산지원</span><span>Java 웹 개발자 양성과정 (960시간) - Spring Boot, JPA, Thymeleaf</span></div>' +
+                '<div class="s-edu-row"><span class="s-edu-period">2026.05 ~ 2026.12</span><span class="s-edu-name">KH정보교육원 부산지원</span><span>클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 (1,053시간) - Spring Boot, JPA, Thymeleaf</span></div>' +
                 '<div class="s-edu-row"><span class="s-edu-period">2018.03 ~ 2024.02</span><span class="s-edu-name">부산대학교</span><span>정보컴퓨터공학부 졸업 | 학점 3.8/4.5</span></div>' +
               '</div>' +
               '<div class="s-section">' +
@@ -5807,7 +5810,7 @@
             },
             {
               title: '교육',
-              example: '<strong>작성 예시:</strong> 2025.06 ~ 2026.02 | KH정보교육원 부산지원 | Java 웹 개발자 양성과정 (960시간)',
+              example: '<strong>작성 예시:</strong> 2026.05 ~ 2026.12 | KH정보교육원 부산지원 | 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 (1,053시간)',
               tip: '<strong>Tip:</strong> 교육 과정은 총 시간과 함께 사용한 핵심 기술(Spring Boot, JPA, Thymeleaf 등)이 프로젝트에서 드러나도록 연결하세요.'
             },
             {
@@ -5858,9 +5861,9 @@
               'project-2-link': 'GitHub: github.com/minsu-web/member-service'
             },
             education: {
-              'edu-1-period': '2025.06 ~ 2026.02',
+              'edu-1-period': '2026.05 ~ 2026.12',
               'edu-1-name': 'KH정보교육원 부산지원',
-              'edu-1-detail': 'Java 웹 개발자 양성과정 (960시간) - Spring Boot, JPA, Thymeleaf',
+              'edu-1-detail': '클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 (1,053시간) - Spring Boot, JPA, Thymeleaf',
               'edu-2-period': '2018.03 ~ 2024.02',
               'edu-2-name': '부산대학교',
               'edu-2-detail': '정보컴퓨터공학부 졸업 | 학점 3.8/4.5'
@@ -6963,13 +6966,13 @@
       label: 'About Me', field: 'about-summary', single: true,
       desc: '2~3문장: 교육·배경 → 핵심 기술/프로젝트 경험 → 일하는 방식. 하나만 골라 넣고 내 경험에 맞게 고치세요.',
       items: [
-        { text: 'K-Digital Training 클라우드 네이티브 풀스택 과정에서 Java 21과 Spring Boot 3.4로 웹 서비스를 설계부터 배포까지 완성했습니다. 팀 프로젝트에서 Spring Data JPA 기반 도메인 설계와 타임리프 화면을 맡았고, AWS EC2·S3에 배포해 실제로 접속되는 서비스로 시연했습니다. 요구사항을 기능 명세와 ERD로 먼저 정리한 뒤 구현하는 개발자를 지향합니다.', tags: ['common', 'devops'] },
+        { text: 'K-디지털 트레이닝 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미(1,053시간)에서 Java 21과 Spring Boot 3.4로 웹 서비스를 설계부터 배포까지 완성했습니다. 팀 프로젝트에서 Spring Data JPA 기반 도메인 설계와 타임리프 화면을 맡았고, AWS EC2·S3에 배포해 실제로 접속되는 서비스로 시연했습니다. 요구사항을 기능 명세와 ERD로 먼저 정리한 뒤 구현하는 개발자를 지향합니다.', tags: ['common', 'devops'] },
         { text: 'Spring Boot와 MySQL 8로 부산 로컬 맛집 리뷰 서비스를 만들며 리뷰·별점·찜 기능과 Spring AI 리뷰 요약을 구현했습니다. AI가 만든 초안 코드를 그대로 쓰지 않고, 테스트 데이터로 SQL 수를 측정해 N+1 문제를 51번에서 1번 조회로 줄였습니다. 측정하고 검증한 뒤 고치는 습관을 강점으로 삼고 있습니다.', tags: ['food', 'quality', 'ai'] },
         { text: '공공 관광 API와 Spring AI를 연동해 부산 여행 코스를 자동으로 만들어주는 서비스를 개발했습니다. 외부 API가 느려도 화면이 멈추지 않도록 타임아웃과 대체 응답을 넣었고, AI가 지어낸 관광지는 DB와 대조해 걸러냈습니다. 외부 연동이 실패해도 서비스가 버티게 만드는 데 관심이 많습니다.', tags: ['trip', 'ai', 'quality'] },
         { text: '매장 사장님이 단골 고객의 방문·포인트·쿠폰을 관리하는 CRM 서비스를 만들었습니다. 고객 전화번호를 화면에 보내기 전에 마스킹하고, 다른 매장 고객 데이터에 접근하지 못하게 권한 검사를 추가했습니다. SQL 집계로 재방문율 대시보드를 만들며 데이터를 서비스 지표로 바꾸는 경험을 했습니다.', tags: ['crm', 'quality'] },
         { text: 'GitHub Actions로 푸시 한 번에 빌드·테스트·jar 생성(CI)과 Elastic Beanstalk 배포(CD)가 자동으로 실행되게 구성했습니다. IAM 역할과 액세스 키를 분리하고 키는 GitHub Secrets에만 저장해, 코드 저장소에 비밀값이 올라가지 않게 관리했습니다. 기능 구현뿐 아니라 배포와 운영 흐름까지 이해하는 백엔드 개발자를 목표로 합니다.', tags: ['devops'] },
         { text: 'Spring Security로 세션 로그인(화면)과 JWT(API), 구글 OAuth2 로그인을 함께 구현했습니다. 주소의 번호만 바꿔 남의 글을 수정하던 IDOR 결함을 테스트로 재현하고 작성자 검사로 막았습니다. 보안 요구사항을 테스트 코드로 증명하는 개발자를 지향합니다.', tags: ['quality'] },
-        { text: '비전공으로 시작해 900시간의 Java 웹 개발 과정에서 Spring Boot, JPA, 타임리프, MySQL을 익혔습니다. 팀 프로젝트에서 회원 도메인과 JWT 인증을 맡아 기능 명세서의 필수 항목을 모두 구현했고, PR 리뷰와 CI 초록불을 거쳐 develop 브랜치에 병합하는 협업 흐름을 지켰습니다. 꾸준히 기록하며 배우는 개발자입니다.', tags: ['common'] },
+        { text: '비전공으로 시작해 1,053시간의 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 과정에서 Spring Boot, JPA, 타임리프, MySQL을 익혔습니다. 팀 프로젝트에서 회원 도메인과 JWT 인증을 맡아 기능 명세서의 필수 항목을 모두 구현했고, PR 리뷰와 CI 초록불을 거쳐 develop 브랜치에 병합하는 협업 흐름을 지켰습니다. 꾸준히 기록하며 배우는 개발자입니다.', tags: ['common'] },
         { text: 'Spring Boot 기반 쇼핑몰에서 상품·주문·장바구니 기능을 구현하며 JPA 연관관계와 QueryDSL 동적 검색을 익혔습니다. 이후 파이널 프로젝트에서는 같은 구조에 AI 기능과 AWS 배포를 더해 실제 사용자가 접속하는 서비스로 발전시켰습니다. 작은 기능도 끝까지 완성해 배포하는 것을 중요하게 생각합니다.', tags: ['shop', 'devops'] },
         { text: 'Spring AI와 OpenRouter 무료 모델로 리뷰 요약·맛집 추천 기능을 만들며, AI 응답을 그대로 믿지 않고 검증하는 구조를 설계했습니다. AI 결과는 th:text로 글자만 출력하고, 하루 사용 횟수와 입력 길이를 제한해 비용과 보안 위험을 줄였습니다. AI를 안전하게 서비스에 녹이는 개발자를 목표로 합니다.', tags: ['ai', 'quality'] },
         { text: '동시에 100명이 찜을 누르면 숫자가 100이 안 되는 갱신 유실 문제를 테스트로 재현했습니다. DB 원자적 업데이트와 유니크 제약으로 고친 뒤 동시성 테스트를 3번 반복해 통과를 확인했습니다. 혼자 쓸 때가 아니라 여러 사람이 동시에 쓸 때를 먼저 생각하는 백엔드 개발자입니다.', tags: ['food', 'quality'] },
@@ -7161,8 +7164,10 @@
       label: '교육', target: 'education',
       desc: '여러 개를 고르면 교육 칸에 위에서부터 차례로 넣고, 칸이 모자라면 자동으로 추가합니다. [ ] 부분은 본인 정보로 바꾸세요.',
       items: [
-        { row: { period: '2026.05 ~ 2026.11', name: '[교육기관명]', detail: 'K-Digital Training 클라우드 네이티브 풀스택 개발자 과정 (900시간) - Spring Boot, JPA, AWS' }, tags: ['common'] },
-        { row: { period: '2026.05 ~ 2026.11', name: '[교육기관명]', detail: 'Java 기반 웹 개발자 양성과정 (960시간) - Spring Boot, 타임리프, MySQL' }, tags: ['common'] },
+        { row: { period: '2026.05 ~ 2026.12', name: 'KH정보교육원AX 부산지원', detail: 'K-디지털 트레이닝 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 5회차 (1,053시간, 프로젝트 360시간)' }, tags: ['common'] },
+        { row: { period: '2026.05 ~ 2026.12', name: 'KH정보교육원AX 부산지원', detail: '클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 (1,053시간) - Java, SQL, React, Servlet/JSP, Spring Boot, Docker·K8s, AWS, GitHub Actions' }, tags: ['common', 'devops'] },
+        { row: { period: '2026.05 ~ 2026.12', name: 'KH정보교육원AX 부산지원', detail: 'NCS 응용SW엔지니어링 · 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 수료(예정) | 세미·파이널 팀 프로젝트 수행' }, tags: ['common'] },
+        { row: { period: '2026.05 ~ 2026.12', name: 'KH정보교육원AX 부산지원', detail: 'K-디지털 트레이닝 Java 풀스택 과정 (1,053시간) - Spring Boot, 타임리프, MySQL' }, tags: ['common'] },
         { row: { period: '2026.10 ~ 2026.11', name: '[교육기관명] 심화', detail: 'AWS 배포(Elastic Beanstalk·RDS·S3) + GitHub Actions CI/CD 실습' }, tags: ['devops'] },
         { row: { period: '2026.10', name: '[교육기관명] 특강', detail: 'AI 코드 검증 실습 - 성능·동시성·보안 결함 11개 측정·개선' }, tags: ['quality', 'ai'] },
         { row: { period: '[20XX.03 ~ 20XX.02]', name: '[OO대학교]', detail: '컴퓨터공학과 졸업 (4년제) | 학점 [X.X]/4.5' }, tags: ['common'] },
@@ -7202,7 +7207,7 @@
         { text: '여행을 계획할 때마다 여러 앱을 오가는 불편을 줄이고 싶어 AI 여행 코스 서비스를 만들었습니다. 외부 API가 느려지면 화면이 멈추는 문제를 타임아웃과 대체 응답으로 해결하며, 서비스는 바깥 시스템이 실패할 때도 버텨야 한다는 것을 배웠습니다. 문제를 로그와 숫자로 좁혀가는 끈기가 강점입니다. 입사 후 안정적인 외부 연동을 책임지는 백엔드 개발자로 성장하겠습니다.', tags: ['trip', 'quality'] },
         { text: '아르바이트하던 가게에서 단골 손님을 수기로 관리하는 모습을 보고 고객 관리 서비스를 기획했습니다. 개인정보인 전화번호를 마스킹하고 다른 매장 데이터 접근을 막으며 보안이 기능만큼 중요하다는 것을 체감했습니다. 사용자의 실제 불편에서 출발해 기능을 정의하는 것이 강점입니다. 입사 후 현장의 문제를 데이터로 푸는 개발자가 되겠습니다.', tags: ['crm', 'quality'] },
         { text: '로컬에서만 돌던 블로그를 AWS에 처음 배포해 친구가 접속했을 때, 코드가 서비스가 되는 순간의 기쁨을 느꼈습니다. 이후 GitHub Actions로 자동 배포를 구성하며 수동 배포 15분을 4분으로 줄였습니다. 반복 작업을 자동화하는 데서 보람을 느낍니다. 입사 후 팀의 배포와 운영을 편하게 만드는 개발자로 성장하겠습니다.', tags: ['devops'] },
-        { text: '비전공자로 시작했기 때문에 모르는 것을 기록하고 다시 확인하는 습관을 먼저 들였습니다. 900시간의 교육과 4주 팀 프로젝트 동안 매일 막힌 부분과 해결 과정을 정리했고, 회원·인증 기능을 맡아 테스트 12개로 동작을 증명했습니다. 꾸준함과 기록이 저의 가장 큰 강점입니다. 입사 후에도 배운 것을 팀과 공유하는 개발자가 되겠습니다.', tags: ['common'] },
+        { text: '비전공자로 시작했기 때문에 모르는 것을 기록하고 다시 확인하는 습관을 먼저 들였습니다. 1,053시간의 교육과 4주 파이널 팀 프로젝트 동안 매일 막힌 부분과 해결 과정을 정리했고, 회원·인증 기능을 맡아 테스트 12개로 동작을 증명했습니다. 꾸준함과 기록이 저의 가장 큰 강점입니다. 입사 후에도 배운 것을 팀과 공유하는 개발자가 되겠습니다.', tags: ['common'] },
         { text: 'AI가 코드를 빠르게 써 주는 시대에 개발자의 역할이 무엇인지 고민했습니다. AI 코드 검증 실습에서 화면은 멀쩡하지만 동시에 100명이 쓰면 숫자가 틀리는 결함을 찾아 고치며, 검증과 책임이 개발자의 몫이라는 답을 얻었습니다. AI 초안은 활용하되 결과는 테스트로 확인하는 것이 강점입니다. 입사 후 AI를 안전하게 쓰는 팀 문화를 만드는 데 기여하겠습니다.', tags: ['ai', 'quality'] },
         { text: '팀장을 맡아 5명이 4주 안에 서비스를 배포해야 했습니다. 매일 아침 5분 스크럼과 브랜치·커밋 규칙을 정해 충돌을 줄였고, CI가 실패한 PR은 머지하지 않는 원칙을 지켜 마지막 주에도 배포가 깨지지 않았습니다. 일정과 품질을 함께 챙기는 조율 능력이 강점입니다. 입사 후 팀이 함께 빨라지는 방법을 찾는 개발자가 되겠습니다.', tags: ['common'] },
         { text: '부팀장으로 팀의 배포와 테스트를 맡았습니다. EC2와 S3, MySQL 서버를 구성하고 CI/CD를 만들어 팀원들이 기능 개발에만 집중할 수 있게 했습니다. 다른 사람의 작업이 막히지 않게 기반을 만드는 일에서 보람을 느낍니다. 입사 후 개발 환경과 배포 파이프라인을 개선하는 백엔드 개발자로 성장하겠습니다.', tags: ['devops'] },
@@ -9537,7 +9542,7 @@
           self.build();
         });
       });
-      ['report-project', 'report-commits', 'report-prs'].forEach(function(id) {
+      ['report-project', 'report-commits', 'report-prs', 'report-verify'].forEach(function(id) {
         document.getElementById(id).addEventListener('change', function() { self.saveInputs(); self.build(); });
       });
       document.getElementById('report-build').addEventListener('click', function() { self.build(); });
@@ -9563,6 +9568,7 @@
       if (saved.project && select.querySelector('option[value="' + saved.project + '"]')) select.value = saved.project;
       document.getElementById('report-commits').value = saved.commits || '';
       document.getElementById('report-prs').value = saved.prs || '';
+      document.getElementById('report-verify').value = saved.verify || '';
       this.showError('');
       this.build();
       this.overlay.classList.add('active');
@@ -9574,7 +9580,8 @@
       Storage.save(REPORT_STORAGE_KEY, {
         project: document.getElementById('report-project').value,
         commits: document.getElementById('report-commits').value,
-        prs: document.getElementById('report-prs').value
+        prs: document.getElementById('report-prs').value,
+        verify: document.getElementById('report-verify').value
       });
     },
 
@@ -9635,6 +9642,8 @@
       var prs = this.num('report-prs');
       md += '### 4. 개인 기여 근거\n';
       md += '- 커밋 ' + (commits === null ? '[N]' : commits) + '건 · PR ' + (prs === null ? '[M]' : prs) + '건 (GitHub Insights → Contributors 기준)\n';
+      var verifyRows = this.num('report-verify');
+      md += '- AI 코드 검증일지: 내 결함 기록 ' + (verifyRows === null ? '[K]' : verifyRows) + '건 (발견 근거·원인·개선·Before/After·커밋 링크)\n';
       md += '- 담당 화면/API: [직접 채우기]\n';
       if (p.result) md += '- 성과: ' + p.result + '\n';
       md += '\n### 5. 문제 해결 (Before → After)\n| 문제 | 원인 | 해결 | 결과 |\n|---|---|---|---|\n';
@@ -9680,9 +9689,9 @@
       md += '- [ ] **AI 기능 (15점)**: 결과 표시, 실패 시 안내 문구, 하루 횟수 제한, `:free` 모델 사용 보여주기\n';
       md += '- [ ] **배포·CI/CD (15점)**: PR → CI 초록불 → main 머지 → 자동 배포 과정 보여주기\n';
       md += '- [ ] **보안 (10점)**: JWT로 API 호출, 권한 없는 접근 거부(403), HTML 입력이 글자로 표시되는 것\n';
-      md += '- [ ] **코드·문서 (15점)**: README, 커밋 메시지, PR 리뷰 기록, 제출 파일 4개\n';
+      md += '- [ ] **코드·문서 (15점)**: README(검증일지 README표 반영), 커밋 메시지, PR 리뷰 기록, 제출 파일 5개\n';
       md += '- [ ] **개인 기여 (15점)**: 결과보고서의 역할별 기여, 본인 커밋, 질의응답 준비\n\n';
-      md += '## 발표 전날\n- [ ] 테스트 계정으로 로그인되는지 확인\n- [ ] 배포 주소 접속 확인 (다른 기기·모바일 데이터로도)\n- [ ] 인터넷이 안 될 때를 대비한 시연 영상·스크린샷 준비\n- [ ] 제출 파일 4개 최종본 확인 (기획·설계, 결과보고서, 주간보고서, jar)\n- [ ] 면접 예상 질문 중 이 프로젝트 질문 3개 답변 연습\n\n';
+      md += '## 발표 전날\n- [ ] 테스트 계정으로 로그인되는지 확인\n- [ ] 배포 주소 접속 확인 (다른 기기·모바일 데이터로도)\n- [ ] 인터넷이 안 될 때를 대비한 시연 영상·스크린샷 준비\n- [ ] 제출 파일 5개 최종본 확인 (기획·설계, 결과보고서, 주간보고서, jar, AI 코드 검증일지)\n- [ ] AI 코드 검증일지: 내 줄의 Before/After 수치와 커밋·PR 링크가 모두 채워졌는지 확인\n- [ ] 면접 예상 질문 중 이 프로젝트 질문 3개 답변 연습\n\n';
       md += '## 발표 후\n- [ ] AWS 리소스 정리 (EC2·S3 등) — 켜 둔 시간만큼 요금 발생\n- [ ] 배포용 IAM 액세스 키 비활성화·삭제, GitHub Secrets 정리\n- [ ] 다음 날 결제 및 비용 관리에서 비용이 늘지 않았는지 확인\n';
       return md;
     },
@@ -10223,6 +10232,304 @@
     }
   };
   window.Photo = Photo;
+
+
+  // ===== 수업 자료 반영: 파이널 프로젝트 공지(개정) + 세미 프로젝트 결과보고서 3개 =====
+  // 출처: final-project-notice.html (Java 21/25, Spring Boot 3/4, 제출 파일 5개·AI 코드 검증일지),
+  //       1조 NEXORA(보안 관제), 2조 MovieBox(영화 예매), 3팀 놀러가자(국내여행·가이드 예약) 결과보고서.
+  // 보고서의 실명은 넣지 않고 역할·기술·수치만 사용한다. 숫자는 각 팀 보고서에 적힌 값이다.
+  (function extendWithCourseMaterials() {
+    var themeIdx = EXAMPLE_THEMES.map(function(t) { return t.key; }).indexOf('common');
+    EXAMPLE_THEMES.splice(themeIdx === -1 ? EXAMPLE_THEMES.length : themeIdx, 0, { key: 'semi', label: '🧩 세미(JSP·Servlet)' }, { key: 'nonmajor', label: '🌱 비전공' });
+
+    var L = EXAMPLE_LIBRARY;
+    var add = function(cat, items) { Array.prototype.push.apply(L[cat].items, items); };
+
+    add('headline', [
+      { text: '백엔드 지원 | Java · JSP/Servlet → Spring Boot · MySQL 8 · AWS', tags: ['semi', 'common'] },
+      { text: '비전공 신입 백엔드 지원 | 1,053시간 풀스택·DevOps 과정 · Spring Boot · AWS · GitHub Actions', tags: ['nonmajor', 'common'] },
+      { text: '웹 개발 지원 | Servlet/JSP MVC · JDBC · 외부 API 연동 · 결제', tags: ['semi'] },
+      { text: '백엔드 지원 | 결제·예약 동시성 제어 · 공공 API 연동 · Nginx HTTPS 배포', tags: ['semi', 'quality', 'devops'] }
+    ]);
+
+    add('about', [
+      { text: '비전공으로 시작해 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미(1,053시간)에서 Java·SQL 기초부터 Spring Boot·Docker·AWS·GitHub Actions까지 단계적으로 익혔습니다. 처음 보는 개발 용어는 개념·쓰이는 상황·예시로 직접 정리했고, 교과마다 필기·실기 평가로 이해도를 확인하며 빈틈을 메웠습니다. 프로젝트에서 맡은 기능, 기술을 고른 이유, 문제를 해결한 과정을 직접 설명할 수 있는 개발자를 지향합니다.', tags: ['nonmajor', 'common'] },
+      { text: '[이전 전공/경력: 예) 경영학·서비스업]을 하며 사용자의 불편을 가까이에서 본 경험이 개발을 시작한 계기입니다. 1,053시간 과정에서 세미 프로젝트(JSP/Servlet)와 파이널 프로젝트(Spring Boot)를 거치며 요구사항을 기능으로 바꾸고 배포까지 완성했습니다. 비전공 배경에서 얻은 사용자 관점을 코드로 옮기는 백엔드 개발자를 목표로 합니다.', tags: ['nonmajor', 'semi'] },
+      { text: '전공은 다르지만, 모르는 것을 그냥 넘기지 않는 습관으로 개발 기본기를 쌓았습니다. 교과마다 학습 내용을 기록하고 실습 과제로 확인했고, 팀 프로젝트에서는 [담당 기능]을 맡아 [숫자로 된 결과]를 냈습니다. 기술 면접에서 "왜 이 기술을 썼는가"까지 설명할 수 있도록 근거를 남기며 개발합니다.', tags: ['nonmajor'] },
+      { text: '세미 프로젝트에서는 JSP/Servlet Model 2 MVC로 Controller–Service–DAO를 직접 나누고 JDBC로 SQL을 다루며 웹 요청이 처리되는 흐름을 손으로 익혔습니다. 파이널 프로젝트에서는 같은 구조를 Spring Boot·Spring Data JPA로 옮기며 프레임워크가 무엇을 대신해 주는지 비교해 이해했습니다. 기본기를 직접 구현해 본 뒤 도구를 쓰는 개발자를 지향합니다.', tags: ['semi', 'common'] },
+      { text: '국내 여행·가이드 예약 플랫폼에서 예약·결제를 맡아, 결제 금액을 서버에서 다시 계산하고 같은 날짜 이중 예약은 DB UNIQUE로, 중복 결제 승인은 조건부 UPDATE 상태 전이로 막았습니다. TourAPI·지도·번역 등 외부 API를 연동하며 실패와 동시 요청 상황까지 고려하는 습관을 얻었습니다. 돈과 데이터가 틀리지 않는 서비스를 만드는 백엔드 개발자를 목표로 합니다.', tags: ['semi', 'quality'] },
+      { text: '보안 관제 웹 서비스에서 웹 요청·AI 프롬프트 위협을 규칙으로 탐지하고 서버 오류를 심각도별로 분류하는 기능을 구현했습니다. 탐지·판단은 규칙이 하고 AI는 요약·대응 제안만 하도록 역할을 나눠 결과의 일관성을 지켰습니다. 운영 중 생기는 문제를 빠르게 발견하고 기록하는 백엔드 개발자를 지향합니다.', tags: ['semi', 'ai', 'quality'] }
+    ]);
+
+    add('intro', [
+      { text: '[이전 전공/경력]을 하다가 [계기가 된 구체적 경험]을 계기로 개발을 시작했습니다. 비전공이라 처음에는 용어부터 낯설었지만, 매일 모르는 용어와 구문을 정리하고 실습으로 확인하며 1,053시간 과정을 끝까지 따라갔습니다. 파이널 프로젝트에서는 [담당 기능]을 맡아 [결과]를 냈고, 실전 면접에서 구현 과정과 문제 해결 경험을 직접 설명하며 부족한 부분을 보완했습니다. 입사 후에도 꾸준히 배우고 기록하는 개발자가 되겠습니다.', tags: ['nonmajor'] },
+      { text: '비전공자로서 가장 어려웠던 것은 "왜 이렇게 동작하는가"를 설명하는 일이었습니다. 그래서 프로젝트마다 담당 기능, 기술을 고른 이유, 구현 과정, 오류를 해결한 경험을 정리해 두는 습관을 들였습니다. 세미 프로젝트의 JSP/Servlet 경험이 파이널 프로젝트에서 Spring Boot가 무엇을 대신해 주는지 이해하는 바탕이 되었습니다. 입사 후 이해한 것을 팀에 설명하고 공유하는 개발자로 성장하겠습니다.', tags: ['nonmajor', 'semi'] },
+      { text: '[이전 분야]에서 데이터를 손으로 정리하던 경험이 있어, 반복 작업을 코드로 자동화하는 데 큰 보람을 느낍니다. 과정에서 Python 크롤링으로 공공 데이터를 수집하고 Spring Boot·MySQL로 서비스를 만들며, GitHub Actions로 배포까지 자동화해 보았습니다. 비전공 출신이라 기초를 더 단단히 하려고 SQL과 트랜잭션을 따로 복습했습니다. 입사 후 사용자의 반복 업무를 줄이는 서비스를 만드는 개발자가 되겠습니다.', tags: ['nonmajor'] },
+      { text: '세미 프로젝트에서 통합 직전 마이페이지 찜이 0건으로 보이는 문제를 만났고, 원인이 세션 키 id와 loginId를 섞어 쓴 데 있다는 것을 로그로 찾아 팀 규칙을 loginId로 통일했습니다. 기능을 만드는 것보다 여러 사람이 같은 규칙으로 통합하는 것이 더 어렵다는 것을 배웠습니다. 그래서 파이널 프로젝트에서는 브랜치·커밋·응답 형식 규칙을 먼저 정하고 시작했습니다. 입사 후에도 팀 규칙을 함께 만들고 지키는 개발자가 되겠습니다.', tags: ['semi', 'common'] },
+      { text: '영화 예매 서비스를 만들며 같은 좌석이 동시에 두 번 예매될 수 있다는 것을 처음 알았습니다. 상영 회차와 좌석 번호에 복합 UNIQUE 제약을 걸어 데이터 무결성을 지켰고, 이 경험으로 "조회 후 저장"만으로는 동시 요청을 막을 수 없다는 것을 배웠습니다. 데이터가 틀어질 수 있는 지점을 먼저 찾는 것이 저의 강점입니다. 입사 후 신뢰할 수 있는 예약·결제 시스템을 만드는 개발자로 성장하겠습니다.', tags: ['semi', 'quality'] }
+    ]);
+
+    add('projectPreset', [
+      { title: '[세미] NEXORA 보안 관제 - 위협 탐지·심각도 분류·Slack 알림', tags: ['semi', 'quality', 'ai'],
+        project: { name: 'NEXORA - 보안 위협 관제·인시던트 대응 웹 서비스', meta: '2026.09 ~ 2026.10 | 팀 3명 (세미 프로젝트)', desc: 'Java 17 · Servlet/JSP MVC · MySQL 8 기반 웹 요청·AI 프롬프트 위협 탐지와 서버 오류 관제',
+          role: 'SentinelOps·Security 탐지·관제 (Servlet/JSP, JDBC, OpenRouter, Slack Webhook)',
+          details: ['웹 입력·AI 프롬프트를 유형별 정규식 규칙으로 검사하고 같은 규칙은 한 번만 기록', 'HTTP 5XX·Java 예외를 기록하고 DB 연결 실패·503은 CRITICAL로 분류하는 심각도 분류기 구현', '탐지·심각도는 규칙이 결정하고 OpenRouter AI는 요약·대응 제안만 하도록 역할 분리', '중요 이벤트 Slack Webhook 알림, X-API-Key 인증 조회 REST API(목록·상세 GET) 제공'],
+          result: '성과: 탐지 → 이벤트 저장 → 관제 확인 → 대응 기록 흐름 완성, 로컬 Tomcat·DB·REST API·Webhook 통합 검증', link: 'github.com/[your-id]/nexora' } },
+      { title: '[세미] NEXORA 회원 - 가입 검증·해시 저장·관리자 회원 관리', tags: ['semi', 'quality'],
+        project: { name: 'NEXORA - 보안 관제 서비스 회원 도메인', meta: '2026.09 ~ 2026.10 | 팀 3명 (세미 프로젝트)', desc: 'Servlet/JSP MVC 보안 관제 사이트의 회원·마이페이지·관리자 회원 관리',
+          role: 'Member 회원 도메인 (Servlet/JSP, JDBC, MySQL 8)',
+          details: ['아이디 중복·입력 형식·필수값 검증 후 비밀번호를 단방향 해시로 저장', '세션 기반 로그인과 마이페이지(회원정보·비밀번호 수정, 우편번호 검색)', '관리자 회원 조회·상태 관리, 탈퇴 계정 보유기간 정책', '민감 정보 마스킹·출처 IP 해시 보관 등 데이터 보호 기준 적용'],
+          result: '성과: 기능별 테이블 15개 중 회원 영역 설계·구현, 평문 비밀번호 저장 0건', link: 'github.com/[your-id]/nexora' } },
+      { title: '[세미] NEXORA 커뮤니티 - 게시판·댓글·첨부파일 권한 검사', tags: ['semi', 'quality'],
+        project: { name: 'NEXORA - 보안 관제 서비스 커뮤니티 게시판', meta: '2026.09 ~ 2026.10 | 팀 3명 (세미 프로젝트)', desc: '게시글·댓글·첨부파일과 관리자 게시물 관리',
+          role: 'Community Board 게시판 (Servlet/JSP, JDBC)',
+          details: ['카테고리·검색·페이지 조회 게시글, 댓글 작성·수정·삭제 권한 확인', '작성자 또는 관리자만 수정하도록 서버에서 검사(403), 관리자 수정 시에도 원래 작성자 보존', '첨부파일 확장자·용량·개수 제한과 저장 경로 비공개', '관리자 공지 관리와 게시물 모더레이션'],
+          result: '성과: 권한 없는 수정 요청 403 차단, 첨부파일 업로드 제한 3종 적용', link: 'github.com/[your-id]/nexora' } },
+      { title: '[세미] MovieBox 영화 예매 - 좌석 중복 예매 방지·AI 영화 추천', tags: ['semi', 'quality', 'ai'],
+        project: { name: 'MovieBox - 영화 예매·리뷰 웹 서비스', meta: '2026.09.22 ~ 2026.10.25 | 팀 5명 (세미 프로젝트)', desc: 'JSP/Servlet MVC + MySQL 8 영화 예매·리뷰·매점 서비스 (KMDb 영화 API 연동)',
+          role: '영화 예매·모바일 티켓·AI 영화 추천 (JSP, Servlet, DAO/JDBC, MySQL 8)',
+          details: ['상영 회차·좌석 번호 복합 UNIQUE 제약으로 같은 좌석 중복 예매 방지', '예매 정보와 선택 좌석 일치 여부 검증, 모바일 티켓 접근 시 예매 정보 확인', 'AI 영화 추천 기능 구현', 'Controller → DAO → VO 구조로 요청 처리와 SQL 분리'],
+          result: '성과: 동일 좌석 동시 예매를 DB 제약으로 차단해 데이터 무결성 확보, 팀 자체 평가 8.0/10', link: 'github.com/[your-id]/moviebox' } },
+      { title: '[세미] MovieBox 영화 데이터 - KMDb API 수집·DB 저장·즐겨찾기', tags: ['semi'],
+        project: { name: 'MovieBox - 영화 데이터 수집·상세 조회', meta: '2026.09.22 ~ 2026.10.25 | 팀 5명 (세미 프로젝트)', desc: 'KMDb 영화 API로 최신 영화 정보를 수집해 MySQL에 저장하고 목록·상세 제공',
+          role: '영화 API 관리·DB, 영화 상세 조회·회원별 즐겨찾기 (KMDb API, JDBC, MySQL 8)',
+          details: ['KMDb 영화 API로 최신 영화 정보를 수집해 MySQL에 저장', '중복 데이터 저장을 막아 영화 정보를 효율적으로 관리', '저장 데이터로 영화 목록·상세 정보 제공, 회원별 영화 즐겨찾기', 'Ubuntu 서버·Windows 환경의 파일 저장 경로 차이 점검'],
+          result: '성과: 외부 API 데이터를 DB에 적재해 목록·상세 화면 제공, Ubuntu 서버 배포 환경 점검', link: 'github.com/[your-id]/moviebox' } },
+      { title: '[세미] 놀러가자 가이드 예약·토스 결제 - 이중 예약·중복 승인 방지', tags: ['semi', 'quality', 'trip'],
+        project: { name: '놀러가자 - 국내여행 소개 & 가이드 예약 플랫폼', meta: '2026.09.21 ~ 2026.10.25 | 팀 4명 (세미 프로젝트)', desc: 'JSP/Servlet Model 2 MVC + MySQL 8.4, AWS Lightsail·Nginx HTTPS 배포',
+          role: '여행지·가이드 예약·토스 결제, 번역·실시간 채팅 (Servlet/JSP, JDBC, Toss Payments, WebSocket)',
+          details: ['TourAPI 여행지 목록·검색·상세를 LRU 캐시로 재사용 (목록·상세 1시간, 검색 10분)', '결제 금액을 서버에서 요금 × 인원으로 재계산해 금액 조작 차단', '같은 가이드·같은 날짜 이중 예약을 생성 컬럼 + UNIQUE로 차단 (409)', 'PENDING → CONFIRMING → PAID 조건부 UPDATE로 중복 결제 승인 방지', '한국어·영어·일본어 번역과 WebSocket 실시간 채팅'],
+          result: '성과: 이중 예약·중복 승인을 DB 제약과 상태 전이로 차단, 외부 API 호출을 캐시로 절감', link: 'github.com/[your-id]/nolleogaja' } },
+      { title: '[세미] 놀러가자 팀장 - 숙박·AI 일정표·관리자·AWS HTTPS 배포', tags: ['semi', 'ai', 'devops', 'trip'],
+        project: { name: '놀러가자 - 숙박·AI 여행 일정·운영 배포', meta: '2026.09.21 ~ 2026.10.25 | 팀 4명 (세미 프로젝트)', desc: '공공데이터 숙소 검색·AI 리뷰 요약·AI 일정 생성과 AWS Lightsail 배포',
+          role: '팀장 · 숙박·AI 일정표·관리자 페이지, AWS 배포 (OpenRouter, AWS Lightsail, Nginx)',
+          details: ['공공데이터 숙소를 배치 수집해 DB에 저장, ST_Distance_Sphere로 반경 500m·1km·3km 검색', 'OpenRouter AI 리뷰 장단점 요약을 DB에 캐시해 반복 호출 비용 절감', 'AI 일정 생성: 요청 1건 + 일차별 N건을 한 트랜잭션으로 저장, PDF·카카오톡 공유', 'WAR 빌드 → AWS Lightsail Tomcat, Nginx 443(HTTPS·Let\'s Encrypt) → Tomcat 프록시, API 키 설정 파일 분리'],
+          result: '성과: 실제 도메인·HTTPS로 배포 완료, 팀 자체 평가 9/10', link: 'github.com/[your-id]/nolleogaja' } },
+      { title: '[세미] 놀러가자 음식·Q&A·마이페이지 - 지도 검색·GET_LOCK·CSRF', tags: ['semi', 'quality', 'food'],
+        project: { name: '놀러가자 - 음식 지도·Q&A·마이페이지', meta: '2026.09.21 ~ 2026.10.25 | 팀 4명 (세미 프로젝트)', desc: '지도 기반 맛집 탐색과 Q&A 게시판, 찜·예약·일정·리뷰 통합 마이페이지',
+          role: '음식·Q&A·마이페이지 (TourAPI, Naver Local Search, JDBC)',
+          details: ['TourAPI 위치 기반 맛집 + Naver Local Search 키워드 검색, 지도 마커와 목록 동기화', 'DB에 없는 음식점은 찜할 때 자동 등록, GET_LOCK으로 중복 등록 방지', 'Q&A 작성자·관리자 권한 검사, CSRF 토큰 쓰기 보호, 조회수 원자적 UPDATE', '마이페이지에서 숙소·여행지·음식·문화유산 찜과 예약·일정·리뷰 통합 조회'],
+          result: '성과: 4개 도메인 찜 데이터 통합·중복 제거, 동시 찜 시 중복 등록 문제 해결', link: 'github.com/[your-id]/nolleogaja' } },
+      { title: '[세미] 놀러가자 회원·리뷰·문화유산 - 세션 고정 방지·탈퇴 익명화', tags: ['semi', 'quality'],
+        project: { name: '놀러가자 - 회원·리뷰 게시판·문화유산·메인', meta: '2026.09.21 ~ 2026.10.25 | 팀 4명 (세미 프로젝트)', desc: '회원가입·카카오 로그인, 이미지 리뷰 게시판, 문화유산 탐색, 메인 통합',
+          role: '회원·리뷰·문화유산·메인 (BCrypt, Kakao Login, SMTP, TourAPI)',
+          details: ['BCrypt 비밀번호, LoginCheckFilter 접근 제어, 로그인 시 세션 재발급으로 세션 고정 방지', '이메일 인증·카카오 로그인, 탈퇴는 ACTIVE → WITHDRAWN 상태 전환·작성글 익명화', '리뷰 이미지·댓글·좋아요 (review_like UNIQUE로 중복 좋아요 방지)', 'TourAPI 문화유산 데이터를 DB에 동기화해 목록 조회 속도 확보, 상세는 fetch JSON 모달'],
+          result: '성과: 회원 탈퇴 FK 오류를 상태 전환·익명화로 해결해 결제·작성 기록 보존', link: 'github.com/[your-id]/nolleogaja' } }
+    ]);
+
+    add('projectRole', [
+      { text: '보안 탐지·관제 · 위협 규칙 검사, 심각도 분류, Slack 알림 (Servlet/JSP)', tags: ['semi', 'quality'] },
+      { text: '영화 예매·모바일 티켓·AI 영화 추천 (JSP, Servlet, JDBC)', tags: ['semi', 'ai'] },
+      { text: '가이드 예약·토스 결제 · 이중 예약·중복 승인 방지 (Servlet, Toss Payments)', tags: ['semi', 'quality'] },
+      { text: '팀장 · 숙박·AI 일정표·관리자, AWS Lightsail·Nginx HTTPS 배포', tags: ['semi', 'devops', 'ai'] },
+      { text: '음식 지도·Q&A·마이페이지 (Naver Local Search, TourAPI)', tags: ['semi'] },
+      { text: '회원·리뷰·문화유산 · 카카오 로그인, 세션 보안 (BCrypt, Filter)', tags: ['semi', 'quality'] }
+    ]);
+
+    add('projectDetail', [
+      { text: 'JSP/Servlet Model 2 MVC로 Controller–Service–DAO–JSP 분리, 공통 레이아웃으로 화면 통일', tags: ['semi'] },
+      { text: '화면 요청은 forward·redirect, fetch 요청은 상태코드 + JSON {success, message}로 응답 규칙 통일', tags: ['semi'] },
+      { text: '상태코드 400·401·403·404·409·500을 구분하는 팀 공통 규칙 적용', tags: ['semi', 'quality'] },
+      { text: 'JNDI 커넥션 풀 + PreparedStatement로 DB 접근, 여러 SQL은 한 트랜잭션으로 처리', tags: ['semi'] },
+      { text: '26개 테이블·FK 30개 관계형 설계, 찜·좋아요는 (회원, 대상) UNIQUE로 중복 저장 방지', tags: ['semi'] },
+      { text: '상영 회차·좌석 번호 복합 UNIQUE 제약으로 같은 좌석 중복 예매 방지', tags: ['semi', 'quality'] },
+      { text: '진행 중 예약만 값이 들어가는 생성 컬럼 + (가이드, 날짜) UNIQUE로 이중 예약 차단 (409)', tags: ['semi', 'quality'] },
+      { text: '결제 금액을 서버에서 DB 가격 × 인원으로 재계산해 금액 조작 차단', tags: ['semi', 'quality'] },
+      { text: 'PENDING → CONFIRMING → PAID 조건부 UPDATE로 중복 결제 승인 방지, 불확실하면 REVIEW 상태', tags: ['semi', 'quality'] },
+      { text: '로그인 시 세션 재발급으로 세션 고정 방지, 로그아웃 시 세션 무효화·캐시 제어로 이전 화면 재노출 방지', tags: ['semi', 'quality'] },
+      { text: '쓰기 요청 CSRF 토큰 검증, 추가·수정·삭제는 POST만 허용', tags: ['semi', 'quality'] },
+      { text: '회원 탈퇴를 ACTIVE → WITHDRAWN 상태 전환 + 개인정보 익명화로 처리해 FK 기록 보존', tags: ['semi', 'quality'] },
+      { text: 'TourAPI 결과를 LRU 메모리 캐시로 재사용 (목록·상세 1시간, 검색 10분)', tags: ['semi', 'trip'] },
+      { text: '공공 API를 화면 JS에서 직접 부르던 구조를 서블릿 배치 수집 + DB 저장으로 바꿔 API 키 노출 방지', tags: ['semi', 'quality'] },
+      { text: 'ST_Distance_Sphere로 반경 500m·1km·3km 숙소 거리 검색', tags: ['semi', 'trip'] },
+      { text: 'DB에 없는 음식점은 찜할 때 자동 등록, MySQL GET_LOCK으로 동시 중복 등록 방지', tags: ['semi', 'quality', 'food'] },
+      { text: 'WebSocket 실시간 채팅 메시지 송수신·저장', tags: ['semi'] },
+      { text: '한국어·영어·일본어 페이지 번역, MutationObserver로 새로 그려진 요소도 번역', tags: ['semi'] },
+      { text: '웹 입력·AI 프롬프트 위협을 정규식 규칙으로 탐지하고 심각도별로 기록, 중요 이벤트 Slack Webhook 알림', tags: ['semi', 'quality'] },
+      { text: 'X-API-Key 인증 REST API(목록·상세 GET)로 외부 서비스에 관제 데이터 제공', tags: ['semi'] },
+      { text: 'KMDb 영화 API로 최신 영화를 수집해 DB에 저장하고 중복 저장 방지', tags: ['semi'] },
+      { text: '매점 장바구니와 가상 결제 흐름 구현', tags: ['semi'] },
+      { text: 'WAR 빌드 → AWS Lightsail Tomcat 배포, Nginx 443(HTTPS·Let\'s Encrypt) → Tomcat 리버스 프록시', tags: ['semi', 'devops'] },
+      { text: 'API 키·DB 정보를 config.properties·context.xml로 분리하고 Git에서 제외', tags: ['semi', 'devops', 'quality'] },
+      { text: '세션 키 id/loginId 혼용으로 찜이 0건으로 보이던 문제를 loginId로 통일해 해결', tags: ['semi'] },
+      { text: 'build/*.class를 Git에서 제외하고 main 변경을 주기적으로 병합해 최종 병합 충돌 감소', tags: ['semi', 'common'] },
+      { text: 'AI 코드 검증일지에 결함 1건 = 한 줄로 발견 근거·원인·개선·Before/After·커밋 링크 기록', tags: ['ai', 'quality', 'common'] }
+    ]);
+
+    add('projectResult', [
+      { text: '26개 테이블·FK 30개 관계형 DB 설계', tags: ['semi'] },
+      { text: '외부 API 7종 연동 (TourAPI·공공데이터·Kakao·Naver·OpenRouter·Toss·Google 번역)', tags: ['semi'] },
+      { text: '좌석 중복 예매를 DB 복합 UNIQUE로 차단', tags: ['semi', 'quality'] },
+      { text: '이중 예약·중복 결제 승인을 DB 제약과 조건부 UPDATE로 차단', tags: ['semi', 'quality'] },
+      { text: '실제 도메인 HTTPS 배포 (AWS Lightsail + Nginx + Let\'s Encrypt)', tags: ['semi', 'devops'] },
+      { text: '로컬 Tomcat·DB·REST API·Slack Webhook 통합 검증 완료', tags: ['semi'] },
+      { text: '한국어·영어·일본어 3개 언어 번역 지원', tags: ['semi'] },
+      { text: 'AI 리뷰 요약 결과 DB 캐시로 같은 숙소 재요청 0회', tags: ['semi', 'ai'] },
+      { text: 'AI 코드 검증일지 결함 [N]건 기록, Before/After 수치와 커밋·PR 링크로 증빙', tags: ['ai', 'quality', 'common'] }
+    ]);
+
+    add('skills', [
+      { text: 'Java 25', cat: 'backend', tags: ['common'] },
+      { text: 'Spring Boot 4', cat: 'backend', tags: ['common'] },
+      { text: 'Servlet/JSP', cat: 'backend', tags: ['semi'] },
+      { text: 'JDBC', cat: 'backend', tags: ['semi'] },
+      { text: 'JSTL', cat: 'frontend', tags: ['semi'] },
+      { text: 'WebSocket', cat: 'backend', tags: ['semi'] },
+      { text: 'Toss Payments', cat: 'backend', tags: ['semi'] },
+      { text: 'TourAPI', cat: 'backend', tags: ['semi', 'trip'] },
+      { text: 'Kakao Maps API', cat: 'frontend', tags: ['semi'] },
+      { text: 'Naver Local Search', cat: 'backend', tags: ['semi'] },
+      { text: 'KMDb API', cat: 'backend', tags: ['semi'] },
+      { text: 'Slack Webhook', cat: 'devops', tags: ['semi'] },
+      { text: 'Apache Tomcat 9', cat: 'devops', tags: ['semi'] },
+      { text: 'Nginx', cat: 'devops', tags: ['semi', 'devops'] },
+      { text: 'AWS Lightsail', cat: 'devops', tags: ['semi', 'devops'] },
+      { text: 'MySQL Workbench', cat: 'devops', tags: ['common'] },
+      { text: 'Eclipse', cat: 'devops', tags: ['semi'] }
+    ]);
+
+    add('education', [
+      { row: { period: '2026.05 ~ 2026.12', name: 'KH정보교육원AX 부산지원', detail: '클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 5회차 — 세미 프로젝트(JSP/Servlet) → 파이널 프로젝트(Spring Boot·AWS)' }, tags: ['semi', 'common'] }
+    ]);
+
+    // --- 면접 질문: 세미 프로젝트 기술 + 공지 변경(검증일지, Java 25·Boot 4)
+    Array.prototype.push.apply(INTERVIEW_TOPICS, [
+      { id: 't-servlet', cat: 'tech', re: /Servlet|\bJSP\b|서블릿/i, q: 'Servlet/JSP로 만든 MVC와 Spring MVC는 무엇이 다른가요?',
+        points: ['Model 2: Servlet이 Controller, JSP가 View, DAO에서 JDBC로 SQL을 직접 실행', 'Spring: DispatcherServlet이 요청을 컨트롤러로 연결하고, 객체 생성·연결은 DI 컨테이너가 관리', '@Transactional·Spring Data JPA로 커넥션·트랜잭션·반복 SQL 코드가 줄어듦', '세미에서 요청 흐름을 직접 구현해 봐서 Spring이 대신하는 부분을 설명할 수 있음'] },
+      { id: 't-jdbc', cat: 'tech', re: /JDBC|PreparedStatement|JNDI|\bDAO\b/i, q: 'JDBC로 DB에 접근할 때 PreparedStatement와 커넥션 풀을 쓴 이유는?',
+        points: ['PreparedStatement: 값을 바인딩해 SQL 인젝션 방지, 같은 SQL 재사용', '커넥션 생성 비용이 커서 풀(JNDI)에서 빌려 쓰고 반납', 'try-with-resources로 close 누락 방지', 'JPA와 비교: 직접 SQL은 제어가 쉽지만 반복 코드가 많음'] },
+      { id: 't-session-fix', cat: 'tech', re: /세션 고정|세션 재발급|세션 무효화|LoginCheckFilter|loginId/i, q: '로그인할 때 세션을 새로 발급하고, 로그아웃할 때 세션을 무효화하는 이유는?',
+        points: ['세션 고정 공격: 공격자가 미리 알려 준 세션 ID로 피해자가 로그인하면 그 세션을 가로챔 → 로그인 시 새 세션 발급', '로그아웃: 세션 무효화 + 캐시 제어 헤더로 뒤로가기 화면 재노출 방지', '필터로 보호 페이지 접근을 한곳에서 검사', '세션 키 이름을 팀 규칙으로 통일 (예: loginId)'] },
+      { id: 't-csrf', cat: 'tech', re: /CSRF/i, q: 'CSRF는 무엇이고 어떻게 막았나요?',
+        points: ['로그인된 사용자의 브라우저를 이용해 다른 사이트가 요청을 위조하는 공격', '쓰기 요청에 서버가 발급한 CSRF 토큰을 넣고 검증', '데이터 변경은 POST만 허용 (GET은 조회만)', '쿠키 SameSite 설정도 함께 고려'] },
+      { id: 't-payment', cat: 'tech', re: /결제|토스|Toss/i, q: '결제 금액을 브라우저에서 받은 값으로 계산하면 왜 위험하고, 중복 승인은 어떻게 막았나요?',
+        points: ['브라우저 값은 조작 가능 → 금액은 서버에서 DB 가격 × 인원으로 다시 계산', '상태를 PENDING → CONFIRMING → PAID로 조건부 UPDATE (영향 행 1일 때만 승인 진행)', '결제사 응답이 불확실하면 REVIEW 같은 확인 대기 상태로 남김', '같은 주문 번호로 두 번 승인되지 않게 주문 번호를 고유하게'] },
+      { id: 't-booking', cat: 'tech', re: /이중 예약|중복 예매|좌석|생성 컬럼|복합 UNIQUE/i, q: '같은 좌석·같은 날짜가 두 번 예약되지 않게 어떻게 막았나요?',
+        points: ['"조회 후 없으면 저장"은 동시 요청에 뚫림', 'DB 복합 UNIQUE (상영 회차 + 좌석 번호)로 최종 방어', '취소된 예약은 제외하려면 진행 중일 때만 값이 생기는 생성 컬럼 + UNIQUE', '위반 예외를 잡아 409(Conflict)로 응답'] },
+      { id: 't-lru', cat: 'tech', re: /LRU|캐시/i, q: '외부 API 결과를 캐시한 이유와 주의할 점은?',
+        points: ['호출 수·비용·응답 시간 절감, 외부 장애 영향 감소', '데이터 성격별 만료 시간 (예: 목록·상세 1시간, 검색 10분)', '메모리 한도 → LRU로 오래 안 쓴 것부터 제거', '자주 바뀌는 데이터는 만료를 짧게, 서버가 여러 대면 공유 캐시(Redis) 고려'] },
+      { id: 't-lock', cat: 'tech', re: /GET_LOCK|중복 등록/i, q: 'MySQL GET_LOCK을 쓴 이유와 다른 방법은?',
+        points: ['DB에 없는 데이터를 두 요청이 동시에 등록하려 할 때 이름 있는 락으로 순서를 정함', '대안: 유니크 제약 + INSERT ... ON DUPLICATE KEY / 예외 처리', '락은 반드시 해제(RELEASE_LOCK), 타임아웃 설정'] },
+      { id: 't-ws', cat: 'tech', re: /WebSocket|웹소켓|실시간 채팅/i, q: 'WebSocket은 HTTP와 무엇이 다르고, 실시간 채팅을 어떻게 구현했나요?',
+        points: ['HTTP는 요청-응답 후 끊김, WebSocket은 한 번 연결 후 서버·클라이언트가 양방향으로 계속 메시지 전송', '연결된 세션 목록에 메시지를 브로드캐스트하고 DB에 저장', '로그인 사용자만 연결 허용, 메시지는 글자로만 출력(XSS 방지)'] },
+      { id: 't-nginx', cat: 'tech', re: /Nginx|Lightsail|Let'?s Encrypt|HTTPS|리버스 프록시/i, q: 'Tomcat 앞에 Nginx를 둔 이유와 HTTPS 적용 방법은?',
+        points: ['Nginx가 443에서 TLS(HTTPS)를 처리하고 내부 Tomcat 포트로 프록시', "Let's Encrypt로 무료 인증서 발급·자동 갱신", '정적 파일 처리·압축·타임아웃 설정을 Nginx에서', '외부에는 80/443만 열고 Tomcat 포트는 닫기'] },
+      { id: 't-rule-ai', cat: 'ai', re: /규칙 기반|탐지|심각도|관제/i, q: '위협 탐지·심각도 판단을 AI가 아니라 규칙으로 한 이유는?',
+        points: ['규칙은 같은 입력에 같은 결과 → 일관성·재현성·설명 가능', 'AI는 요약·영향·대응 제안 같은 보조 분석만, 저장된 분류·심각도를 덮어쓰지 않음', 'AI에는 제한된 사실만, 민감 정보는 마스킹해서 전달', '운영 데이터로 오탐률을 점검해 규칙 개선'] },
+      { id: 't-webhook', cat: 'tech', re: /Webhook|API Key|X-API-Key/i, q: 'Slack Webhook 알림과 API Key 인증 조회 API는 어떻게 설계했나요?',
+        points: ['중요 이벤트만 알림 (심각도 기준) → 알림 피로 방지', 'Webhook URL·API Key는 설정 파일로 분리하고 저장소에 올리지 않음', '조회 API는 X-API-Key 헤더 검증 후 JSON 응답, 쓰기는 열지 않음', '실패해도 본 기능이 멈추지 않게 알림은 별도 처리'] },
+      { id: 't-withdraw', cat: 'tech', re: /탈퇴|익명화|WITHDRAWN|보유기간/i, q: '회원 탈퇴 시 행을 지우지 않고 상태를 바꾼 이유는?',
+        points: ['리뷰·예약·결제가 회원을 FK로 참조 → 삭제하면 FK 오류나 기록 손실', 'ACTIVE → WITHDRAWN 상태 전환, 개인정보는 익명화', '결제·작성 기록은 보존, 보유 기간이 지나면 파기하는 정책'] },
+      { id: 't-geo', cat: 'tech', re: /ST_Distance_Sphere|반경|거리 검색/i, q: '"주변 1km 숙소" 같은 반경 검색은 어떻게 구현했나요?',
+        points: ['좌표(위도·경도)를 저장하고 ST_Distance_Sphere로 두 지점 거리(m) 계산', '반경 조건으로 필터 후 거리순 정렬', '데이터가 많으면 위경도 범위로 먼저 줄이거나 공간 인덱스 사용'] },
+      { id: 't-boot4', cat: 'tech', re: /Spring Boot\s*4|Java\s*25/i, q: 'Java 25 / Spring Boot 4를 쓰면서 확인한 점은?',
+        points: ['공지 기준: Boot 4를 쓰면 Spring AI 등 라이브러리도 Boot 4에 맞는 버전으로 바꿔야 함', '자습서 기준은 Java 21 · Spring Boot 3.4 → 차이 나는 설정은 공식 문서로 확인', '버전을 올린 뒤 전체 테스트를 다시 돌려 확인', '써 보지 않았다면 아는 척하지 말고 확인 계획으로 답하기'] }
+    ]);
+
+    INTERVIEW_COMMON.splice(2, 0,
+      { id: 'c-verify-log', cat: 'ai', q: 'AI 코드 검증일지에 어떤 결함을 기록했고, Before/After는 어떻게 측정했나요?',
+        steps: ['결함 1개를 고른다 (예: N+1, 동시성, IDOR, XSS)', '발견 근거: 무엇을 보고 알았나 (SQL 로그, 테스트 실패, 화면 오류)', '원인: 어떤 코드·구조 때문이었나', '개선: 무엇을 바꿨나', 'Before → After 수치와 커밋·PR 링크', '그 뒤 같은 결함을 막으려고 추가한 테스트'] },
+      { id: 'c-semi-final', cat: 'project', q: '세미 프로젝트(JSP/Servlet)와 파이널 프로젝트(Spring Boot)를 비교하면 무엇이 달라졌나요?',
+        steps: ['세미에서 직접 구현한 것 (요청 분기, JDBC, 세션·필터)', '파이널에서 프레임워크가 대신해 준 것 (DI, JPA, Security)', '세미에서 겪은 문제 1개와 파이널에서 미리 막은 방법', '그래서 프레임워크를 쓸 때 무엇을 이해하고 쓰는지'] }
+    );
+
+    // --- 기술 사전 (자동 입력·채용공고 비교·면접 근거에 사용)
+    Array.prototype.push.apply(SKILL_DICTIONARY, [
+      { name: 'Servlet/JSP', cat: 'backend', re: /servlet|\bjsp\b|서블릿/i },
+      { name: 'JDBC', cat: 'backend', re: /\bjdbc\b|preparedstatement/i },
+      { name: 'JSTL', cat: 'frontend', re: /\bjstl\b/i },
+      { name: 'Toss Payments', cat: 'backend', re: /toss\s*payments?|토스\s*(페이먼츠|결제)/i },
+      { name: 'TourAPI', cat: 'backend', re: /tour\s*api|한국관광공사/i },
+      { name: 'Kakao API', cat: 'backend', re: /kakao\s*(map|api|login|sdk)|카카오\s*(맵|지도|로그인|공유|api)/i },
+      { name: 'Naver API', cat: 'backend', re: /naver\s*(map|api|local|search)|네이버\s*(지도|검색|로그인|api)/i },
+      { name: 'KMDb API', cat: 'backend', re: /kmdb/i },
+      { name: 'Google Translation API', cat: 'backend', re: /google\s*translat|구글\s*번역/i },
+      { name: 'BCrypt', cat: 'backend', re: /bcrypt/i },
+      { name: 'Jackson', cat: 'backend', re: /\bjackson\b/i },
+      { name: 'Apache Tomcat', cat: 'devops', re: /tomcat|톰캣/i },
+      { name: 'AWS Lightsail', cat: 'devops', re: /lightsail/i },
+      { name: "Let's Encrypt", cat: 'devops', re: /let'?s\s*encrypt/i },
+      { name: 'Slack Webhook', cat: 'devops', re: /slack|슬랙/i },
+      { name: 'Eclipse', cat: 'devops', re: /eclipse|이클립스/i },
+      { name: 'MySQL Workbench', cat: 'devops', re: /workbench/i }
+    ]);
+    Array.prototype.push.apply(JOB_KEYWORDS, [
+      { name: '결제 연동', cat: null, re: /결제|\bpg\b|payment/i, resumeRe: /결제|toss|토스/i },
+      { name: '지도 API', cat: null, re: /지도\s*(api|sdk)|map\s*(api|sdk)/i, resumeRe: /지도|kakao\s*map|naver\s*map/i },
+      { name: '보안 관제', cat: null, re: /관제|siem|보안\s*모니터링/i, resumeRe: /관제|탐지|sentinel/i }
+    ]);
+    Array.prototype.push.apply(POLISH_TERM_RULES, [
+      { re: /서블릿|\bservlet\b/gi, to: 'Servlet' },
+      { re: /톰캣|\btomcat\b/gi, to: 'Tomcat' },
+      { re: /\bnginx\b/gi, to: 'Nginx' },
+      { re: /\bwebsocket\b/gi, to: 'WebSocket' }
+    ]);
+
+    // --- 위자드 기술 선택지
+    SKILL_OPTIONS.Backend.push('Java 25', 'Spring Boot 4', 'Servlet/JSP', 'JDBC', 'WebSocket');
+    SKILL_OPTIONS.Frontend.push('JSTL');
+    SKILL_OPTIONS.DevOps.push('Apache Tomcat', 'Nginx', 'AWS Lightsail', 'Eclipse');
+    var tips = {
+      'Java 25': '공지 기준 Java 21 또는 25 (최신 LTS)', 'Spring Boot 4': '공지 기준 Spring Boot 3 또는 4 (4는 라이브러리 버전 확인)',
+      'Servlet/JSP': '세미 프로젝트 MVC (Model 2)', 'JDBC': 'SQL 직접 실행 (PreparedStatement)', 'WebSocket': '실시간 양방향 통신',
+      'JSTL': 'JSP 태그 라이브러리', 'Apache Tomcat': '서블릿 컨테이너 (WAR 배포)', 'Nginx': 'HTTPS·리버스 프록시', 'AWS Lightsail': '간단한 AWS 가상 서버', 'Eclipse': 'Java IDE (세미 프로젝트)'
+    };
+    Object.keys(tips).forEach(function(k) { SKILL_TIPS[k] = tips[k]; });
+    RESULT_CHIPS.push('좌석 중복 예매 0건 (복합 UNIQUE)', '결제 금액 서버 재계산', '중복 결제 승인 방지', 'HTTPS 배포 (Nginx)', '26개 테이블 설계', '검증일지 결함 기록');
+  })();
+
+  // ===== AI 자동 입력: AI 코드 검증일지 (공지 제출 파일 5번) =====
+  AUTOFILL_TYPE_SAMPLES.verify =
+    '번호\t결함\t발견 근거\t원인\t개선\tBefore\tAfter\t커밋·PR\n' +
+    '1\t맛집 목록 N+1\tSQL 로그에 쿼리 51번\t리뷰 컬렉션 지연 로딩을 반복문에서 size()\tDTO 조회(COUNT)로 변경\tSQL 51회\tSQL 1회\thttps://github.com/your-id/busan-matzip/pull/12\n' +
+    '2\t찜 숫자 갱신 유실\t동시 100건 테스트에서 찜 87\t읽고-더하고-저장 사이 끼어들기\t원자적 UPDATE + (회원, 맛집) UNIQUE\t찜 87/100\t찜 100/100\thttps://github.com/your-id/busan-matzip/pull/15\n' +
+    '3\t남의 리뷰 수정(IDOR)\t주소 번호만 바꿔 수정 성공\t서비스에서 작성자 검사 없음\t작성자 비교 후 403\t남의 글 수정 가능\t403 거부\thttps://github.com/your-id/busan-matzip/pull/18\n' +
+    '4\t리뷰 스크립트 실행(XSS)\t리뷰에 script 입력 시 경고창\tth:utext로 출력\tth:text로 변경\t스크립트 실행\t글자로 표시\thttps://github.com/your-id/busan-matzip/pull/19\n';
+
+  AutofillTypes.parseVerify = function(text) {
+    var out = { name: '', meta: '', desc: '', role: '', details: [], result: '', link: '', skills: {}, about: '', intro: '' };
+    var lines = String(text || '').split(/\r?\n/).filter(function(l) { return l.trim(); });
+    if (!lines.length) return out;
+    var split = function(l) { return l.indexOf('\t') !== -1 ? l.split('\t') : l.split(/\s*[|,]\s*/); };
+    var header = split(lines[0]).map(function(h) { return h.trim(); });
+    var hasHeader = header.some(function(h) { return /원인|before|after|개선/i.test(h); });
+    var col = function(re, fallback) {
+      for (var i = 0; i < header.length; i++) if (re.test(header[i])) return i;
+      return hasHeader ? -1 : fallback;
+    };
+    // 헤더가 없으면 공지 양식 순서(번호, 결함, 발견 근거, 원인, 개선, Before, After, 링크)로 본다
+    var idx = {
+      title: col(/결함|문제|항목|제목/, 1), basis: col(/발견|근거|증상/, 2), cause: col(/원인/, 3),
+      fix: col(/개선|해결|조치/, 4), before: col(/before|전/i, 5), after: col(/after|후/i, 6), link: col(/커밋|pr|링크|link/i, 7)
+    };
+    var rows = (hasHeader ? lines.slice(1) : lines).map(split);
+    var details = [], results = [], links = [];
+    rows.forEach(function(r) {
+      var get = function(k) { return idx[k] >= 0 && r[idx[k]] ? normalizeWhitespace(r[idx[k]]) : ''; };
+      var title = get('title'), fix = get('fix'), before = get('before'), after = get('after');
+      if (!title && !fix) return;
+      details.push((title ? title + ' → ' : '') + (fix || '개선'));
+      if (before && after) results.push((title ? title + ': ' : '') + before + ' → ' + after);
+      var gh = /github\.com\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)/.exec(get('link'));
+      if (gh) links.push('github.com/' + gh[1] + '/' + gh[2]);
+    });
+    out.details = details.slice(0, 6);
+    out.result = results.slice(0, 2).join(', ') + (rows.length ? (results.length ? ', ' : '') + 'AI 코드 검증일지 결함 ' + details.length + '건 기록' : '');
+    out.link = links[0] || '';
+    out.skills = Autofill.detectSkills(text);
+    return out;
+  };
+  (function() {
+    var parse = AutofillTypes.parse;
+    AutofillTypes.parse = function(type, text) {
+      return type === 'verify' ? AutofillTypes.parseVerify(text) : parse.call(AutofillTypes, type, text);
+    };
+    var hint = AutofillTypes.promptHint;
+    AutofillTypes.promptHint = function(type) {
+      if (type === 'verify') return '원문 종류: AI 코드 검증일지(결함 1건 = 한 줄: 결함, 발견 근거, 원인, 개선, Before, After, 커밋·PR)입니다. 결함과 개선을 구현 내용으로, Before → After 수치를 성과로 정리하고, 수치는 원문 그대로 씁니다.\n';
+      return hint.call(AutofillTypes, type);
+    };
+  })();
 
   // ===== Initialize =====
   document.addEventListener('DOMContentLoaded', function() {
