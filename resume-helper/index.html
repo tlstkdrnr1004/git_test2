@@ -1616,6 +1616,46 @@
   .iv-num { flex-shrink: 0; font-size: 8pt; font-weight: 700; color: #4a6fa5; padding-top: 2px; min-width: 22px; }
   .iv-q { flex: 1; font-size: 10pt; font-weight: 700; color: #1a365d; line-height: 1.5; }
   .iv-basis { font-size: 7.5pt; color: #718096; margin: 3px 0 0 30px; }
+
+  /* ===== 말풍선 따라 쓰기 투어 ===== */
+  .tour-blocker { position: fixed; z-index: 21000; background: rgba(15, 23, 42, 0.62); cursor: not-allowed; }
+  .tour-ring { position: fixed; z-index: 21001; pointer-events: none; border-radius: 8px; border: 3px solid #f6ad55;
+    box-shadow: 0 0 0 4px rgba(246, 173, 85, 0.35); animation: tour-pulse 1.6s ease-in-out infinite; }
+  @keyframes tour-pulse { 0%, 100% { box-shadow: 0 0 0 4px rgba(246,173,85,0.35); } 50% { box-shadow: 0 0 0 9px rgba(246,173,85,0.12); } }
+  .tour-bubble { position: fixed; z-index: 21002; width: 360px; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px); overflow-y: auto;
+    background: #fff; color: #1a202c; border-radius: 12px; padding: 14px 16px; box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    font-size: 9.5pt; line-height: 1.6; box-sizing: border-box; }
+  .tour-bubble.arrow-up::before, .tour-bubble.arrow-down::after { content: ''; position: absolute; left: var(--arrow-x, 24px);
+    width: 14px; height: 14px; background: #fff; transform: translateX(-50%) rotate(45deg); }
+  .tour-bubble.arrow-up::before { top: -7px; }
+  .tour-bubble.arrow-down::after { bottom: -7px; }
+  .tour-bubble.tour-bubble-sheet { left: 8px !important; right: 8px; bottom: 8px; top: auto !important; width: auto; max-height: 55vh; }
+  .tour-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .tour-count { font-size: 8pt; font-weight: 700; color: #4a6fa5; }
+  .tour-close { border: none; background: none; color: #718096; font-size: 8.5pt; cursor: pointer; padding: 2px 4px; }
+  .tour-progress { height: 4px; background: #edf2f7; border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
+  .tour-progress span { display: block; height: 100%; background: #f6ad55; transition: width .25s; }
+  .tour-title { font-size: 11.5pt; font-weight: 800; color: #1a365d; margin-bottom: 4px; }
+  .tour-tip { margin-top: 8px; background: #fffaf0; border-left: 3px solid #f6ad55; padding: 6px 8px; font-size: 8.8pt; color: #4a5568; border-radius: 0 6px 6px 0; }
+  .tour-warn { color: #c05621; font-size: 8.8pt; font-weight: 600; margin-top: 6px; }
+  .tour-warn:empty { display: none; }
+  .tour-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tour-action { border: 1px solid #4a6fa5; background: #f0f4fa; color: #1a365d; border-radius: 6px; padding: 5px 9px; font-size: 8.8pt; cursor: pointer; }
+  .tour-action:hover { background: #e2e8f0; }
+  .tour-nav { display: flex; justify-content: space-between; gap: 8px; margin-top: 12px; }
+  .tour-prev, .tour-next { border-radius: 6px; padding: 7px 12px; font-size: 9pt; font-weight: 700; cursor: pointer; }
+  .tour-prev { border: 1px solid #cbd5e0; background: #fff; color: #4a5568; }
+  .tour-prev:disabled { opacity: .4; cursor: default; }
+  .tour-next { border: none; background: #1a365d; color: #fff; flex: 1; }
+  .tour-left { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+  .tour-left-title { font-weight: 700; color: #c05621; font-size: 9pt; }
+  .tour-left-ok { font-weight: 700; color: #2f855a; }
+  .tour-jump { text-align: left; border: 1px dashed #f6ad55; background: #fffaf0; border-radius: 6px; padding: 4px 8px; font-size: 8.8pt; cursor: pointer; }
+  .tour-shake { animation: tour-shake .35s; }
+  @keyframes tour-shake { 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-3px); } }
+  .tour-start-btn { background: linear-gradient(135deg, #f6ad55, #ed8936) !important; }
+  @media (prefers-reduced-motion: reduce) { .tour-ring, .tour-shake { animation: none; } }
+  @media print { .tour-blocker, .tour-ring, .tour-bubble { display: none !important; } }
   .iv-guide { margin: 6px 0 0 30px; font-size: 8.5pt; color: #2d3748; }
   .iv-model p { margin: 4px 0 0; line-height: 1.6; background: #f7fafc; border-left: 3px solid #4a90d9; padding: 6px 8px; }
   .iv-guide summary { cursor: pointer; color: #4a6fa5; font-weight: 600; }
@@ -1782,7 +1822,9 @@
   <div id="panel-body" class="panel-body">
     <div class="panel-group-title">핵심 흐름</div>
     <div class="panel-section">
-      <button id="wizard-start-btn" class="wizard-start-btn">단계별 가이드 시작 (추천)</button>
+      <button id="guided-tour-btn" class="wizard-start-btn tour-start-btn" type="button">💬 말풍선 따라 쓰기 (처음이라면 추천)</button>
+      <div style="font-size:7pt; color:#888; margin:3px 0 6px; text-align:center;">이력서 화면에서 칸을 하나씩 비추며 무엇을 쓸지 알려 줍니다</div>
+      <button id="wizard-start-btn" class="wizard-start-btn">질문에 답하며 채우기 (단계별 가이드)</button>
       <div style="font-size:7pt; color:#888; margin-top:3px; text-align:center;">기본 정보부터 대표 프로젝트까지 순서대로 채울 수 있습니다</div>
     </div>
 
@@ -2005,7 +2047,8 @@
       화면에 보이는 안내 문구, 점선 테두리, 버튼 등은 <strong>PDF에 포함되지 않습니다.</strong><br>
       편집을 도와주는 표시이니 안심하고 작성하세요.
     </div>
-    <button id="onboarding-start-btn" class="onboarding-start-btn">단계별 가이드로 시작하기</button>
+    <button id="onboarding-tour-btn" class="onboarding-start-btn" type="button">💬 화면에서 말풍선 따라 쓰기 (추천)</button>
+    <button id="onboarding-start-btn" class="onboarding-skip-btn" style="margin-bottom:6px;">질문에 답하며 채우기 (단계별 가이드)</button>
     <button id="onboarding-skip-btn" class="onboarding-skip-btn">직접 편집할게요 (건너뛰기)</button>
   </div>
 </div>
@@ -10989,6 +11032,384 @@
     RESULT_CHIPS.push('쿼리 101회 → 1회', '동시 100건 유실 0건', '중복 사용 0건', 'IDOR 403 차단', 'EXPLAIN ALL → range', '외부 API 2초 안 안내', '저장소 비밀값 0건');
   })();
 
+  // ===== Module: GuidedTour (처음 쓰는 사람을 위한 단계별 말풍선 따라 쓰기) =====
+  // 이력서 화면 위에서 한 칸씩 밝게 비추고(나머지는 어둡게 막음) 말풍선으로 무엇을 쓸지 안내한다.
+  // 밝은 칸 밖은 클릭·Tab 이동이 막히고, 예시 라이브러리 같은 창이 열리면 잠시 숨었다가 닫히면 돌아온다.
+  var TOUR_STORAGE_KEY = 'resume-guided-tour';
+  var GuidedTour = {
+    active: false,
+    paused: false,
+    index: 0,
+    warned: false,
+    els: null,
+    rafId: 0,
+    pollId: 0,
+
+    field: function(id) { return document.querySelector('[data-field-id="' + id + '"]'); },
+    section: function(name) { return document.querySelector('.section[data-section-toggle="' + name + '"]'); },
+    visible: function(el) { return !!(el && el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden'); },
+
+    steps: function() {
+      var self = this;
+      var f = function(id) { return function() { return self.field(id); }; };
+      var lib = function(cat, label) { return { label: label || '예시 보기', run: function() { ExampleLibrary.open(cat); } }; };
+      return [
+        { key: 'welcome', title: '이력서를 함께 채워 볼까요?',
+          body: '화면에서 한 칸씩 밝게 비춰 드립니다. 밝은 칸만 편집할 수 있고, 말풍선의 안내를 따라 쓰면 됩니다.',
+          tip: '대괄호 [ ] 안의 문구는 예시입니다. 칸을 누르면 전체가 선택되니 바로 입력하세요. 입력 내용은 자동 저장되고, 언제든 "끝내기"를 눌러 멈췄다가 이어서 할 수 있어요.' },
+        { key: 'name', target: [f('header-name')], focus: 'header-name', required: ['header-name'],
+          title: '이름', body: '이력서 맨 위에 들어갈 이름을 적으세요.', tip: '예) 김부산 — 별명이나 영문 아이디가 아니라 실명으로 씁니다.' },
+        { key: 'headline', target: [f('header-subtitle')], focus: 'header-subtitle', required: ['header-subtitle'],
+          title: '한 줄 소개', body: '이름 아래 한 줄입니다. "지원 포지션 | 핵심 기술 3~4개" 형식이 가장 잘 읽힙니다.',
+          tip: '예) 웹 백엔드 지원 | Java 21 · Spring Boot 3.4 · Spring Data JPA · MySQL 8', actions: [lib('headline', '한 줄 소개 예시 고르기')] },
+        { key: 'contact', target: [function() { var e = self.field('header-email'); return e && e.closest('.contact-info'); }], focus: 'header-email',
+          required: ['header-email', 'header-phone', 'header-github'],
+          title: '연락처 · GitHub', body: '이메일, 전화번호, GitHub 주소를 적으세요. 블로그·사람인은 없으면 비워 두어도 됩니다.',
+          tip: 'GitHub는 github.com/아이디 형식으로. 이메일·전화번호는 AI 기능을 쓸 때 자동으로 가려서 보냅니다.' },
+        { key: 'about', target: [function() { return self.section('about'); }], focus: 'about-summary', required: ['about-summary'],
+          title: 'About Me (2~3문장)', body: '교육·배경 → 핵심 기술·프로젝트 경험 → 일하는 방식 순서로 2~3문장을 씁니다.',
+          tip: '막막하면 아래 "초안 만들기"를 누르세요. 이력서에 적은 내용으로 초안 8개를 만들어 줍니다.',
+          actions: [{ label: 'About Me 초안 만들기', run: function() { WritingHelper.showAboutDrafts(); } }, lib('about', 'About Me 예시 고르기')] },
+        { key: 'skills', target: [function() { return self.section('skills'); }], focus: 'skills-backend', required: ['skills-backend'],
+          title: '기술 스택', body: 'Backend · Frontend · Database · DevOps 칸에 실제로 써 본 기술만 적습니다. 전체 7~12개가 적당합니다.',
+          tip: '써 보지 않은 기술을 넣으면 면접에서 바로 질문이 들어옵니다.', actions: [lib('skills', '기술 스택 예시 고르기')] },
+        { key: 'project-head', target: [f('project-1-name'), f('project-1-meta'), f('project-1-desc')], focus: 'project-1-name',
+          required: ['project-1-name', 'project-1-meta'],
+          title: '대표 프로젝트 ① 이름 · 기간 · 한 줄 설명', body: '가장 자신 있는 프로젝트 하나를 먼저 씁니다. 이름, 기간·인원, 어떤 서비스인지 한 줄로.',
+          tip: '예) 부산 로컬 맛집 리뷰 | 2026.11.05 ~ 2026.11.30 | 팀 5명. 예시에서 "프로젝트 통째로"를 고르면 6칸이 한 번에 채워집니다.',
+          actions: [lib('projectPreset', '프로젝트 통째로 넣기')] },
+        { key: 'project-role', target: [f('project-1-role')], focus: 'project-1-role', required: ['project-1-role'],
+          title: '대표 프로젝트 ② 내가 맡은 역할', body: '팀에서 맡은 역할과 담당 기능, 쓴 기술을 적습니다.',
+          tip: '예) 리뷰 도메인 + AI 담당 (Spring Boot, Spring Data JPA, Spring AI)', actions: [lib('projectRole', '역할 예시 고르기')] },
+        { key: 'project-detail', target: [f('project-1-detail')], focus: 'project-1-detail', required: ['project-1-detail'],
+          title: '대표 프로젝트 ③ 구현 내용 (3~4줄)', body: '직접 구현한 것을 한 줄에 하나씩 적습니다. Enter로 줄을 나눕니다.',
+          tip: '"무엇을 + 어떻게 + 왜" — 예) 맛집 목록 리뷰 수를 DTO 직접 조회로 바꿔 N+1 제거', actions: [lib('projectDetail', '구현 예시 고르기')] },
+        { key: 'project-result', target: [f('project-1-result'), function() { return document.querySelector('[data-project-draft-tools="1"]'); }, function() { return document.querySelector('[data-project-draft-box="1"]'); }],
+          focus: 'project-1-result', required: ['project-1-result'],
+          title: '대표 프로젝트 ④ 성과 (숫자로)', body: '프로젝트로 무엇이 좋아졌는지 숫자로 씁니다. "동사 + 숫자"가 가장 강합니다.',
+          tip: '예) 목록 조회 SQL 101회 → 1회, 동시 찜 100건 유실 0건. 숫자는 내가 직접 잰 값으로 바꾸세요.',
+          actions: [{ label: '성과 문장 추천', run: function() { WritingHelper.showProjectResultDrafts(1); } }, lib('projectResult', '성과 예시 고르기')] },
+        { key: 'project-link', target: [f('project-1-link')], focus: 'project-1-link', optional: true,
+          title: '대표 프로젝트 ⑤ 저장소 링크', body: 'GitHub 저장소 주소를 적습니다. 면접관이 코드를 직접 확인합니다.', tip: '예) github.com/아이디/busan-matzip' },
+        { key: 'education', target: [function() { return self.section('education'); }], focus: 'edu-1-period', required: ['edu-1-name'],
+          title: '교육', body: '기간 · 교육기관 · 과정명을 적습니다. 과정명에 총 시간을 함께 쓰면 좋습니다.',
+          tip: '예) 2026.05 ~ 2026.12 | KH정보교육원AX 부산지원 | 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 (1,053시간)', actions: [lib('education', '교육 예시 고르기')] },
+        { key: 'cert', target: [function() { return self.section('certification'); }], focus: 'cert-1-date', optional: true,
+          title: '자격증 (없으면 건너뛰기)', body: '취득했거나 준비 중인 자격증을 적습니다. 없으면 "다음"을 누르면 됩니다.',
+          tip: '준비 중이면 "SQLD (2026.12 응시 예정)"처럼 적어도 됩니다.', actions: [lib('certification', '자격증 예시 고르기')] },
+        { key: 'intro', target: [function() { return self.section('intro'); }], focus: 'intro-text', required: ['intro-text'],
+          title: '자기소개 (3~4문장)', body: '왜 개발자인가 → 무엇을 해냈나 → 강점 → 입사 후 방향 순서로 씁니다. About Me와 다른 이야기로.',
+          tip: '"초안 만들기"를 누르면 이력서 내용으로 초안 8개를 만들어 줍니다.',
+          actions: [{ label: '자기소개 초안 만들기', run: function() { WritingHelper.showIntroDrafts(); } }, lib('intro', '자기소개 예시 고르기')] },
+        { key: 'check', target: [function() { return document.getElementById('quick-check-btn'); }], click: 'quick-check-btn',
+          title: '빠른 점검', body: '빈 칸, 남아 있는 예시 문구, 문장 길이를 한 번에 점검합니다. 밝게 보이는 버튼을 눌러 보세요.',
+          tip: '점검 결과에 나온 칸을 고친 뒤 다시 눌러 확인하면 됩니다.' },
+        { key: 'pdf', target: [function() { return document.getElementById('pdf-guide-btn'); }], click: 'pdf-guide-btn',
+          title: 'PDF로 저장', body: '완성되면 PDF로 저장합니다. 버튼을 누르면 저장 방법을 단계별로 보여 줍니다.',
+          tip: '안내 문구·점선 테두리·버튼은 PDF에 들어가지 않습니다.' },
+        { key: 'done', title: '수고했어요! 🎉', summary: true,
+          body: '이력서의 뼈대가 완성되었습니다. 오른쪽 패널에서 면접 예상 질문, 결과보고서, 채용공고 맞춤 점검도 이어서 해 보세요.',
+          tip: '이 투어는 오른쪽 패널의 "말풍선 따라 쓰기" 버튼으로 언제든 다시 시작할 수 있습니다.' }
+      ];
+    },
+
+    init: function() {
+      var self = this;
+      this.list = this.steps();
+      var btn = document.getElementById('guided-tour-btn');
+      if (btn) btn.addEventListener('click', function() { self.start(self.savedIndex()); });
+      var ob = document.getElementById('onboarding-tour-btn');
+      if (ob) ob.addEventListener('click', function() {
+        document.getElementById('onboarding-overlay').classList.remove('active');
+        Storage.save(STORAGE_KEYS.ONBOARDING, true);
+        self.start(0);
+      });
+      this.updateButton();
+    },
+
+    savedIndex: function() {
+      var s = Storage.load(TOUR_STORAGE_KEY);
+      return s && !s.done && s.index > 0 && s.index < this.list.length - 1 ? s.index : 0;
+    },
+
+    updateButton: function() {
+      var btn = document.getElementById('guided-tour-btn');
+      if (!btn) return;
+      var i = this.savedIndex();
+      btn.textContent = i ? '💬 말풍선 따라 쓰기 이어서 (' + (i + 1) + '/' + this.list.length + ')' : '💬 말풍선 따라 쓰기 (처음이라면 추천)';
+    },
+
+    build: function() {
+      if (this.els) return;
+      var self = this;
+      var mk = function(cls) { var d = document.createElement('div'); d.className = cls; document.body.appendChild(d); return d; };
+      var blockers = ['top', 'right', 'bottom', 'left'].map(function(side) {
+        var b = mk('tour-blocker');
+        b.setAttribute('data-side', side);
+        b.addEventListener('mousedown', function(e) { e.preventDefault(); self.nudge(); });
+        b.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); });
+        return b;
+      });
+      var ring = mk('tour-ring');
+      var bubble = mk('tour-bubble');
+      bubble.setAttribute('role', 'dialog');
+      bubble.setAttribute('aria-live', 'polite');
+      bubble.id = 'tour-bubble';
+      this.els = { blockers: blockers, ring: ring, bubble: bubble };
+      this.onFrame = function() { self.rafId = 0; self.position(); };
+      this.onMove = function() { if (!self.rafId) self.rafId = requestAnimationFrame(self.onFrame); };
+      this.onKey = function(e) {
+        if (!self.active || self.paused) return;
+        if (e.key === 'Escape') { e.preventDefault(); self.stop(false); }
+      };
+      // 밝은 칸·말풍선 밖으로 Tab 이동하면 다시 현재 칸으로 돌려놓는다 (강제 포커스)
+      this.onFocusIn = function(e) {
+        if (!self.active || self.paused) return;
+        if (self.els.bubble.contains(e.target) || self.inHole(e.target)) return;
+        self.focusCurrent();
+      };
+    },
+
+    start: function(index) {
+      this.build();
+      this.active = true;
+      this.paused = false;
+      this.show(true); // 끝내기로 숨긴 화면을 다시 보이게 한다
+      document.body.classList.add('tour-active');
+      window.addEventListener('scroll', this.onMove, true);
+      window.addEventListener('resize', this.onMove);
+      document.addEventListener('keydown', this.onKey, true);
+      document.addEventListener('focusin', this.onFocusIn, true);
+      var self = this;
+      this.pollId = setInterval(function() { self.checkPause(); }, 300);
+      this.go(index || 0);
+    },
+
+    stop: function(finished) {
+      if (!this.active) return;
+      this.active = false;
+      clearInterval(this.pollId);
+      window.removeEventListener('scroll', this.onMove, true);
+      window.removeEventListener('resize', this.onMove);
+      document.removeEventListener('keydown', this.onKey, true);
+      document.removeEventListener('focusin', this.onFocusIn, true);
+      document.body.classList.remove('tour-active');
+      this.show(false);
+      Storage.save(TOUR_STORAGE_KEY, { index: finished ? 0 : this.index, done: !!finished });
+      this.updateButton();
+      if (!finished) ResumeWriter.notify('투어를 멈췄습니다. 패널의 "말풍선 따라 쓰기"로 이어서 할 수 있어요.');
+    },
+
+    // 다른 창(예시 라이브러리·점검 결과·위자드 등)이 열려 있으면 그 창을 쓸 수 있게 투어 화면을 잠시 숨긴다
+    checkPause: function() {
+      var open = Array.prototype.some.call(document.querySelectorAll('[id$="-overlay"]'), function(o) {
+        return o.classList.contains('active');
+      });
+      if (open !== this.paused) {
+        this.paused = open;
+        this.show(!open);
+        if (!open) { this.position(); this.focusCurrent(); }
+      }
+    },
+
+    show: function(on) {
+      if (!this.els) return;
+      var d = on ? '' : 'none';
+      this.els.blockers.forEach(function(b) { b.style.display = d; });
+      this.els.ring.style.display = d;
+      this.els.bubble.style.display = d;
+    },
+
+    step: function() { return this.list[this.index]; },
+
+    targets: function(step) {
+      var self = this;
+      return (step.target || []).map(function(fn) { return fn(); }).filter(function(el) { return self.visible(el); });
+    },
+
+    inHole: function(node) {
+      return this.targets(this.step()).some(function(el) { return el.contains(node); });
+    },
+
+    go: function(i) {
+      this.index = Math.max(0, Math.min(this.list.length - 1, i));
+      this.warned = false;
+      var step = this.step();
+      Storage.save(TOUR_STORAGE_KEY, { index: this.index, done: false });
+      var targets = this.targets(step);
+      if (targets.length) targets[0].scrollIntoView({ block: 'center', behavior: 'auto' });
+      this.render();
+      this.position();
+      this.focusCurrent();
+    },
+
+    focusCurrent: function() {
+      var step = this.step();
+      if (!step) return;
+      if (!step.focus) {
+        // 입력 칸이 없는 단계에서는 이전 칸의 선택 표시를 지운다
+        var a = document.activeElement;
+        if (a && a.isContentEditable) { a.blur(); window.getSelection().removeAllRanges(); }
+        return;
+      }
+      var el = this.field(step.focus);
+      if (el && this.visible(el) && document.activeElement !== el) el.focus({ preventScroll: true });
+    },
+
+    isFilled: function(id) {
+      var el = this.field(id);
+      return !el || !hasPlaceholderText(el.innerText);
+    },
+
+    missing: function(step) {
+      var self = this;
+      return (step.required || []).filter(function(id) { return !self.isFilled(id); });
+    },
+
+    render: function() {
+      var self = this;
+      var step = this.step();
+      var b = this.els.bubble;
+      b.innerHTML = '';
+      var add = function(parent, tag, cls, text) {
+        var e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (text) e.textContent = text;
+        parent.appendChild(e);
+        return e;
+      };
+      var head = add(b, 'div', 'tour-head');
+      add(head, 'span', 'tour-count', (this.index + 1) + ' / ' + this.list.length);
+      var close = add(head, 'button', 'tour-close', '끝내기 ✕');
+      close.type = 'button';
+      close.addEventListener('click', function() { self.stop(false); });
+      var bar = add(b, 'div', 'tour-progress');
+      add(bar, 'span').style.width = Math.round((this.index + 1) / this.list.length * 100) + '%';
+      add(b, 'div', 'tour-title', step.title);
+      add(b, 'div', 'tour-body', step.body);
+      if (step.tip) add(b, 'div', 'tour-tip', step.tip);
+
+      if (step.summary) {
+        // 마지막 단계: 아직 예시 문구가 남은 칸으로 바로 돌아갈 수 있게 한다
+        var left = this.list.filter(function(s) { return self.missing(s).length; });
+        var box = add(b, 'div', 'tour-left');
+        if (!left.length) {
+          add(box, 'div', 'tour-left-ok', '✅ 필수 칸을 모두 채웠습니다.');
+        } else {
+          add(box, 'div', 'tour-left-title', '아직 예시 문구가 남은 칸 ' + left.length + '곳');
+          left.forEach(function(s) {
+            var jump = add(box, 'button', 'tour-jump', '→ ' + s.title);
+            jump.type = 'button';
+            jump.addEventListener('click', function() { self.go(self.list.indexOf(s)); });
+          });
+        }
+      }
+
+      var warn = add(b, 'div', 'tour-warn');
+      warn.id = 'tour-warn';
+      if (step.actions && step.actions.length) {
+        var acts = add(b, 'div', 'tour-actions');
+        step.actions.forEach(function(a) {
+          var ab = add(acts, 'button', 'tour-action', a.label);
+          ab.type = 'button';
+          ab.addEventListener('click', function() { a.run(); setTimeout(function() { self.position(); }, 50); });
+        });
+      }
+      if (step.click && !this.targets(step).length) {
+        // 패널이 접혀 버튼이 안 보이면 말풍선에서 바로 실행한다
+        var run = add(b, 'div', 'tour-actions');
+        var rb = add(run, 'button', 'tour-action', '지금 실행하기');
+        rb.type = 'button';
+        rb.addEventListener('click', function() { var t = document.getElementById(step.click); if (t) t.click(); });
+      }
+      var nav = add(b, 'div', 'tour-nav');
+      var prev = add(nav, 'button', 'tour-prev', '← 이전');
+      prev.type = 'button';
+      prev.disabled = this.index === 0;
+      prev.addEventListener('click', function() { self.go(self.index - 1); });
+      var last = this.index === this.list.length - 1;
+      var next = add(nav, 'button', 'tour-next', this.index === 0 ? '시작하기 →' : last ? '완료' : step.optional ? '다음 (건너뛰어도 OK) →' : '다음 →');
+      next.type = 'button';
+      next.id = 'tour-next';
+      next.addEventListener('click', function() { self.next(); });
+    },
+
+    next: function() {
+      var step = this.step();
+      var miss = this.missing(step);
+      if (miss.length && !this.warned) {
+        // 강제로 막지는 않고, 한 번 알려 준 뒤 다시 누르면 넘어간다
+        this.warned = true;
+        document.getElementById('tour-warn').textContent = '⚠️ 아직 예시 문구 그대로인 칸이 있어요. 지금 채우거나, 나중에 채우려면 한 번 더 누르세요.';
+        document.getElementById('tour-next').textContent = '나중에 채울게요 →';
+        var first = this.field(miss[0]);
+        if (first) first.focus({ preventScroll: true });
+        this.nudge();
+        return;
+      }
+      if (this.index === this.list.length - 1) { this.stop(true); return; }
+      this.go(this.index + 1);
+    },
+
+    nudge: function() {
+      var b = this.els && this.els.bubble;
+      if (!b) return;
+      b.classList.remove('tour-shake');
+      void b.offsetWidth;
+      b.classList.add('tour-shake');
+    },
+
+    position: function() {
+      if (!this.active || this.paused || !this.els) return;
+      var step = this.step();
+      var vw = window.innerWidth, vh = window.innerHeight, pad = 6;
+      var rects = this.targets(step).map(function(el) { return el.getBoundingClientRect(); }).filter(function(r) { return r.width || r.height; });
+      var hole = null;
+      if (rects.length) {
+        hole = rects.reduce(function(a, r) {
+          return { left: Math.min(a.left, r.left), top: Math.min(a.top, r.top), right: Math.max(a.right, r.right), bottom: Math.max(a.bottom, r.bottom) };
+        }, { left: Infinity, top: Infinity, right: -Infinity, bottom: -Infinity });
+        hole = { left: Math.max(0, hole.left - pad), top: Math.max(0, hole.top - pad), right: Math.min(vw, hole.right + pad), bottom: Math.min(vh, hole.bottom + pad) };
+        if (hole.right <= hole.left || hole.bottom <= hole.top) hole = null;
+      }
+      var bl = this.els.blockers;
+      var set = function(el, l, t, w, h) { el.style.left = l + 'px'; el.style.top = t + 'px'; el.style.width = Math.max(0, w) + 'px'; el.style.height = Math.max(0, h) + 'px'; };
+      if (hole) {
+        set(bl[0], 0, 0, vw, hole.top);
+        set(bl[1], hole.right, hole.top, vw - hole.right, hole.bottom - hole.top);
+        set(bl[2], 0, hole.bottom, vw, vh - hole.bottom);
+        set(bl[3], 0, hole.top, hole.left, hole.bottom - hole.top);
+        set(this.els.ring, hole.left, hole.top, hole.right - hole.left, hole.bottom - hole.top);
+        this.els.ring.style.display = '';
+      } else {
+        set(bl[0], 0, 0, vw, vh);
+        [1, 2, 3].forEach(function(i) { set(bl[i], 0, 0, 0, 0); });
+        this.els.ring.style.display = 'none';
+      }
+
+      var b = this.els.bubble;
+      b.classList.toggle('tour-bubble-sheet', vw < 640);
+      b.classList.remove('arrow-up', 'arrow-down');
+      if (vw < 640) { b.style.left = ''; b.style.top = ''; return; }
+      var bw = b.offsetWidth, bh = b.offsetHeight, gap = 14;
+      var left, top;
+      if (!hole) {
+        left = (vw - bw) / 2; top = (vh - bh) / 2;
+      } else {
+        if (vh - hole.bottom >= bh + gap) { top = hole.bottom + gap; b.classList.add('arrow-up'); }
+        else if (hole.top >= bh + gap) { top = hole.top - bh - gap; b.classList.add('arrow-down'); }
+        else if (vw - hole.right >= bw + gap) { top = Math.min(vh - bh - 8, Math.max(8, hole.top)); left = hole.right + gap; }
+        else if (hole.left >= bw + gap) { top = Math.min(vh - bh - 8, Math.max(8, hole.top)); left = hole.left - bw - gap; }
+        else { top = vh - bh - 8; left = vw - bw - 8; } // 칸이 화면을 거의 채우면 오른쪽 아래 구석으로 비켜선다
+        if (left === undefined) left = Math.min(vw - bw - 8, Math.max(8, hole.left));
+        b.style.setProperty('--arrow-x', Math.min(bw - 24, Math.max(16, (hole.left + hole.right) / 2 - left)) + 'px');
+      }
+      b.style.left = Math.round(left) + 'px';
+      b.style.top = Math.round(Math.max(8, top)) + 'px';
+    }
+  };
+  window.GuidedTour = GuidedTour;
+
   // ===== Initialize =====
   document.addEventListener('DOMContentLoaded', function() {
     UI.init();
@@ -11007,6 +11428,7 @@
     FieldMeter.init();
     A4Guide.init();
     PrintVisibility.init();
+    GuidedTour.init();
 
     // Auto-restore saved content
     var savedContent = UI.getSavedContentPayload();
