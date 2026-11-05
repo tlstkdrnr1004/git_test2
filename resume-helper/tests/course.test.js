@@ -67,3 +67,21 @@ test('면접 질문·결과보고서·채용공고에 세미 프로젝트 기술
   assert.ok(rows.some((r) => r.startsWith('결제 연동') && !r.includes('없음')), JSON.stringify(rows));
   assert.deepEqual(page.errors, []);
 });
+
+test('공식 과정 정보와 비전공자 예시', async () => {
+  const page = await openPage(browser);
+  // 이력서 기본 교육 행이 공식 과정 기준(1,053시간)인지
+  assert.match(await page.textContent('[data-field-id="edu-1-detail"]'), /1,053시간/);
+  await page.click('#example-library-btn');
+  await page.click('#example-tabs .tool-tab:has-text("교육")');
+  const edu = await page.$$eval('#example-list .tool-item', (e) => e.map((x) => x.textContent));
+  assert.ok(edu.some((t) => t.includes('클라우드 네이티브 풀스택 & DevOps') && t.includes('1,053시간')));
+  assert.ok(edu.every((t) => !/900시간|960시간/.test(t)), '추정 시간 값이 남지 않음');
+  await page.click('#example-tabs .tool-tab:has-text("About Me")');
+  await page.click('#example-filters .tool-filter:has-text("비전공")');
+  assert.ok((await page.$$eval('#example-list .tool-item', (e) => e.length)) >= 3, 'About Me 비전공 예시 3개 이상');
+  await page.click('#example-tabs .tool-tab:has-text("자기소개")');
+  await page.click('#example-filters .tool-filter:has-text("비전공")');
+  assert.ok((await page.$$eval('#example-list .tool-item', (e) => e.length)) >= 3, '자기소개 비전공 예시 3개 이상');
+  assert.deepEqual(page.errors, []);
+});
