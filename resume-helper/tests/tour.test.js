@@ -72,7 +72,7 @@ test('끝내기 후 이어서 하기, 마지막 단계에서 남은 칸으로 �
   await goTo(page, '수고');
   await page.click('#tour-next');
   assert.equal(await page.evaluate(() => GuidedTour.active), false);
-  assert.match(await page.textContent('#guided-tour-btn'), /처음이라면/);
+  assert.equal((await page.textContent('#guided-tour-btn')).trim(), '💬 말풍선 따라 쓰기'); // "이어서" 표시가 사라짐
   assert.deepEqual(page.errors, []);
 });
 

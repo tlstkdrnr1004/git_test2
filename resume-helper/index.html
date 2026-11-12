@@ -1617,6 +1617,45 @@
   .iv-q { flex: 1; font-size: 10pt; font-weight: 700; color: #1a365d; line-height: 1.5; }
   .iv-basis { font-size: 7.5pt; color: #718096; margin: 3px 0 0 30px; }
 
+  /* ===== 간단 모드 (3단계만 보이기) ===== */
+  .simple-title { font-size: 10pt; font-weight: 800; color: #1a365d; margin-bottom: 8px; }
+  .simple-step { border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; margin-bottom: 8px; background: #fbfcfe; }
+  .simple-step-head { display: flex; align-items: center; gap: 6px; font-size: 9pt; font-weight: 700; color: #1a365d; margin-bottom: 6px; }
+  .simple-step-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%;
+    background: #1a365d; color: #fff; font-size: 8.5pt; font-weight: 800; flex: none; }
+  .simple-step button { width: 100%; margin-bottom: 4px; box-sizing: border-box; }
+  .simple-link-btn { border: none !important; background: none !important; color: #4a6fa5; font-size: 8pt; cursor: pointer; padding: 2px 0; text-decoration: underline; }
+  .advanced-toggle-btn { width: 100%; border: 1px dashed #a0aec0; background: #f7fafc; color: #4a5568; border-radius: 8px; padding: 7px;
+    font-size: 8.8pt; font-weight: 700; cursor: pointer; margin-top: 4px; }
+  .advanced-toggle-btn:hover { background: #edf2f7; }
+  #advanced-panel { margin-top: 10px; }
+  body.simple-mode #advanced-panel { display: none; }
+  body:not(.simple-mode) #advanced-hint { display: none; }
+  /* 간단 모드에서는 이력서 본문의 보조 표시를 줄인다 (기능은 고급 기능을 열면 그대로) */
+  body.simple-mode .guide,
+  body.simple-mode #field-meter,
+  body.simple-mode .inline-sample-btn:not(.example-lib-btn) { display: none !important; }
+  .onboarding-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px; margin-top: 4px; }
+  .onboarding-link-btn { border: none; background: none; color: #4a6fa5; font-size: 8.5pt; cursor: pointer; text-decoration: underline; padding: 4px 2px; }
+  .starter-card-wrap { max-width: 720px; }
+  .starter-body { padding: 12px 20px; overflow-y: auto; flex: 1; min-height: 0; }
+  .starter-q { display: flex; align-items: center; gap: 8px; font-size: 10.5pt; font-weight: 800; color: #1a365d; margin: 6px 0 8px; }
+  .starter-themes { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-bottom: 12px; }
+  .starter-theme, .starter-role { border: 2px solid #e2e8f0; background: #fff; border-radius: 10px; padding: 10px; cursor: pointer; text-align: left;
+    font-size: 9.5pt; color: #2d3748; line-height: 1.5; }
+  .starter-theme strong { display: block; font-size: 10.5pt; color: #1a365d; }
+  .starter-theme small, .starter-role small { color: #718096; font-size: 8.3pt; }
+  .starter-theme:hover, .starter-role:hover { border-color: #4a6fa5; }
+  .starter-theme.active, .starter-role.active { border-color: #ed8936; background: #fffaf0; }
+  .starter-roles { display: flex; flex-direction: column; gap: 6px; }
+  .starter-role strong { display: block; color: #1a365d; }
+  .starter-preview { margin-top: 10px; background: #f7fafc; border-left: 3px solid #4a6fa5; border-radius: 0 8px 8px 0; padding: 8px 10px; font-size: 8.8pt; line-height: 1.6; color: #2d3748; }
+  .starter-preview ul { margin: 4px 0 0 16px; padding: 0; }
+  .starter-footer { display: flex; align-items: center; gap: 12px; padding: 10px 20px 14px; border-top: 1px solid #e2e8f0; }
+  .starter-footer .tool-note { flex: 1; margin: 0; padding: 0; }
+  .starter-footer button:disabled { opacity: .45; cursor: default; }
+  @media (max-width: 640px) { .starter-footer { flex-direction: column; align-items: stretch; } }
+
   /* ===== 말풍선 따라 쓰기 투어 ===== */
   .tour-blocker { position: fixed; z-index: 21000; background: rgba(15, 23, 42, 0.62); cursor: not-allowed; }
   .tour-ring { position: fixed; z-index: 21001; pointer-events: none; border-radius: 8px; border: 3px solid #f6ad55;
@@ -1637,6 +1676,7 @@
   .tour-progress span { display: block; height: 100%; background: #f6ad55; transition: width .25s; }
   .tour-title { font-size: 11.5pt; font-weight: 800; color: #1a365d; margin-bottom: 4px; }
   .tour-tip { margin-top: 8px; background: #fffaf0; border-left: 3px solid #f6ad55; padding: 6px 8px; font-size: 8.8pt; color: #4a5568; border-radius: 0 6px 6px 0; }
+  .tour-note { background: #ebf8ff; border-left-color: #4a90d9; }
   .tour-warn { color: #c05621; font-size: 8.8pt; font-weight: 600; margin-top: 6px; }
   .tour-warn:empty { display: none; }
   .tour-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
@@ -1820,26 +1860,28 @@
     <button id="panel-toggle" title="접기/펼치기">&#9660;</button>
   </div>
   <div id="panel-body" class="panel-body">
-    <div class="panel-group-title">핵심 흐름</div>
-    <div class="panel-section">
-      <button id="guided-tour-btn" class="wizard-start-btn tour-start-btn" type="button">💬 말풍선 따라 쓰기 (처음이라면 추천)</button>
-      <div style="font-size:7pt; color:#888; margin:3px 0 6px; text-align:center;">이력서 화면에서 칸을 하나씩 비추며 무엇을 쓸지 알려 줍니다</div>
-      <button id="wizard-start-btn" class="wizard-start-btn">질문에 답하며 채우기 (단계별 가이드)</button>
-      <div style="font-size:7pt; color:#888; margin-top:3px; text-align:center;">기본 정보부터 대표 프로젝트까지 순서대로 채울 수 있습니다</div>
-    </div>
-
-    <div class="panel-section">
-      <button id="quick-check-btn" class="primary-btn">빠른 점검 실행</button>
-      <div class="panel-hint">AI 없이도 필수 항목 누락, placeholder, 링크 형식, 정량 성과 부족을 먼저 점검합니다.</div>
-    </div>
-    <div class="panel-section">
-      <button id="analyze-btn" class="outline-btn" type="button">
-        <span id="analyze-btn-text">AI로 더 자세히 점검하기</span>
-        <span id="analyze-spinner" class="spinner" style="display:none;"></span>
+    <div id="simple-panel">
+      <div class="simple-title">3단계로 이력서 끝내기</div>
+      <div class="simple-step">
+        <div class="simple-step-head"><span class="simple-step-num">1</span>주제·역할 고르기</div>
+        <button id="starter-open-btn" class="wizard-start-btn tour-start-btn" type="button">🚀 주제·역할 고르고 예시로 채우기</button>
+        <div class="panel-hint">내 프로젝트 주제와 역할을 고르면 이력서 전체가 예시로 채워집니다.</div>
+      </div>
+      <div class="simple-step">
+        <div class="simple-step-head"><span class="simple-step-num">2</span>내 것으로 고치기</div>
+      <button id="guided-tour-btn" class="wizard-start-btn" type="button">💬 말풍선 따라 쓰기</button>
+        <div class="panel-hint">칸을 하나씩 비추며 무엇을 쓸지 알려 줍니다. 이름·숫자·링크를 내 것으로 바꾸세요.</div>
+      <button id="example-library-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600; background:#eef3fb; border-color:#4a6fa5; color:#1a365d;" type="button">
+        📚 예시 문장 더 보기
       </button>
-      <div class="panel-hint">아래 API 키가 필요합니다. 이메일·전화번호는 가린 뒤 AI로 보냅니다.</div>
-    </div>
-
+        <button id="simple-undo-btn" class="simple-link-btn" type="button">↩ 방금 변경 되돌리기</button>
+      </div>
+      <div class="simple-step">
+        <div class="simple-step-head"><span class="simple-step-num">3</span>점검하고 PDF 저장</div>
+      <button id="quick-check-btn" class="primary-btn">빠른 점검 실행</button>
+      <button id="pdf-guide-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600;">PDF로 저장하기</button>
+        <div class="panel-hint">입력 내용은 이 브라우저에 자동 저장됩니다. 안내 문구와 버튼은 PDF에 들어가지 않습니다.</div>
+      </div>
     <!-- #3 이력서 완성도 -->
     <div id="completeness-section" class="panel-section">
       <div class="overall-label">이력서 완성도</div>
@@ -1859,19 +1901,28 @@
 
     <div id="error-display" class="panel-section error-text" style="display:none;"></div>
 
+    </div>
+
+    <button id="advanced-toggle-btn" class="advanced-toggle-btn" type="button" aria-expanded="false" aria-controls="advanced-panel">⚙️ 고급 기능 열기</button>
+    <div class="panel-hint" id="advanced-hint">면접 질문 · 결과보고서 · 채용공고 점검 · AI 점검 · 디자인 · 버전 관리 · 백업</div>
+
+    <div id="advanced-panel">
+    <div class="panel-group-title">다른 작성 방법</div>
     <div class="panel-section">
-      <button id="pdf-guide-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600;">PDF로 저장하기</button>
-      <div class="panel-hint">저장 전에 필수 항목 누락과 한 페이지 초과 가능성을 먼저 확인합니다.</div>
+      <button id="wizard-start-btn" class="wizard-start-btn">질문에 답하며 채우기 (단계별 가이드)</button>
+      <div style="font-size:7pt; color:#888; margin-top:3px; text-align:center;">기본 정보부터 대표 프로젝트까지 순서대로 채울 수 있습니다</div>
+    </div>
+
+    <div class="panel-section">
+      <button id="analyze-btn" class="outline-btn" type="button">
+        <span id="analyze-btn-text">AI로 더 자세히 점검하기</span>
+        <span id="analyze-spinner" class="spinner" style="display:none;"></span>
+      </button>
+      <div class="panel-hint">아래 API 키가 필요합니다. 이메일·전화번호는 가린 뒤 AI로 보냅니다.</div>
     </div>
 
     <div class="panel-divider"></div>
     <div class="panel-group-title">빠른 입력</div>
-    <div class="panel-section">
-      <button id="example-library-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600; background:#eef3fb; border-color:#4a6fa5; color:#1a365d;" type="button">
-        예시 라이브러리 (섹션별 10개+)
-      </button>
-      <div class="panel-hint">한줄 소개, About Me, 프로젝트 구현·성과, 기술, 교육, 자격증, 자기소개 예시를 여러 개 골라 한 번에 넣습니다.</div>
-    </div>
     <div class="panel-section">
       <button id="autofill-open-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600;" type="button">
         AI 자동 입력 (README·메모 → 이력서)
@@ -2018,6 +2069,7 @@
       </div>
       <div class="storage-warning">다른 기기에서도 이어서 쓰려면 반드시 <strong>파일로 내보내기</strong>로 백업 파일을 저장해두세요.</div>
     </div>
+    </div><!-- /#advanced-panel -->
   </div>
 </div>
 
@@ -2025,31 +2077,34 @@
 <div id="onboarding-overlay">
   <div class="onboarding-card">
     <h2>이력서 작성 도우미</h2>
-    <div class="onboarding-sub">작성부터 점검, PDF 저장까지 한 흐름으로 진행하세요</div>
+    <div class="onboarding-sub">3단계면 됩니다: 고르기 → 고치기 → PDF 저장</div>
     <div class="onboarding-steps">
       <div class="onboarding-step">
         <div class="onboarding-step-num">1</div>
-        <div class="onboarding-step-title">정보 입력</div>
-        <div class="onboarding-step-desc">단계별 가이드를 따라<br>질문에 답하면 자동 완성</div>
+        <div class="onboarding-step-title">고르기</div>
+        <div class="onboarding-step-desc">내 프로젝트 주제와<br>역할을 고릅니다</div>
       </div>
       <div class="onboarding-step">
         <div class="onboarding-step-num">2</div>
-        <div class="onboarding-step-title">빠른 점검</div>
-        <div class="onboarding-step-desc">필수 항목과 문장 흐름을<br>먼저 스스로 점검합니다</div>
+        <div class="onboarding-step-title">고치기</div>
+        <div class="onboarding-step-desc">채워진 예시에서 이름·숫자·<br>링크를 내 것으로 바꿉니다</div>
       </div>
       <div class="onboarding-step">
         <div class="onboarding-step-num">3</div>
         <div class="onboarding-step-title">PDF 저장</div>
-        <div class="onboarding-step-desc">완성된 이력서를<br>PDF로 다운로드</div>
+        <div class="onboarding-step-desc">점검한 뒤<br>PDF로 저장합니다</div>
       </div>
     </div>
     <div style="font-size:7.5pt;color:#888;margin-bottom:16px;line-height:1.5;background:#f7f9fc;padding:8px 12px;border-radius:6px;text-align:left;">
       화면에 보이는 안내 문구, 점선 테두리, 버튼 등은 <strong>PDF에 포함되지 않습니다.</strong><br>
       편집을 도와주는 표시이니 안심하고 작성하세요.
     </div>
-    <button id="onboarding-tour-btn" class="onboarding-start-btn" type="button">💬 화면에서 말풍선 따라 쓰기 (추천)</button>
-    <button id="onboarding-start-btn" class="onboarding-skip-btn" style="margin-bottom:6px;">질문에 답하며 채우기 (단계별 가이드)</button>
-    <button id="onboarding-skip-btn" class="onboarding-skip-btn">직접 편집할게요 (건너뛰기)</button>
+    <button id="onboarding-starter-btn" class="onboarding-start-btn" type="button">🚀 주제·역할 고르고 시작하기</button>
+    <div class="onboarding-links">
+      <button id="onboarding-tour-btn" class="onboarding-link-btn" type="button">빈 이력서에서 말풍선 따라 쓰기</button>
+      <button id="onboarding-start-btn" class="onboarding-link-btn" type="button">질문에 답하며 채우기</button>
+      <button id="onboarding-skip-btn" class="onboarding-link-btn" type="button">직접 편집할게요</button>
+    </div>
   </div>
 </div>
 
@@ -2219,6 +2274,27 @@
     <div class="tool-desc" id="polish-summary"></div>
     <div class="tool-list" id="polish-list"></div>
     <div class="tool-note">"고치기"가 있는 항목은 자동으로 바꿀 수 있고(되돌리기 가능), 나머지는 직접 고칠 위치를 알려줍니다. 항목을 누르면 이력서의 해당 칸으로 이동합니다.</div>
+  </div>
+</div>
+
+<!-- ===== 주제·역할 고르기 (간단 모드 1단계) ===== -->
+<div id="starter-overlay" class="tool-overlay" role="dialog" aria-modal="true" aria-labelledby="starter-title">
+  <div class="tool-card starter-card-wrap">
+    <div class="readme-header">
+      <span class="readme-title" id="starter-title">주제·역할 고르기</span>
+      <button id="starter-close" class="readme-close-btn" type="button" aria-label="닫기">&times;</button>
+    </div>
+    <div class="starter-body">
+      <div class="starter-q"><span class="simple-step-num">1</span>어떤 프로젝트를 했나요?</div>
+      <div class="starter-themes" id="starter-themes"></div>
+      <div class="starter-q" id="starter-role-q" hidden><span class="simple-step-num">2</span>내가 맡은 역할과 가장 비슷한 것을 고르세요</div>
+      <div class="starter-roles" id="starter-roles"></div>
+      <div class="starter-preview" id="starter-preview" hidden></div>
+    </div>
+    <div class="starter-footer">
+      <div class="tool-note" id="starter-note">고르면 한 줄 소개 · About Me · 기술 스택 · 대표 프로젝트 · 자기소개가 예시로 채워집니다. 채운 뒤 이름·숫자·링크만 내 것으로 바꾸세요.</div>
+      <button id="starter-apply" class="readme-action-btn primary" type="button" disabled>이 예시로 채우기</button>
+    </div>
   </div>
 </div>
 
@@ -3913,6 +3989,7 @@
           return;
         }
         if (e.key === 'Escape') {
+          if (typeof Starter !== 'undefined' && Starter.isOpen()) { Starter.close(); return; }
           if (typeof Report !== 'undefined' && Report.isOpen()) { Report.close(); return; }
           if (typeof Polish !== 'undefined' && Polish.isOpen()) { Polish.close(); return; }
           if (typeof Interview !== 'undefined' && Interview.isOpen()) { Interview.close(); return; }
@@ -11117,7 +11194,7 @@
       var self = this;
       this.list = this.steps();
       var btn = document.getElementById('guided-tour-btn');
-      if (btn) btn.addEventListener('click', function() { self.start(self.savedIndex()); });
+      if (btn) btn.addEventListener('click', function() { self.introNote = ''; self.start(self.savedIndex()); });
       var ob = document.getElementById('onboarding-tour-btn');
       if (ob) ob.addEventListener('click', function() {
         document.getElementById('onboarding-overlay').classList.remove('active');
@@ -11136,7 +11213,7 @@
       var btn = document.getElementById('guided-tour-btn');
       if (!btn) return;
       var i = this.savedIndex();
-      btn.textContent = i ? '💬 말풍선 따라 쓰기 이어서 (' + (i + 1) + '/' + this.list.length + ')' : '💬 말풍선 따라 쓰기 (처음이라면 추천)';
+      btn.textContent = i ? '💬 말풍선 따라 쓰기 이어서 (' + (i + 1) + '/' + this.list.length + ')' : '💬 말풍선 따라 쓰기';
     },
 
     build: function() {
@@ -11288,6 +11365,7 @@
       add(b, 'div', 'tour-title', step.title);
       add(b, 'div', 'tour-body', step.body);
       if (step.tip) add(b, 'div', 'tour-tip', step.tip);
+      if (step.key === 'welcome' && this.introNote) add(b, 'div', 'tour-tip tour-note', this.introNote);
 
       if (step.summary) {
         // 마지막 단계: 아직 예시 문구가 남은 칸으로 바로 돌아갈 수 있게 한다
@@ -11410,6 +11488,180 @@
   };
   window.GuidedTour = GuidedTour;
 
+  // ===== Module: SimpleMode (3단계만 보이는 간단 모드) + Starter (주제·역할을 고르면 이력서 전체를 예시로 채움) =====
+  // 기능은 지우지 않는다. 패널의 나머지 구역은 #advanced-panel 안에 그대로 있고, "고급 기능 열기"로 펼친다.
+  var SIMPLE_MODE_KEY = 'resume-simple-mode';
+  var SimpleMode = {
+    init: function() {
+      var self = this;
+      this.btn = document.getElementById('advanced-toggle-btn');
+      if (!this.btn) return;
+      this.set(Storage.load(SIMPLE_MODE_KEY) !== false, true);
+      this.btn.addEventListener('click', function() { self.set(!self.simple); });
+      var undo = document.getElementById('simple-undo-btn');
+      if (undo) undo.addEventListener('click', function() { UI.undoLastChange(); });
+    },
+    set: function(simple, skipSave) {
+      this.simple = !!simple;
+      document.body.classList.toggle('simple-mode', this.simple);
+      this.btn.textContent = this.simple ? '⚙️ 고급 기능 열기' : '⚙️ 고급 기능 닫기 (간단 모드로)';
+      this.btn.setAttribute('aria-expanded', this.simple ? 'false' : 'true');
+      if (!skipSave) Storage.save(SIMPLE_MODE_KEY, this.simple);
+    }
+  };
+  window.SimpleMode = SimpleMode;
+
+  var STARTER_THEMES = [
+    { key: 'food', label: '🍽️ 부산 로컬 맛집 리뷰', hint: '리뷰·별점·찜 + AI 리뷰 요약·맛집 추천' },
+    { key: 'trip', label: '🧳 AI 부산 여행 코스', hint: '관광 API·지도·날씨 + AI 일정 생성' },
+    { key: 'crm', label: '📊 단골 고객 관리 (CRM)', hint: '고객·방문·포인트·쿠폰 + 분석 대시보드' },
+    { key: 'semi', label: '🧩 세미 프로젝트', hint: 'JSP·Servlet·JDBC로 만든 웹 서비스' }
+  ];
+  // 프로젝트 글에서 못 찾은 분류에 넣을 기본 기술 (수업 기준)
+  var STARTER_BASE_SKILLS = {
+    final: { backend: ['Java 21', 'Spring Boot 3.4', 'Spring Data JPA'], frontend: ['Thymeleaf', 'Bootstrap 5', 'JavaScript'], database: ['MySQL 8'], devops: ['AWS EC2', 'AWS S3', 'GitHub Actions', 'Git/GitHub'] },
+    semi: { backend: ['Java 17', 'Servlet/JSP', 'JDBC'], frontend: ['JSP', 'JSTL', 'JavaScript'], database: ['MySQL 8'], devops: ['Apache Tomcat', 'Git/GitHub'] }
+  };
+
+  var Starter = {
+    overlay: null,
+    theme: '',
+    preset: null,
+
+    init: function() {
+      this.overlay = document.getElementById('starter-overlay');
+      if (!this.overlay) return;
+      var self = this;
+      document.getElementById('starter-open-btn').addEventListener('click', function() { self.open(); });
+      document.getElementById('starter-close').addEventListener('click', function() { self.close(); });
+      this.overlay.addEventListener('click', function(e) { if (e.target === self.overlay) self.close(); });
+      document.getElementById('starter-apply').addEventListener('click', function() { self.apply(); });
+      var ob = document.getElementById('onboarding-starter-btn');
+      if (ob) ob.addEventListener('click', function() {
+        document.getElementById('onboarding-overlay').classList.remove('active');
+        Storage.save(STORAGE_KEYS.ONBOARDING, true);
+        self.open();
+      });
+    },
+
+    open: function() {
+      this.theme = '';
+      this.preset = null;
+      this.render();
+      this.overlay.classList.add('active');
+    },
+    close: function() { this.overlay.classList.remove('active'); },
+    isOpen: function() { return this.overlay && this.overlay.classList.contains('active'); },
+
+    presets: function(theme) {
+      // 세미 프로젝트 예시는 '세미' 주제에서만 보여 준다 (맛집·여행 태그가 함께 붙은 세미 예시가 섞이지 않게)
+      return EXAMPLE_LIBRARY.projectPreset.items.filter(function(it) {
+        return it.tags.indexOf(theme) !== -1 && (theme === 'semi' || it.tags.indexOf('semi') === -1);
+      });
+    },
+
+    // 고른 역할과 태그가 가장 많이 겹치는 예시 문장을 고른다 (주제 태그에 가중치)
+    pick: function(cat, tags, theme) {
+      var best = null, bestScore = 0;
+      EXAMPLE_LIBRARY[cat].items.forEach(function(it) {
+        if (!it.text) return;
+        var score = 0;
+        it.tags.forEach(function(t) { if (t === theme) score += 3; else if (tags.indexOf(t) !== -1) score += 1; });
+        if (it.tags.indexOf(theme) === -1) score = 0;
+        if (score > bestScore) { best = it; bestScore = score; }
+      });
+      return best ? best.text : '';
+    },
+
+    skills: function(preset, theme) {
+      var p = preset.project;
+      var found = Autofill.detectSkills([p.desc, p.role, (p.details || []).join('\n'), p.result].join('\n'));
+      var base = STARTER_BASE_SKILLS[theme === 'semi' ? 'semi' : 'final'];
+      var out = {};
+      Object.keys(base).forEach(function(cat) {
+        var list = [], keys = [];
+        // 글에서 찾은 기술을 앞에 두고, 기본 기술로 빈 자리를 채운다 (같은 기술은 한 번만, 분류마다 최대 6개)
+        (found[cat] || []).concat(base[cat]).forEach(function(name) {
+          var k = ResumeWriter.skillKey(name);
+          if (keys.indexOf(k) === -1 && list.length < 6) { keys.push(k); list.push(name); }
+        });
+        out[cat] = list;
+      });
+      return out;
+    },
+
+    render: function() {
+      var self = this;
+      var themesEl = document.getElementById('starter-themes');
+      var rolesEl = document.getElementById('starter-roles');
+      var preview = document.getElementById('starter-preview');
+      themesEl.innerHTML = '';
+      rolesEl.innerHTML = '';
+      var mk = function(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; };
+      STARTER_THEMES.forEach(function(t) {
+        var b = mk('button', 'starter-theme' + (self.theme === t.key ? ' active' : ''));
+        b.type = 'button';
+        b.setAttribute('data-theme', t.key);
+        b.appendChild(mk('strong', '', t.label));
+        b.appendChild(mk('small', '', t.hint));
+        b.addEventListener('click', function() { self.theme = t.key; self.preset = null; self.render(); });
+        themesEl.appendChild(b);
+      });
+      document.getElementById('starter-role-q').hidden = !this.theme;
+      if (this.theme) {
+        this.presets(this.theme).forEach(function(it) {
+          var b = mk('button', 'starter-role' + (self.preset === it ? ' active' : ''));
+          b.type = 'button';
+          b.appendChild(mk('strong', '', it.title.replace(/^\[(검수|세미)\]\s*/, '')));
+          b.appendChild(mk('small', '', it.project.role));
+          b.addEventListener('click', function() { self.preset = it; self.render(); });
+          rolesEl.appendChild(b);
+        });
+      }
+      preview.hidden = !this.preset;
+      preview.innerHTML = '';
+      if (this.preset) {
+        var p = this.preset.project;
+        preview.appendChild(mk('strong', '', '이렇게 채워집니다 — ' + p.name));
+        var ul = mk('ul');
+        (p.details || []).slice(0, 3).forEach(function(d) { ul.appendChild(mk('li', '', d)); });
+        if (p.result) ul.appendChild(mk('li', '', '성과: ' + p.result.replace(/^성과\s*[:：]\s*/, '')));
+        preview.appendChild(ul);
+        preview.scrollIntoView({ block: 'nearest' });
+      }
+      document.getElementById('starter-apply').disabled = !this.preset;
+    },
+
+    // 사용자가 이미 자기 내용을 썼는지 (이름·연락처·대표 프로젝트 이름 기준)
+    hasOwnContent: function() {
+      return ['header-name', 'header-email', 'project-1-name'].some(function(id) {
+        var t = FieldCollector.getFieldText(id);
+        return t && !hasPlaceholderText(t);
+      });
+    },
+
+    apply: function() {
+      if (!this.preset) return;
+      if (this.hasOwnContent() && !window.confirm('한 줄 소개 · About Me · 기술 스택 · 대표 프로젝트(1번) · 자기소개를 예시로 바꿉니다.\n이름·연락처·교육·자격증은 그대로 둡니다.\n\n바꾼 뒤에도 "방금 변경 되돌리기"로 되돌릴 수 있습니다. 계속할까요?')) return;
+      var preset = this.preset, theme = this.theme;
+      UI.captureUndoSnapshot();
+      ResumeWriter.applyProject('1', preset.project);
+      var headline = this.pick('headline', preset.tags, theme);
+      var about = this.pick('about', preset.tags, theme);
+      var intro = this.pick('intro', preset.tags, theme);
+      if (headline) ResumeWriter.setText('header-subtitle', headline);
+      if (about) { ResumeWriter.showSection('about'); ResumeWriter.setText('about-summary', about); }
+      if (intro) { ResumeWriter.showSection('intro'); ResumeWriter.setText('intro-text', intro); }
+      ResumeWriter.addSkills(this.skills(preset, theme), 'replace');
+      ResumeWriter.afterChange('주제·역할 예시로 채움');
+      this.close();
+      ResumeWriter.notify('예시로 채웠습니다. 이제 밝은 칸을 따라 이름·숫자·링크를 내 것으로 바꾸세요.');
+      GuidedTour.introNote = '방금 고른 주제·역할의 예시로 이력서를 채워 두었습니다. 예시 문장은 그대로 내면 안 됩니다. 이름·연락처·숫자·링크를 내 것으로 바꾸고, 하지 않은 일은 지우세요.';
+      GuidedTour.start(0);
+    }
+  };
+  window.Starter = Starter;
+
   // ===== Initialize =====
   document.addEventListener('DOMContentLoaded', function() {
     UI.init();
@@ -11429,6 +11681,8 @@
     A4Guide.init();
     PrintVisibility.init();
     GuidedTour.init();
+    SimpleMode.init();
+    Starter.init();
 
     // Auto-restore saved content
     var savedContent = UI.getSavedContentPayload();

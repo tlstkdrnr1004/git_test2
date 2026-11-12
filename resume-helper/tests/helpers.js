@@ -10,7 +10,10 @@ async function launch() {
 }
 
 async function openPage(browser, options = {}) {
-  const context = await browser.newContext({ viewport: { width: 1400, height: 900 }, ...options });
+  const { simple, ...contextOptions } = options;
+  const context = await browser.newContext({ viewport: { width: 1400, height: 900 }, ...contextOptions });
+  // 기존 테스트는 고급 영역의 버튼을 직접 누르므로 고급 기능을 연 상태로 시작한다 (simple: true면 간단 모드 그대로)
+  if (!options.simple) await context.addInitScript(() => { if (localStorage.getItem('resume-simple-mode') === null) localStorage.setItem('resume-simple-mode', 'false'); });
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
