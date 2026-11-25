@@ -2836,7 +2836,7 @@
   };
   var STORAGE_VERSION = 2;
   // 화면 오른쪽 위와 내보낸 백업 파일에 표시되는 앱 버전 (CODE_REVIEW.md의 업그레이드 차수와 같다)
-  var APP_VERSION = 'v10 (2026.11.25)';
+  var APP_VERSION = 'v10.1 (2026.11.25)';
   var API_URL = 'https://openrouter.ai/api/v1/chat/completions';
   var MODEL = 'openrouter/free';
   var AI_TIMEOUT_MS = 45000;
@@ -11931,7 +11931,17 @@
     // 주소 앞뒤에 붙은 괄호·문장부호는 링크에서 뺀다 (예: "(https://a.com)." → https://a.com)
     splitToken: function(raw) {
       var m = /^([(<“"'‘]*)([\s\S]*?)([)>”"'’.,;:!?。、]*)$/.exec(raw);
-      return m ? { lead: m[1], core: m[2], tail: m[3] } : { lead: '', core: raw, tail: '' };
+      if (!m) return { lead: '', core: raw, tail: '' };
+      var lead = m[1], core = m[2], tail = m[3];
+      var at = core.search(/https?:\/\//i);
+      if (at > 0) { lead += core.slice(0, at); core = core.slice(at); }
+      else {
+        var h = /^([\u3131-\u318E\uAC00-\uD7A3]+[(<“"'‘:]*)([^\u3131-\u318E\uAC00-\uD7A3][\s\S]*)$/.exec(core);
+        if (h && !/[\u3131-\u318E\uAC00-\uD7A3]/.test(h[2])) { lead += h[1]; core = h[2]; }
+      }
+      var k = /^([\s\S]*?[^\u3131-\u318E\uAC00-\uD7A3)>”"'’.,;:!?。、])([)>”"'’.,;:!?。、]*[\u3131-\u318E\uAC00-\uD7A3][\s\S]*)$/.exec(core);
+      if (k && !/[\u3131-\u318E\uAC00-\uD7A3]/.test(k[1]) && !/[^\u3131-\u318E\uAC00-\uD7A3)>”"'’.,;:!?。、]/.test(k[2])) { core = k[1]; tail = k[2] + tail; }
+      return { lead: lead, core: core, tail: tail };
     },
 
     makeLink: function(href, text) {
@@ -11987,7 +11997,7 @@
       // 이메일도 누르면 메일 쓰기가 열리게 한다
       var email = root.querySelector('[data-field-id="header-email"]');
       var text = email && normalizeWhitespace(email.textContent);
-      if (email && isValidEmail(text) && !email.querySelector('a')) {
+      if (email && isValidEmail(text) && !/[\[\]<>()"'\s]/.test(text) && !email.classList.contains('is-placeholder') && !email.querySelector('a')) {
         var link = this.makeLink('mailto:' + text, text);
         email.textContent = '';
         email.appendChild(link);
@@ -12052,20 +12062,25 @@
       [/해군/, { ko: '해군', en: 'Republic of Korea Navy', ja: '大韓民国海軍' }],
       [/공군/, { ko: '공군', en: 'Republic of Korea Air Force', ja: '大韓民国空軍' }],
       [/의경|의무경찰/, { ko: '의무경찰', en: 'Auxiliary Police (mandatory service)', ja: '義務警察' }],
-      [/사회복무/, { ko: '사회복무요원', en: 'Social Service Personnel (alternative service)', ja: '社会服務要員' }],
-      [/전문연구|산업기능/, { ko: '대체복무', en: 'Alternative Service (Technical Research / Industrial Technical Personnel)', ja: '代替服務' }]
+      [/상근/, { ko: '상근예비역', en: 'Republic of Korea Army (Full-time Reserve Service)', ja: '大韓民国陸軍（常勤予備役）' }],
+      [/사회복무|공익/, { ko: '사회복무요원', en: 'Social Service Personnel (alternative service)', ja: '社会服務要員', noRank: true }],
+      [/전문연구|산업기능/, { ko: '대체복무', en: 'Alternative Service (Technical Research / Industrial Technical Personnel)', ja: '代替服務', noRank: true }]
     ],
     rank: [
       [/병장/, { ko: '병장', en: 'Sergeant', ja: '兵長' }], [/상병/, { ko: '상병', en: 'Corporal', ja: '上等兵' }],
       [/일병/, { ko: '일병', en: 'Private First Class', ja: '一等兵' }], [/이병/, { ko: '이병', en: 'Private', ja: '二等兵' }],
       [/하사/, { ko: '하사', en: 'Staff Sergeant', ja: '下士' }], [/중사/, { ko: '중사', en: 'Sergeant First Class', ja: '中士' }],
       [/소위/, { ko: '소위', en: 'Second Lieutenant', ja: '少尉' }], [/중위/, { ko: '중위', en: 'First Lieutenant', ja: '中尉' }],
-      [/대위/, { ko: '대위', en: 'Captain', ja: '大尉' }]
+      [/대위/, { ko: '대위', en: 'Captain', ja: '大尉' }], [/상사/, { ko: '상사', en: 'Master Sergeant', ja: '上士' }],
+      [/소령/, { ko: '소령', en: 'Major', ja: '少佐' }], [/중령/, { ko: '중령', en: 'Lieutenant Colonel', ja: '中佐' }],
+      [/수경/, { ko: '수경', en: 'Sergeant (Auxiliary Police)', ja: '首警' }], [/상경/, { ko: '상경', en: 'Corporal (Auxiliary Police)', ja: '上警' }],
+      [/일경/, { ko: '일경', en: 'Private First Class (Auxiliary Police)', ja: '一警' }], [/이경/, { ko: '이경', en: 'Private (Auxiliary Police)', ja: '二警' }]
     ],
     discharge: [
       [/만기\s*전역|만기\s*제대/, { ko: '만기전역', en: 'Honorable discharge', ja: '満期除隊' }],
       [/소집\s*해제/, { ko: '소집해제', en: 'Completed service', ja: '召集解除' }],
       [/의병\s*전역/, { ko: '의병전역', en: 'Medical discharge', ja: '依病除隊' }],
+      [/의가사\s*전역/, { ko: '의가사전역', en: 'Hardship discharge', ja: '依家事除隊' }],
       [/복무\s*완료/, { ko: '복무 완료', en: 'Completed service', ja: '服務完了' }]
     ]
   };
@@ -12129,7 +12144,7 @@
       document.getElementById('format-desc').textContent = this.format(cur).desc;
       this.render();
       // 브라우저 내장 번역(무료·기기 안)이 있으면 바로 번역한다. AI 번역은 사용량이 드므로 버튼을 눌렀을 때만.
-      if (this.pending.length && this.translationMethod() === 'browser' && !this.edits[cur]) this.translatePending();
+      if (this.pending.length && this.translationMethod(this.format(cur).lang) === 'browser' && !this.edits[cur]) this.translatePending({ auto: true });
     },
 
     // ---------- 이력서 내용 읽기 ----------
@@ -12229,7 +12244,7 @@
       return (t[m.status] || t.done)[lang];
     },
 
-    // 한국 이름 → 로마자 (국어의 로마자 표기법, 성씨는 흔히 쓰는 표기) 예: 배수환 → Suhwan Bae
+    // 한국 이름 → 로마자 (국어의 로마자 표기법, 성씨는 흔히 쓰는 표기) 예: 홍길동 → Gildong Hong
     romanize: function(name) {
       name = String(name || '').trim();
       if (!/[가-힣]/.test(name)) return { given: name, family: '', full: name };
@@ -12251,11 +12266,12 @@
 
     phoneIntl: function(phone) {
       var digits = String(phone || '').replace(/[^\d]/g, '');
-      if (/^0\d{9,10}$/.test(digits)) {
-        var rest = digits.slice(1);
-        return '+82 ' + rest.replace(/^(\d{2})(\d{3,4})(\d{4})$/, '$1-$2-$3');
-      }
-      return phone || '';
+      if (!/^0\d{8,10}$/.test(digits)) return phone || '';
+      var rest = digits.slice(1);
+      // 서울(02)은 지역번호가 한 자리, 휴대폰(010 등)·다른 지역(051 등)은 두 자리
+      var area = /^2/.test(rest) ? 1 : 2;
+      var m = new RegExp('^(\\d{' + area + '})(\\d{3,4})(\\d{4})$').exec(rest);
+      return m ? '+82 ' + m[1] + '-' + m[2] + '-' + m[3] : phone || '';
     },
 
     // ---------- 번역 ----------
@@ -12270,8 +12286,9 @@
       if (this.pending.indexOf(text) === -1) this.pending.push(text);
       return '<span class="fx-untr" title="번역 필요">' + escapeHtml(text) + '</span>';
     },
-    translationMethod: function() {
-      if (window.Translator && typeof window.Translator.create === 'function') return 'browser';
+    browserFailed: {},
+    translationMethod: function(lang) {
+      if (window.Translator && typeof window.Translator.create === 'function' && !this.browserFailed[lang]) return 'browser';
       if (Storage.load(STORAGE_KEYS.API_KEY)) return 'ai';
       return '';
     },
@@ -12281,11 +12298,13 @@
       Object.keys(map).forEach(function(k) { if (map[k]) all[lang][k] = map[k]; });
       Storage.save(FX_TRANSLATION_KEY, all);
     },
-    translatePending: function() {
+    // opts.auto: 탭을 열 때 저절로 하는 번역. 이때는 사용량이 드는 AI로 넘어가지 않는다.
+    translatePending: function(opts) {
       var self = this;
+      var auto = !!(opts && opts.auto);
       var fmt = this.format(this.current);
       if (fmt.lang === 'ko' || !this.pending.length || this.busy) return;
-      var method = this.translationMethod();
+      var method = this.translationMethod(fmt.lang);
       if (!method) {
         this.setStatus('번역하려면 Chrome 최신 버전(내장 번역)을 쓰거나, 고급 기능 → AI 설정에 OpenRouter API 키를 저장하세요. 지금은 한국어 문장이 주황색으로 남아 있고, 문서에서 직접 고쳐 써도 됩니다.', 'warn');
         return;
@@ -12298,8 +12317,11 @@
       this.setStatus((method === 'browser' ? '브라우저 내장 번역' : 'AI') + '으로 ' + texts.length + '개 문장을 번역하는 중입니다…', 'info');
       var run = method === 'browser'
         ? this.translateBrowser(texts, fmt.lang).catch(function(err) {
-            // 내장 번역이 안 되면(모델 없음·응답 없음) API 키가 있을 때 AI 번역으로 넘어간다
+            // 내장 번역이 안 되면(모델 없음·응답 없음) 다음부터는 시도하지 않고,
+            // 버튼을 눌렀고 API 키가 있을 때만 AI 번역으로 넘어간다
+            self.browserFailed[fmt.lang] = true;
             if (!Storage.load(STORAGE_KEYS.API_KEY)) throw err;
+            if (auto) { err = new Error((err && err.message ? err.message : err) + ' "번역하기"를 누르면 AI로 번역합니다.'); err.aiNext = true; throw err; }
             self.setStatus('브라우저 번역을 쓸 수 없어 AI로 번역하는 중입니다…', 'info');
             return self.translateAI(texts, fmt.lang);
           })
@@ -12314,7 +12336,7 @@
       }).catch(function(err) {
         self.busy = false;
         self.render();
-        self.setStatus('번역하지 못했습니다: ' + (err && err.message ? err.message : err) + ' 한국어 문장은 주황색으로 표시됩니다. 직접 고쳐 쓰거나, 고급 기능 → AI 설정에 API 키를 넣고 다시 누르세요.', 'warn');
+        self.setStatus('번역하지 못했습니다: ' + (err && err.message ? err.message : err) + (err && err.aiNext ? '' : ' 한국어 문장은 주황색으로 표시됩니다. 직접 고쳐 쓰거나, 고급 기능 → AI 설정에 API 키를 넣고 다시 누르세요.'), 'warn');
       });
     },
     // 응답이 없는 약속(Promise)을 ms 뒤에 실패로 끝낸다
@@ -12386,8 +12408,8 @@
                 var idx = parseInt(it && it.i, 10);
                 var out = it && typeof it.t === 'string' ? it.t.trim().slice(0, 2000) : '';
                 if (isNaN(idx) || !texts[idx] || !out) return;
-                // 원문의 숫자가 번역에 모두 남아 있을 때만 쓴다 (숫자를 바꾸거나 빠뜨린 번역은 버림)
-                var nums = texts[idx].match(/\d+(?:[.,]\d+)?/g) || [];
+                // AI에 보낸 글(연락처는 가린 글)의 숫자가 번역에 모두 남아 있을 때만 쓴다 (숫자를 바꾸거나 빠뜨린 번역은 버림)
+                var nums = masked[idx].match(/\d+(?:[.,]\d+)?/g) || [];
                 var ok = nums.every(function(n) { return out.indexOf(n) !== -1 || out.indexOf(n.replace(',', '')) !== -1; });
                 if (ok) map[texts[idx]] = out;
               });
@@ -12521,8 +12543,8 @@
       var m = d.military;
       var military = m ? table(['병역 대상', '군별', '계급', '복무기간', '제대 구분'], [[
         this.militaryStatusText(m, 'ko'), m.branch ? m.branch.ko : (m.status === 'done' ? this.blank('[군별]') : '-'),
-        m.rank ? m.rank.ko : (m.status === 'done' ? this.blank('[계급]') : '-'),
-        m.start ? this.fmtYM(m.start, 'ko') + (m.end ? ' ~ ' + this.fmtYM(m.end, 'ko') : '') : (m.status === 'done' ? this.blank('[복무기간]') : '-'),
+        m.rank ? m.rank.ko : (m.status === 'done' && !(m.branch && m.branch.noRank) ? this.blank('[계급]') : '-'),
+        m.status !== 'done' ? '-' : m.start ? this.fmtYM(m.start, 'ko') + (m.end ? ' ~ ' + this.fmtYM(m.end, 'ko') : '') : this.blank('[복무기간]'),
         m.discharge ? m.discharge.ko : (m.status === 'done' ? this.blank('[제대 구분]') : '-')
       ]]) : '';
       var essay = (d.about ? '<h3 class="fx-h3">핵심 역량 요약</h3><p>' + e(d.about) + '</p>' : '') +

@@ -38,17 +38,17 @@ async function open(opts = {}) {
 async function fillResume(page) {
   await page.evaluate(() => {
     const set = (id, t) => { document.querySelector('[data-field-id="' + id + '"]').innerText = t; };
-    set('header-name', '배수환'); set('header-age', '만 29세');
+    set('header-name', '홍길동'); set('header-age', '만 29세');
     set('header-subtitle', '클라우드 백엔드 지원 | Spring Boot · AWS EC2(Ubuntu) · S3 · GitHub Actions');
-    set('header-email', 'tbvjghks123@gmail.com'); set('header-phone', '010-2275-3761');
-    set('header-github', 'https://github.com/suhwan-yeh');
+    set('header-email', 'gildong.hong@example.com'); set('header-phone', '010-9876-5432');
+    set('header-github', 'https://github.com/example-dev');
     set('header-military', '병역: 군필 (해병 병장 만기전역, 2021.11 ~ 2023.05)');
     set('project-1-name', '고객관리 CRM - 팀 공동 개발을 위한 CRM 웹 서비스');
     set('project-1-meta', '2026.10.28 ~ 2026.11.30 | 팀 5명 (파이널 프로젝트)');
     set('project-1-role', '담당: 부팀장 / CI 구성, AWS 인프라 구축');
     set('project-1-result', 'GitHub Actions → S3 → EC2 배포 흐름 검증, 배포 시간 15분 → 3분');
-    set('project-1-link', 'GitHub: github.com/suhwan-yeh/busan-crm');
-    set('about-summary', '기능 구현에 그치지 않고 AWS 배포와 GitHub Actions 자동 배포까지 직접 구성했습니다. 자세한 기록은 https://velog.io/@suhwan/crm-deploy 에 있습니다.');
+    set('project-1-link', 'GitHub: github.com/example-dev/busan-crm');
+    set('about-summary', '기능 구현에 그치지 않고 AWS 배포와 GitHub Actions 자동 배포까지 직접 구성했습니다. 자세한 기록은 https://velog.io/@example-dev/crm-deploy 에 있습니다.');
     set('edu-2-period', '2021.03 ~ 2025.06'); set('edu-2-name', '부산외국어대학교'); set('edu-2-detail', '중국어중국학과 제적');
     set('cert-1-date', '2012.03'); set('cert-1-name', '디지털정보활용능력(DIAT) 워드프로세서 고급'); set('cert-1-issuer', '한국정보통신진흥협회');
     set('doc-1-name', 'AI 코드 검증일지'); set('doc-1-link', 'http://example.com/ai-verify-log.md'); set('doc-1-desc', '결함 4건 기록');
@@ -64,7 +64,7 @@ test('PDF로 저장하면 이력서의 http·https 주소를 누를 수 있다 (
   const before = await page.evaluate(() => UI.buildContentPayload().fields);
   const pdf = await page.pdf({ preferCSSPageSize: true });
   const links = pdfLinks(pdf);
-  for (const url of ['https://github.com/suhwan-yeh', 'https://github.com/suhwan-yeh/busan-crm', 'https://velog.io/@suhwan/crm-deploy', 'http://example.com/ai-verify-log.md', 'mailto:tbvjghks123@gmail.com']) {
+  for (const url of ['https://github.com/example-dev', 'https://github.com/example-dev/busan-crm', 'https://velog.io/@example-dev/crm-deploy', 'http://example.com/ai-verify-log.md', 'mailto:gildong.hong@example.com']) {
     assert.ok(links.includes(url), url + ' 링크 없음: ' + JSON.stringify(links));
   }
   assert.ok(!links.some((u) => /tistory|saramin|your-id/.test(u)), '예시 문구 [ ] 가 든 주소는 링크로 만들지 않음: ' + JSON.stringify(links));
@@ -124,10 +124,10 @@ test('양식 5종: 항목 순서와 나라별 규칙 (사진·나이·병역·�
   // 미국: 사진·나이 없음, 이름 로마자, 국제 전화번호, 병역은 영어로
   await page.click('#format-tabs .tool-tab[data-format="us"]');
   t = await text();
-  assert.equal(await page.textContent('#format-doc h1'), 'Suhwan Bae');
+  assert.equal(await page.textContent('#format-doc h1'), 'Gildong Hong');
   assert.equal(await page.locator('#format-doc img').count(), 0);
   assert.ok(!/29세|Age/.test(t), '나이 없음');
-  assert.match(t, /\+82 10-2275-3761/);
+  assert.match(t, /\+82 10-9876-5432/);
   assert.match(t, /Military service: Republic of Korea Marine Corps, Sergeant — Honorable discharge \(Nov 2021 – May 2023\)/);
   assert.match(t, /Oct 2026 – Nov 2026/);
   assert.ok(!/Referees/.test(t));
@@ -139,7 +139,7 @@ test('양식 5종: 항목 순서와 나라별 규칙 (사진·나이·병역·�
   // 일본: 履歴書 + 職務経歴書, 満年齢, 兵役, 以上
   await page.click('#format-tabs .tool-tab[data-format="jp"]');
   t = await text();
-  for (const s of ['履 歴 書', '職 務 経 歴 書', '（満 29 歳）', '大韓民国海兵隊　入隊（兵役）', '兵長', '満期除隊', '以上', 'BAE SUHWAN', '中途退学']) assert.ok(t.includes(s), s);
+  for (const s of ['履 歴 書', '職 務 経 歴 書', '（満 29 歳）', '大韓民国海兵隊　入隊（兵役）', '兵長', '満期除隊', '以上', 'HONG GILDONG', '中途退学']) assert.ok(t.includes(s), s);
   const histRows = await page.$$eval('.fx-jp-hist tbody tr', (rows) => rows.map((r) => Array.from(r.cells).map((c) => c.textContent.trim()).join('|')));
   assert.ok(histRows.includes('2021|11|大韓民国海兵隊　入隊（兵役）'), JSON.stringify(histRows));
   assert.ok(histRows.includes('2023|5|大韓民国海兵隊　兵長　満期除隊'), JSON.stringify(histRows));
@@ -188,7 +188,7 @@ test('AI 번역: 숫자를 바꾼 번역은 쓰지 않고, 연락처는 보내�
   const untr = await page.$$eval('#format-doc .fx-untr', (e) => e.map((x) => x.textContent));
   assert.deepEqual(untr.filter((x) => /15분/.test(x)).length, 1, '숫자가 바뀐 번역은 버리고 한국어로 남김: ' + JSON.stringify(untr));
   assert.equal(untr.length, 1);
-  assert.ok(sent.length >= 1 && !sent.join('').includes('010-2275-3761') && !sent.join('').includes('tbvjghks123@gmail.com'));
+  assert.ok(sent.length >= 1 && !sent.join('').includes('010-9876-5432') && !sent.join('').includes('gildong.hong@example.com'));
   assert.deepEqual(page.errors, []);
 });
 
@@ -226,7 +226,7 @@ test('양식 PDF: 고른 양식만 인쇄되고 링크가 살아 있으며, 5개
   assert.equal(await page.locator('#format-print-root .fx-blank').count(), 0, '채우지 않은 칸은 PDF에서 뺌');
   await page.emulateMedia({ media: null }); // 'screen'으로 고정하면 page.pdf도 화면 모양으로 찍힌다
   const one = await page.pdf({ preferCSSPageSize: true });
-  assert.ok(pdfLinks(one).includes('https://github.com/suhwan-yeh/busan-crm'), JSON.stringify(pdfLinks(one)));
+  assert.ok(pdfLinks(one).includes('https://github.com/example-dev/busan-crm'), JSON.stringify(pdfLinks(one)));
   await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
   assert.equal(await page.evaluate(() => document.body.classList.contains('fx-printing')), false);
   assert.equal(await page.evaluate(() => document.getElementById('format-print-root').innerHTML), '');
@@ -247,7 +247,7 @@ test('양식 PDF: 고른 양식만 인쇄되고 링크가 살아 있으며, 5개
   assert.ok(pdfPages(await page.pdf({ preferCSSPageSize: true })) >= 6);
   await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
   // 원래 이력서 PDF는 다시 정상
-  assert.ok(pdfLinks(await page.pdf({ preferCSSPageSize: true })).includes('https://github.com/suhwan-yeh'));
+  assert.ok(pdfLinks(await page.pdf({ preferCSSPageSize: true })).includes('https://github.com/example-dev'));
   assert.deepEqual(page.errors, []);
 });
 
