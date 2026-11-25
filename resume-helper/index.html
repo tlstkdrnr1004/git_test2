@@ -1228,14 +1228,15 @@
   #ai-panel-mini:hover { background: #2a4a7f; }
 
   /* ===== #11 반응형 ===== */
-  @media (max-width: 1024px) {
+  /* 화면에만 적용한다. A4 인쇄 폭(약 703px)도 768px보다 좁아서, 전에는 PDF에서 머리글이 휴대폰 모양(세로)으로 쌓였다 */
+  @media screen and (max-width: 1024px) {
     #ai-control-panel {
       width: 240px;
       padding: 10px;
       font-size: 8.5pt;
     }
   }
-  @media (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     #ai-control-panel {
       display: none;
     }
@@ -1259,7 +1260,7 @@
       grid-template-columns: repeat(2, 1fr);
     }
   }
-  @media (max-width: 480px) {
+  @media screen and (max-width: 480px) {
     .wizard-card {
       padding: 18px 16px;
     }
@@ -1656,6 +1657,76 @@
   .starter-footer button:disabled { opacity: .45; cursor: default; }
   @media (max-width: 640px) { .starter-footer { flex-direction: column; align-items: stretch; } }
 
+  /* ===== 채용 사이트 양식 변환 (사람인 · 잡코리아 · 호주 · 미국 · 일본) ===== */
+  #format-overlay .tool-card { max-width: 1040px; }
+  .fx-status { padding: 6px 20px; font-size: 8.5pt; line-height: 1.5; flex-shrink: 0; }
+  .fx-status:empty { display: none; }
+  .fx-status.fx-warn { background: #fffaf0; color: #9c4221; }
+  .fx-status.fx-ok { background: #f0fff4; color: #276749; }
+  .fx-status.fx-info { background: #ebf8ff; color: #2c5282; }
+  .fx-scroll { flex: 1; min-height: 0; overflow: auto; background: #e2e8f0; padding: 16px; }
+  .fx-doc { outline: none; }
+  .fx-page { background: #fff; width: 210mm; max-width: 100%; margin: 0 auto 16px; padding: 14mm; box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    font-size: 9.5pt; line-height: 1.55; color: #222; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', sans-serif; }
+  .fx-title { font-size: 15pt; text-align: center; margin-bottom: 10px; color: #1a365d; }
+  .fx-h2 { font-size: 11pt; color: #1a365d; border-bottom: 2px solid #1a365d; margin: 14px 0 6px; padding-bottom: 2px; }
+  .fx-h3 { font-size: 10pt; margin: 8px 0 3px; }
+  .fx-page p { margin: 2px 0; }
+  .fx-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; }
+  .fx-table th, .fx-table td { border: 1px solid #a0aec0; padding: 4px 6px; vertical-align: top; text-align: left; font-size: 9pt; }
+  .fx-table th { background: #edf2f7; white-space: nowrap; font-weight: 700; }
+  .fx-photo { width: 32mm; text-align: center !important; vertical-align: middle !important; }
+  .fx-photo img { width: 28mm; height: 37mm; object-fit: cover; display: block; margin: 0 auto; }
+  .fx-photo span { color: #a0aec0; font-size: 8pt; }
+  .fx-item { margin-bottom: 8px; break-inside: avoid; }
+  .fx-item-head { display: flex; justify-content: space-between; gap: 10px; }
+  .fx-item-head span { color: #555; white-space: nowrap; font-size: 8.5pt; }
+  .fx-sub { color: #4a5568; }
+  .fx-item ul, .fx-list, .fx-skill-lines, .fx-jp-proj ul { margin: 3px 0 3px 18px; }
+  .fx-chips div { margin-bottom: 3px; }
+  .fx-chip { display: inline-block; border: 1px solid #cbd5e0; border-radius: 3px; padding: 0 5px; margin: 1px 3px 1px 0; font-size: 8.5pt; }
+  .fx-result { background: #f0fff4; padding: 1px 4px; }
+  .fx-strong { font-weight: 700; }
+  .fx-dot { color: #a0aec0; }
+  .fx-blank { background: #fefcbf; border-bottom: 1px dashed #d69e2e; color: #744210; }
+  .fx-untr { background: #feebc8; }
+  .fx-link { color: #2b6cb0; text-decoration: none; }
+  .fx-en { font-family: Calibri, 'Segoe UI', Arial, 'Malgun Gothic', sans-serif; }
+  .fx-en-head { text-align: center; margin-bottom: 8px; }
+  .fx-en-head h1 { font-size: 20pt; color: #1a202c; }
+  .fx-en-title { font-weight: 600; color: #2d3748; }
+  .fx-en-contact { font-size: 9pt; color: #4a5568; }
+  .fx-en .fx-h2 { text-transform: uppercase; letter-spacing: 0.5px; font-size: 10.5pt; }
+  .fx-jp { font-family: 'Yu Gothic', YuGothic, Meiryo, 'Hiragino Sans', 'Noto Sans JP', 'Malgun Gothic', sans-serif; }
+  .fx-jp-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 6px; }
+  .fx-jp-top h1 { font-size: 17pt; letter-spacing: 4px; }
+  .fx-jp-top span { font-size: 9pt; text-align: right; }
+  .fx-jp-name { font-size: 14pt; }
+  .fx-jp-name small { font-size: 8pt; margin-left: 6px; color: #555; }
+  .fx-table .fx-y { width: 14mm; text-align: center; }
+  .fx-table .fx-m { width: 9mm; text-align: center; }
+  .fx-table .fx-c { text-align: center; }
+  .fx-r { text-align: right !important; }
+  .fx-jp-box { min-height: 20mm; }
+  .fx-jp-proj { margin-bottom: 8px; break-inside: avoid; }
+  #format-print-root { display: none; }
+  @media screen and (max-width: 768px) {
+    .fx-scroll { padding: 6px; }
+    .fx-page { padding: 8mm 5mm; font-size: 9pt; }
+  }
+  @media print {
+    body.fx-printing > *:not(#format-print-root) { display: none !important; }
+    body.fx-printing #format-print-root { display: block !important; }
+    #format-print-root .fx-page { box-shadow: none; margin: 0; padding: 0; width: auto; max-width: none; break-after: page; }
+    #format-print-root .fx-doc:last-child .fx-page:last-child { break-after: auto; }
+    #format-print-root .fx-untr { background: none; }
+  }
+
+  /* ===== 인쇄용 링크 · 버전 표시 ===== */
+  a.print-link { color: inherit; text-decoration: none; }
+  .page.measuring-print [contenteditable="true"]:not(.project-result):not(.badge) { border: none !important; }
+  .panel-version { font-size: 7pt; font-weight: 600; color: #a0aec0; margin-left: 4px; }
+
   /* ===== 지운 칸 접기 · 되살리기 · 기타 문서 · 기술 분류 목록 ===== */
   .name-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 10px; }
   .header-age { font-size: 10pt; font-weight: 600; color: #4a6fa5; }
@@ -1878,7 +1949,7 @@
 <!-- ===== AI 컨트롤 패널 ===== -->
 <div id="ai-control-panel">
   <div class="panel-header">
-    <span class="panel-title">이력서 작성 도우미</span>
+    <span class="panel-title">이력서 작성 도우미 <span class="panel-version" id="app-version"></span></span>
     <button id="panel-toggle" title="접기/펼치기">&#9660;</button>
   </div>
   <div id="panel-body" class="panel-body">
@@ -1902,6 +1973,7 @@
         <div class="simple-step-head"><span class="simple-step-num">3</span>점검하고 PDF 저장</div>
       <button id="quick-check-btn" class="primary-btn">빠른 점검 실행</button>
       <button id="pdf-guide-btn" class="secondary-btn full-width-btn" style="padding:7px; font-weight:600;">PDF로 저장하기</button>
+      <button id="format-open-btn" class="secondary-btn full-width-btn" type="button" style="padding:7px; font-weight:600; background:#f0fff4; border-color:#38a169; color:#22543d;">🌏 사람인·잡코리아·해외 양식 PDF</button>
         <div class="panel-hint">입력 내용은 이 브라우저에 자동 저장됩니다. 안내 문구와 버튼은 PDF에 들어가지 않습니다.</div>
       </div>
     <!-- #3 이력서 완성도 -->
@@ -2144,7 +2216,7 @@
     </div>
     <div class="pdf-step">
       <span class="pdf-step-num">3</span>
-      <div class="pdf-step-text"><strong>"저장"</strong> 버튼을 눌러 원하는 위치에 저장하세요</div>
+      <div class="pdf-step-text"><strong>"저장"</strong> 버튼을 눌러 원하는 위치에 저장하세요<br><span style="color:#4a5568;">PDF 속 http·https 주소(GitHub·블로그·문서 링크)와 이메일은 누르면 바로 열립니다.</span></div>
     </div>
     <div id="pdf-preflight-status" class="pdf-preflight-box">저장 전에 빠른 점검 결과를 불러옵니다.</div>
     <div class="pdf-guide-btns">
@@ -2317,6 +2389,29 @@
       <div class="tool-note" id="starter-note">고르면 한 줄 소개 · About Me · 기술 스택 · 대표 프로젝트 · 자기소개가 예시로 채워집니다. 채운 뒤 이름·숫자·링크만 내 것으로 바꾸세요.</div>
       <button id="starter-apply" class="readme-action-btn primary" type="button" disabled>이 예시로 채우기</button>
     </div>
+  </div>
+</div>
+
+<!-- ===== 채용 사이트 양식으로 바꿔 PDF 저장 ===== -->
+<div id="format-overlay" class="tool-overlay" role="dialog" aria-modal="true" aria-labelledby="format-title">
+  <div class="tool-card">
+    <div class="readme-header">
+      <span class="readme-title" id="format-title">채용 사이트 양식으로 바꿔 PDF 저장</span>
+      <button id="format-close" class="readme-close-btn" type="button" aria-label="닫기">&times;</button>
+    </div>
+    <div class="tool-tabs" id="format-tabs" role="tablist" aria-label="양식"></div>
+    <div class="tool-toolbar">
+      <div class="tool-desc" id="format-desc"></div>
+      <div class="iv-actions">
+        <button id="format-translate" class="readme-action-btn secondary" type="button">번역하기</button>
+        <button id="format-reset" class="readme-action-btn secondary" type="button">다시 만들기</button>
+        <button id="format-print-all" class="readme-action-btn secondary" type="button">5개 양식 한 번에 PDF</button>
+        <button id="format-print" class="readme-action-btn primary" type="button">이 양식 PDF로 저장</button>
+      </div>
+    </div>
+    <div class="fx-status" id="format-status" role="status" aria-live="polite"></div>
+    <div class="fx-scroll"><div id="format-doc" class="fx-doc" contenteditable="true" spellcheck="false" aria-label="변환된 이력서 (눌러서 고칠 수 있음)"></div></div>
+    <div class="tool-note">이력서에 적은 내용으로 자동으로 채웠습니다. 문서를 눌러 바로 고칠 수 있고(원래 이력서는 바뀌지 않음), "PDF로 저장"을 누른 뒤 인쇄 창에서 대상을 "PDF로 저장"으로 고르세요. PDF 속 주소는 누르면 열립니다.</div>
   </div>
 </div>
 
@@ -2726,6 +2821,7 @@
 
 </div>
 
+<div id="format-print-root" aria-hidden="true"></div>
 <script>
 (function() {
   'use strict';
@@ -2739,6 +2835,8 @@
     SECTION_TOGGLE: 'resume-section-toggles'
   };
   var STORAGE_VERSION = 2;
+  // 화면 오른쪽 위와 내보낸 백업 파일에 표시되는 앱 버전 (CODE_REVIEW.md의 업그레이드 차수와 같다)
+  var APP_VERSION = 'v10 (2026.11.25)';
   var API_URL = 'https://openrouter.ai/api/v1/chat/completions';
   var MODEL = 'openrouter/free';
   var AI_TIMEOUT_MS = 45000;
@@ -2952,6 +3050,55 @@
     return '';
   }
 
+  // 인쇄에서 숨겨지는 편집용 요소. A4 1페이지 계산(PDF 점검·A4 안내선)이 이 목록을 같이 쓴다.
+  // (전에는 두 곳의 목록이 달라 PDF 점검이 "+ 추가" 버튼·삭제 버튼 높이까지 재서 A4 초과로 잘못 알렸다)
+  var PRINT_HIDE_SELECTOR = '.guide, .section-toggle-btn, .inline-sample-btn, .draft-helper-tools, .draft-helper-box, .ai-feedback-container, .restore-chips, .skill-preset-menu, [data-print-empty="true"], .project-add-wrap, .inline-add-wrap, .dynamic-item-header, .section-actions, .a4-limit-line';
+
+  // A4 한 장에 들어가는 본문 높이(px): 297mm - 위아래 여백 8mm×2
+  function getA4ContentHeight() {
+    var ruler = document.createElement('div');
+    ruler.style.cssText = 'position:absolute;visibility:hidden;height:281mm;';
+    document.body.appendChild(ruler);
+    var height = ruler.getBoundingClientRect().height;
+    document.body.removeChild(ruler);
+    return height;
+  }
+
+  // 인쇄와 같은 모양(편집용 요소 숨김, A4 폭)을 잠깐 만들어 fn으로 재고 되돌린다. 화면에는 그려지지 않는다.
+  // 재는 동안 문서가 짧아지면 브라우저가 스크롤을 위로 당기므로, 스크롤 위치를 기억했다가 되돌린다
+  // (전에는 페이지 아래쪽에서 입력하다 칸을 벗어나면 화면이 위로 튀어 누르려던 버튼을 놓쳤다).
+  function withPrintLayout(page, fn) {
+    var scrollX = window.scrollX, scrollY = window.scrollY;
+    var hidden = Array.prototype.slice.call(page.querySelectorAll(PRINT_HIDE_SELECTOR));
+    // "숨기기"를 누른 섹션은 인쇄에서 제목까지 빠진다 (인쇄 CSS의 .section:has(> .hidden-section)와 같은 규칙)
+    page.querySelectorAll('.section').forEach(function(section) {
+      if (section.querySelector(':scope > .hidden-section')) hidden.push(section);
+    });
+    var saved = [];
+    for (var i = 0; i < hidden.length; i++) { saved.push(hidden[i].style.display); hidden[i].style.display = 'none'; }
+    var width = page.style.width, maxWidth = page.style.maxWidth;
+    page.style.width = '210mm';
+    page.style.maxWidth = 'none';
+    page.classList.add('measuring-print'); // 편집용 점선 테두리처럼 인쇄에서 빠지는 크기도 같이 뺀다
+    try {
+      return fn();
+    } finally {
+      page.classList.remove('measuring-print');
+      page.style.width = width;
+      page.style.maxWidth = maxWidth;
+      for (var j = 0; j < hidden.length; j++) hidden[j].style.display = saved[j];
+      if (window.scrollX !== scrollX || window.scrollY !== scrollY) window.scrollTo(scrollX, scrollY);
+    }
+  }
+
+  // 인쇄했을 때 본문 높이(px): 화면용 위아래 패딩은 인쇄에서 0이 되므로 뺀다
+  function measurePrintContentHeight(page) {
+    return withPrintLayout(page, function() {
+      var cs = window.getComputedStyle(page);
+      return page.getBoundingClientRect().height - (parseFloat(cs.paddingTop) || 0) - (parseFloat(cs.paddingBottom) || 0);
+    });
+  }
+
   function isValidEmail(text) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizeWhitespace(text));
   }
@@ -3075,6 +3222,18 @@
       return getCustomSkillTagFieldId(idx);
     });
   }
+
+  // 교육·자격증·기타 문서처럼 "칸 3개짜리 행"의 정의. 행 추가와 저장 내용 복원이 같은 정의를 쓴다.
+  // fields: [CSS 클래스, 칸 이름, guide-type, 예시 문구]. 1~2번 행은 HTML에 고정으로 있다.
+  var ROW_KINDS = {
+    edu: { section: 'education', cls: 'edu-row', button: 'add-education-btn', saveLabel: '교육 추가 저장',
+      fields: [['edu-period', 'period', 'date-range', '[기간]'], ['edu-name', 'name', 'education-name', '[교육기관 또는 학교명]'], ['edu-detail', 'detail', 'education-detail', '[과정명 / 전공 / 졸업 정보 / 학점]']] },
+    cert: { section: 'certification', cls: 'cert-row', button: 'add-cert-btn', saveLabel: '자격증 추가 저장',
+      fields: [['cert-date', 'date', 'cert-date', '[20XX.XX]'], ['cert-name', 'name', 'cert-name', '[자격증명]'], ['edu-detail', 'issuer', 'cert-issuer', '[발급기관]']] },
+    doc: { section: 'documents', cls: 'doc-row', button: 'add-doc-btn', saveLabel: '기타 문서 추가 저장',
+      fields: [['doc-name', 'name', 'doc-name', '[문서명]'], ['doc-link', 'link', 'doc-link', '[링크]'], ['doc-desc', 'desc', 'doc-desc', '[한 줄 설명]']] }
+  };
+  var ROW_STATIC_COUNT = 2;
 
   var FieldCollector = {
     getFieldEl: function(fieldId) {
@@ -3528,25 +3687,10 @@
       if (typeof PrintVisibility !== 'undefined' && PrintVisibility && PrintVisibility.sync) {
         PrintVisibility.sync();
       }
-      var ruler = document.createElement('div');
-      ruler.style.position = 'absolute';
-      ruler.style.visibility = 'hidden';
-      ruler.style.height = '281mm';
-      document.body.appendChild(ruler);
-      var limit = ruler.getBoundingClientRect().height;
-      document.body.removeChild(ruler);
-      var hideTargets = page.querySelectorAll('.guide, .section-toggle-btn, .inline-sample-btn, .draft-helper-tools, .draft-helper-box, .ai-feedback-container, .restore-chips, .skill-preset-menu, [data-print-empty="true"]');
-      var hiddenStyles = [];
-      for (var i = 0; i < hideTargets.length; i++) {
-        hiddenStyles.push(hideTargets[i].style.display);
-        hideTargets[i].style.display = 'none';
-      }
-      var current = page.getBoundingClientRect().height;
-      for (var j = 0; j < hideTargets.length; j++) {
-        hideTargets[j].style.display = hiddenStyles[j];
-      }
+      var limit = getA4ContentHeight();
+      var current = measurePrintContentHeight(page);
       return {
-        overflow: current > (limit + 12),
+        overflow: current > (limit + 4),
         current: current,
         limit: limit
       };
@@ -3621,64 +3765,25 @@
       }
     },
 
-    syncCertificationSection: function(fields) {
-      var certRows = document.querySelectorAll('.cert-row');
-      var hasVisibleRow = false;
-      for (var i = 0; i < certRows.length; i++) {
-        var fieldEls = certRows[i].querySelectorAll('[data-field-id]');
-        var anyReal = false;
-        for (var j = 0; j < fieldEls.length; j++) {
-          if (FieldCollector.hasRealContent(fieldEls[j].getAttribute('data-field-id'), fields)) {
-            anyReal = true;
-            break;
-          }
-        }
-        this.mark(certRows[i], !anyReal);
-        if (anyReal) hasVisibleRow = true;
-      }
-      this.mark(document.querySelector('.section[data-section-toggle="certification"]'), !hasVisibleRow);
-    },
-
-    syncEducationRows: function(fields) {
-      var eduRows = document.querySelectorAll('.edu-row');
-      for (var i = 0; i < eduRows.length; i++) {
-        var fieldEls = eduRows[i].querySelectorAll('[data-field-id]');
-        var allOptional = true;
-        var anyReal = false;
-        for (var j = 0; j < fieldEls.length; j++) {
-          if (fieldEls[j].getAttribute('data-optional') !== 'true') {
-            allOptional = false;
-          }
-          if (FieldCollector.hasRealContent(fieldEls[j].getAttribute('data-field-id'), fields)) {
-            anyReal = true;
-          }
-        }
-        this.mark(eduRows[i], allOptional && !anyReal);
-      }
-    },
-
-    syncSkillRows: function(fields) {
-      var skillRows = document.querySelectorAll('.skill-row');
-      for (var i = 0; i < skillRows.length; i++) {
-        var fieldEls = skillRows[i].querySelectorAll('[data-field-id]');
+    // 선택 칸만 있는 행(기술 추가 행·교육 행)은 내용이 하나도 없으면 인쇄하지 않는다. 필수 칸이 있는 행은 항상 인쇄.
+    syncOptionalRows: function(selector, fields) {
+      var rows = document.querySelectorAll(selector);
+      for (var i = 0; i < rows.length; i++) {
+        var fieldEls = rows[i].querySelectorAll('[data-field-id]');
         if (!fieldEls.length) continue;
         var allOptional = true;
         var anyReal = false;
         for (var j = 0; j < fieldEls.length; j++) {
-          if (fieldEls[j].getAttribute('data-optional') !== 'true') {
-            allOptional = false;
-          }
-          if (FieldCollector.hasRealContent(fieldEls[j].getAttribute('data-field-id'), fields)) {
-            anyReal = true;
-          }
+          if (fieldEls[j].getAttribute('data-optional') !== 'true') allOptional = false;
+          if (FieldCollector.hasRealContent(fieldEls[j].getAttribute('data-field-id'), fields)) anyReal = true;
         }
-        this.mark(skillRows[i], allOptional && !anyReal);
+        this.mark(rows[i], allOptional && !anyReal);
       }
     },
 
-    // 기타 문서: 내용이 있는 행이 하나도 없으면 섹션째로 인쇄하지 않는다 (자격증과 같은 규칙)
-    syncDocumentSection: function(fields) {
-      var rows = document.querySelectorAll('.doc-row');
+    // 자격증·기타 문서: 내용이 없는 행은 인쇄하지 않고, 내용이 있는 행이 하나도 없으면 섹션째로 빼낸다
+    syncRowSection: function(rowSelector, sectionKey, fields) {
+      var rows = document.querySelectorAll(rowSelector);
       var hasVisibleRow = false;
       for (var i = 0; i < rows.length; i++) {
         var fieldEls = rows[i].querySelectorAll('[data-field-id]');
@@ -3689,7 +3794,7 @@
         this.mark(rows[i], !anyReal);
         if (anyReal) hasVisibleRow = true;
       }
-      this.mark(document.querySelector('.section[data-section-toggle="documents"]'), !hasVisibleRow);
+      this.mark(document.querySelector('.section[data-section-toggle="' + sectionKey + '"]'), !hasVisibleRow);
     },
 
     // 사용자가 지운(완전히 빈) 칸은 인쇄뿐 아니라 화면에서도 접는다. 예시 문구가 그대로인 칸은 안내로 남긴다.
@@ -3719,11 +3824,11 @@
       // 필드 텍스트를 한 번만 읽어 모든 판정에 재사용한다 (기존: 필드마다 전체를 다시 읽음)
       var fields = FieldCollector.getAllFields();
       this.syncOptionalFields(fields);
-      this.syncSkillRows(fields);
+      this.syncOptionalRows('.skill-row', fields);
       this.syncProjectItems(fields);
-      this.syncEducationRows(fields);
-      this.syncCertificationSection(fields);
-      this.syncDocumentSection(fields);
+      this.syncOptionalRows('.edu-row', fields);
+      this.syncRowSection('.cert-row', 'certification', fields);
+      this.syncRowSection('.doc-row', 'documents', fields);
       this.syncUserEmpty(fields);
       if (typeof ItemTools !== 'undefined') ItemTools.syncChips();
     },
@@ -4092,13 +4197,11 @@
           return;
         }
         if (e.key === 'Escape') {
-          if (typeof Starter !== 'undefined' && Starter.isOpen()) { Starter.close(); return; }
-          if (typeof Report !== 'undefined' && Report.isOpen()) { Report.close(); return; }
-          if (typeof Polish !== 'undefined' && Polish.isOpen()) { Polish.close(); return; }
-          if (typeof Interview !== 'undefined' && Interview.isOpen()) { Interview.close(); return; }
-          if (typeof JobMatch !== 'undefined' && JobMatch.isOpen()) { JobMatch.close(); return; }
-          if (typeof ExampleLibrary !== 'undefined' && ExampleLibrary.isOpen()) { ExampleLibrary.close(); return; }
-          if (typeof Autofill !== 'undefined' && Autofill.isOpen()) { Autofill.close(); return; }
+          // isOpen/close가 있는 창은 위에 열린 것부터 하나씩 닫는다
+          var dialogs = [FormatExport, Starter, Report, Polish, Interview, JobMatch, ExampleLibrary, Autofill];
+          for (var d = 0; d < dialogs.length; d++) {
+            if (dialogs[d] && dialogs[d].isOpen && dialogs[d].isOpen()) { dialogs[d].close(); return; }
+          }
           var readme = document.getElementById('readme-overlay');
           if (readme && readme.classList.contains('active')) { ReadmeGenerator.close(); return; }
           var pdf = document.getElementById('pdf-guide-overlay');
@@ -4253,9 +4356,7 @@
     ensureDynamicItemsFromFields: function(savedFields) {
       var fieldIds = Object.keys(savedFields || {});
       var projectSeen = {};
-      var eduSeen = {};
-      var certSeen = {};
-      var docSeen = {};
+      var rowSeen = { edu: {}, cert: {}, doc: {} };
       var skillSeen = {};
 
       for (var i = 0; i < fieldIds.length; i++) {
@@ -4263,17 +4364,9 @@
         if (projectMatch && !FieldCollector.getFieldEl(fieldIds[i])) {
           projectSeen[parseInt(projectMatch[1], 10)] = true;
         }
-        var eduMatch = /^edu-(\d+)-/.exec(fieldIds[i]);
-        if (eduMatch && parseInt(eduMatch[1], 10) > 2 && !FieldCollector.getFieldEl(fieldIds[i])) {
-          eduSeen[parseInt(eduMatch[1], 10)] = true;
-        }
-        var certMatch = /^cert-(\d+)-/.exec(fieldIds[i]);
-        if (certMatch && parseInt(certMatch[1], 10) > 2 && !FieldCollector.getFieldEl(fieldIds[i])) {
-          certSeen[parseInt(certMatch[1], 10)] = true;
-        }
-        var docMatch = /^doc-(\d+)-/.exec(fieldIds[i]);
-        if (docMatch && parseInt(docMatch[1], 10) > 2 && !FieldCollector.getFieldEl(fieldIds[i])) {
-          docSeen[parseInt(docMatch[1], 10)] = true;
+        var rowMatch = /^(edu|cert|doc)-(\d+)-/.exec(fieldIds[i]);
+        if (rowMatch && parseInt(rowMatch[2], 10) > ROW_STATIC_COUNT && !FieldCollector.getFieldEl(fieldIds[i])) {
+          rowSeen[rowMatch[1]][parseInt(rowMatch[2], 10)] = true;
         }
         var skillMatch = /^skills-extra-(\d+)(?:-(label|tags))?$/.exec(fieldIds[i]);
         if (skillMatch && !FieldCollector.getFieldEl(fieldIds[i])) {
@@ -4287,14 +4380,10 @@
       Object.keys(skillSeen).sort(function(a, b) { return parseInt(a, 10) - parseInt(b, 10); }).forEach(function(idx) {
         UI.addSkillRow({ index: parseInt(idx, 10), skipUndo: true, skipSave: true, skipScroll: true });
       });
-      Object.keys(eduSeen).sort(function(a, b) { return parseInt(a, 10) - parseInt(b, 10); }).forEach(function(idx) {
-        UI.addEducationRow({ index: parseInt(idx, 10), skipUndo: true, skipSave: true, skipScroll: true });
-      });
-      Object.keys(certSeen).sort(function(a, b) { return parseInt(a, 10) - parseInt(b, 10); }).forEach(function(idx) {
-        UI.addCertificationRow({ index: parseInt(idx, 10), skipUndo: true, skipSave: true, skipScroll: true });
-      });
-      Object.keys(docSeen).sort(function(a, b) { return parseInt(a, 10) - parseInt(b, 10); }).forEach(function(idx) {
-        UI.addDocumentRow({ index: parseInt(idx, 10), skipUndo: true, skipSave: true, skipScroll: true });
+      Object.keys(rowSeen).forEach(function(kind) {
+        Object.keys(rowSeen[kind]).sort(function(a, b) { return parseInt(a, 10) - parseInt(b, 10); }).forEach(function(idx) {
+          UI.addRow(kind, { index: parseInt(idx, 10), skipUndo: true, skipSave: true, skipScroll: true });
+        });
       });
     },
 
@@ -4410,7 +4499,8 @@
 
     // ===== #4 플레이스홀더 관리 =====
     setupPlaceholders: function() {
-      this.attachEditableHandlers(document.querySelectorAll('[contenteditable="true"]'));
+      // 이력서 본문(.page)의 칸에만 붙인다. 양식 미리보기처럼 다른 편집 영역까지 붙으면, 누를 때 문서 전체가 선택되는 등 오작동한다
+      this.attachEditableHandlers(document.querySelectorAll('.page [contenteditable="true"]'));
     },
 
     attachEditableHandlers: function(nodeList) {
@@ -4463,7 +4553,7 @@
 
     refreshPlaceholders: function() {
       var self = this;
-      document.querySelectorAll('[contenteditable="true"]').forEach(function(el) {
+      document.querySelectorAll('.page [contenteditable="true"]').forEach(function(el) {
         self.checkPlaceholder(el);
       });
     },
@@ -4632,6 +4722,7 @@
         exportBtn.addEventListener('click', function() {
           var exportData = self.buildContentPayload();
           exportData.exportDate = new Date().toISOString();
+          exportData.appVersion = APP_VERSION;
           var blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
           triggerDownload(blob, '이력서_백업_' + new Date().toISOString().slice(0, 10) + '.json');
           alert('이력서 데이터가 파일로 저장되었습니다.');
@@ -4896,31 +4987,6 @@
       });
     },
 
-    addEducationRow: function(options) {
-      options = options || {};
-      var section = document.querySelector('.section[data-section-toggle="education"]');
-      var addWrap = document.querySelector('#add-education-btn').closest('.inline-add-wrap');
-      if (!section || !addWrap) return;
-      if (!options.skipUndo) this.captureUndoSnapshot();
-      var nextIndex = options.index || ((getIndexedFieldNumbers('edu').pop() || 0) + 1);
-      var row = document.createElement('div');
-      row.className = 'edu-row';
-      row.setAttribute('data-dynamic-item', 'true');
-      row.setAttribute('data-print-empty', 'true');
-      row.innerHTML =
-        '<span class="dynamic-item-header" style="margin-bottom:0;min-width:auto;"><button type="button" class="dynamic-delete-btn" onclick="UI.removeDynamicItem(this)">삭제</button></span>' +
-        '<span class="edu-period" contenteditable="true" data-field-id="edu-' + nextIndex + '-period" data-optional="true" data-max-lines="1" data-guide-type="date-range">[기간]</span>' +
-        '<span class="edu-name" contenteditable="true" data-field-id="edu-' + nextIndex + '-name" data-optional="true" data-max-lines="1" data-guide-type="education-name">[교육기관 또는 학교명]</span>' +
-        '<span class="edu-detail" contenteditable="true" data-field-id="edu-' + nextIndex + '-detail" data-optional="true" data-max-lines="1" data-guide-type="education-detail">[과정명 / 전공 / 졸업 정보 / 학점]</span>';
-      section.insertBefore(row, addWrap);
-      this.attachEditableHandlers(row.querySelectorAll('[contenteditable="true"]'));
-      this.refreshPlaceholders();
-      this.updateCompleteness();
-      if (typeof PrintVisibility !== 'undefined' && PrintVisibility && PrintVisibility.sync) PrintVisibility.sync();
-      if (!options.skipSave) this.persistContent({ label: '교육 추가 저장' });
-      if (!options.skipScroll) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    },
-
     setupCertificationAdder: function() {
       var self = this;
       var addBtn = document.getElementById('add-cert-btn');
@@ -4930,61 +4996,44 @@
       });
     },
 
-    addCertificationRow: function(options) {
-      options = options || {};
-      var section = document.querySelector('.section[data-section-toggle="certification"]');
-      var addWrap = document.querySelector('#add-cert-btn').closest('.inline-add-wrap');
-      if (!section || !addWrap) return;
-      if (!options.skipUndo) this.captureUndoSnapshot();
-      var nextIndex = options.index || ((getIndexedFieldNumbers('cert').pop() || 0) + 1);
-      var row = document.createElement('div');
-      row.className = 'cert-row';
-      row.setAttribute('data-dynamic-item', 'true');
-      row.setAttribute('data-print-empty', 'true');
-      row.innerHTML =
-        '<span class="dynamic-item-header" style="margin-bottom:0;min-width:auto;"><button type="button" class="dynamic-delete-btn" onclick="UI.removeDynamicItem(this)">삭제</button></span>' +
-        '<span class="cert-date" contenteditable="true" data-field-id="cert-' + nextIndex + '-date" data-optional="true" data-max-lines="1" data-guide-type="cert-date">[20XX.XX]</span>' +
-        '<span class="cert-name" contenteditable="true" data-field-id="cert-' + nextIndex + '-name" data-optional="true" data-max-lines="1" data-guide-type="cert-name">[자격증명]</span>' +
-        '<span class="edu-detail" contenteditable="true" data-field-id="cert-' + nextIndex + '-issuer" data-optional="true" data-max-lines="1" data-guide-type="cert-issuer">[발급기관]</span>';
-      section.insertBefore(row, addWrap);
-      this.attachEditableHandlers(row.querySelectorAll('[contenteditable="true"]'));
-      this.refreshPlaceholders();
-      this.updateCompleteness();
-      if (typeof PrintVisibility !== 'undefined' && PrintVisibility && PrintVisibility.sync) PrintVisibility.sync();
-      if (!options.skipSave) this.persistContent({ label: '자격증 추가 저장' });
-      if (!options.skipScroll) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    },
-
     setupDocumentAdder: function() {
       var self = this;
       var btn = document.getElementById('add-doc-btn');
       if (btn) btn.addEventListener('click', function() { self.addDocumentRow(); });
     },
 
-    addDocumentRow: function(options) {
+    // 교육·자격증·기타 문서 행 추가 (ROW_KINDS 정의를 따른다)
+    addRow: function(kind, options) {
       options = options || {};
-      var section = document.querySelector('.section[data-section-toggle="documents"]');
-      var addWrap = document.querySelector('#add-doc-btn').closest('.inline-add-wrap');
-      if (!section || !addWrap) return;
+      var def = ROW_KINDS[kind];
+      var section = def && document.querySelector('.section[data-section-toggle="' + def.section + '"]');
+      var button = def && document.getElementById(def.button);
+      var addWrap = button && button.closest('.inline-add-wrap');
+      if (!section || !addWrap) return null;
       if (!options.skipUndo) this.captureUndoSnapshot();
-      var nextIndex = options.index || ((getIndexedFieldNumbers('doc').pop() || 0) + 1);
+      var nextIndex = options.index || ((getIndexedFieldNumbers(kind).pop() || 0) + 1);
       var row = document.createElement('div');
-      row.className = 'doc-row';
+      row.className = def.cls;
       row.setAttribute('data-dynamic-item', 'true');
       row.setAttribute('data-print-empty', 'true');
       row.innerHTML =
         '<span class="dynamic-item-header" style="margin-bottom:0;min-width:auto;"><button type="button" class="dynamic-delete-btn" onclick="UI.removeDynamicItem(this)">삭제</button></span>' +
-        '<span class="doc-name" contenteditable="true" data-field-id="doc-' + nextIndex + '-name" data-optional="true" data-max-lines="1" data-guide-type="doc-name">[문서명]</span>' +
-        '<span class="doc-link" contenteditable="true" data-field-id="doc-' + nextIndex + '-link" data-optional="true" data-max-lines="1" data-guide-type="doc-link">[링크]</span>' +
-        '<span class="doc-desc" contenteditable="true" data-field-id="doc-' + nextIndex + '-desc" data-optional="true" data-max-lines="1" data-guide-type="doc-desc">[한 줄 설명]</span>';
+        def.fields.map(function(f) {
+          return '<span class="' + f[0] + '" contenteditable="true" data-field-id="' + kind + '-' + nextIndex + '-' + f[1] + '" data-optional="true" data-max-lines="1" data-guide-type="' + f[2] + '">' + f[3] + '</span>';
+        }).join('');
       section.insertBefore(row, addWrap);
       this.attachEditableHandlers(row.querySelectorAll('[contenteditable="true"]'));
       this.refreshPlaceholders();
       this.updateCompleteness();
       if (typeof PrintVisibility !== 'undefined' && PrintVisibility && PrintVisibility.sync) PrintVisibility.sync();
-      if (!options.skipSave) this.persistContent({ label: '기타 문서 추가 저장' });
+      if (!options.skipSave) this.persistContent({ label: def.saveLabel });
       if (!options.skipScroll) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+      return row;
+    },
+
+    addEducationRow: function(options) { return this.addRow('edu', options); },
+    addCertificationRow: function(options) { return this.addRow('cert', options); },
+    addDocumentRow: function(options) { return this.addRow('doc', options); }
   };
   window.UI = UI;
   window.ValidationEngine = ValidationEngine; // 테스트에서 PDF 점검 결과를 직접 확인할 때 사용
@@ -10321,24 +10370,18 @@
       var page = this.page;
       if (!page || !this.line) return;
       if (typeof PrintVisibility !== 'undefined' && PrintVisibility.sync) PrintVisibility.sync();
-      var ruler = document.createElement('div');
-      ruler.style.cssText = 'position:absolute;visibility:hidden;height:281mm;';
-      document.body.appendChild(ruler);
-      var limit = ruler.getBoundingClientRect().height;
-      document.body.removeChild(ruler);
-      var hideTargets = page.querySelectorAll('.guide, .section-toggle-btn, .inline-sample-btn, .draft-helper-tools, .draft-helper-box, .ai-feedback-container, .restore-chips, .skill-preset-menu, [data-print-empty="true"], .project-add-wrap, .inline-add-wrap, .dynamic-item-header, .section-actions, .a4-limit-line');
-      var saved = [];
-      for (var i = 0; i < hideTargets.length; i++) { saved.push(hideTargets[i].style.display); hideTargets[i].style.display = 'none'; }
-      var pageRect = page.getBoundingClientRect();
-      var padTop = parseFloat(window.getComputedStyle(page).paddingTop) || 0;
-      var boundary = pageRect.top + padTop + limit;
-      var blocks = page.querySelectorAll('.header, .section-title, .summary, .skill-row, .project-header, .project-desc, .project-role, .project-detail li, .project-result, .project-link, .edu-row, .cert-row, .intro-text');
-      var crossing = null;
-      for (var b = 0; b < blocks.length; b++) {
-        var rect = blocks[b].getBoundingClientRect();
-        if (rect.height && rect.bottom > boundary) { crossing = blocks[b]; break; }
-      }
-      for (var j = 0; j < hideTargets.length; j++) hideTargets[j].style.display = saved[j];
+      var limit = getA4ContentHeight();
+      var crossing = withPrintLayout(page, function() {
+        var pageRect = page.getBoundingClientRect();
+        var padTop = parseFloat(window.getComputedStyle(page).paddingTop) || 0;
+        var boundary = pageRect.top + padTop + limit;
+        var blocks = page.querySelectorAll('.header, .section-title, .summary, .skill-row, .project-header, .project-desc, .project-role, .project-detail li, .project-result, .project-link, .edu-row, .cert-row, .doc-row, .intro-text');
+        for (var b = 0; b < blocks.length; b++) {
+          var rect = blocks[b].getBoundingClientRect();
+          if (rect.height && rect.bottom > boundary) return blocks[b];
+        }
+        return null;
+      });
       if (!crossing) { this.line.style.display = 'none'; return; }
       var top = crossing.getBoundingClientRect().top - page.getBoundingClientRect().top - 2;
       this.line.style.top = top + 'px';
@@ -11391,7 +11434,7 @@
           tip: '점검 결과에 나온 칸을 고친 뒤 다시 눌러 확인하면 됩니다.' },
         { key: 'pdf', target: [function() { return document.getElementById('pdf-guide-btn'); }], click: 'pdf-guide-btn',
           title: 'PDF로 저장', body: '완성되면 PDF로 저장합니다. 버튼을 누르면 저장 방법을 단계별로 보여 줍니다.',
-          tip: '안내 문구·점선 테두리·버튼은 PDF에 들어가지 않습니다.' },
+          tip: '안내 문구·점선 테두리·버튼은 PDF에 들어가지 않고, PDF 속 주소는 누르면 열립니다. 사람인·잡코리아·호주·미국·일본 양식이 필요하면 바로 아래 "🌏 사람인·잡코리아·해외 양식 PDF"를 누르세요.' },
         { key: 'done', title: '수고했어요! 🎉', summary: true,
           body: '이력서의 뼈대가 완성되었습니다. 오른쪽 패널에서 면접 예상 질문, 결과보고서, 채용공고 맞춤 점검도 이어서 해 보세요.',
           tip: '이 투어는 오른쪽 패널의 "말풍선 따라 쓰기" 버튼으로 언제든 다시 시작할 수 있습니다.' }
@@ -11870,6 +11913,814 @@
   };
   window.Starter = Starter;
 
+  // ===== Module: PrintLinks (PDF에서 주소를 누르면 열리게) =====
+  // 브라우저의 "PDF로 저장"은 <a href> 링크만 PDF 안의 누를 수 있는 링크로 남긴다. 이력서 칸은 글자라서,
+  // 인쇄 직전에 http·https 주소(와 github.com/... 같은 주소)를 링크로 감싸고 인쇄가 끝나면 글자로 되돌린다.
+  // 저장되는 내용은 바뀌지 않는다(혹시 남아도 저장할 때 sanitizeRichText가 링크 껍데기를 벗긴다).
+  var LINK_BARE_HOST_RE = /^(?:www\.[a-z0-9-]+\.|(?:[a-z0-9-]+\.)?(?:github\.com|github\.io|gitlab\.com|velog\.io|tistory\.com|blog\.naver\.com|notion\.so|notion\.site|linkedin\.com|saramin\.co\.kr|jobkorea\.co\.kr|youtu\.be|youtube\.com|google\.com|vercel\.app|netlify\.app)(?:[\/:?#]|$))/i;
+  var PrintLinks = {
+    // 공백으로 나뉜 글자 한 덩어리가 주소이면 링크 주소를, 아니면 ''를 돌려준다
+    toHref: function(token) {
+      if (!token || /[\[\]<>"'`\\{}|^]/.test(token)) return ''; // 예시 문구 [ ] 가 섞인 주소는 링크로 만들지 않는다
+      var href = '';
+      if (/^https?:\/\/[a-z0-9¡-￿-]+(\.[a-z0-9¡-￿-]+)+(:\d+)?([\/?#]\S*)?$/i.test(token)) href = token;
+      else if (LINK_BARE_HOST_RE.test(token)) href = 'https://' + token;
+      return href && isSafeUrl(href) ? href : '';
+    },
+
+    // 주소 앞뒤에 붙은 괄호·문장부호는 링크에서 뺀다 (예: "(https://a.com)." → https://a.com)
+    splitToken: function(raw) {
+      var m = /^([(<“"'‘]*)([\s\S]*?)([)>”"'’.,;:!?。、]*)$/.exec(raw);
+      return m ? { lead: m[1], core: m[2], tail: m[3] } : { lead: '', core: raw, tail: '' };
+    },
+
+    makeLink: function(href, text) {
+      var a = document.createElement('a');
+      a.className = 'print-link';
+      a.href = href;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = text;
+      return a;
+    },
+
+    // root 안의 글자에서 주소를 찾아 링크로 감싼다. 감싼 개수를 돌려준다.
+    wrapText: function(root) {
+      var self = this;
+      var count = 0;
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode: function(node) {
+          var parent = node.parentNode;
+          if (!parent || (parent.closest && parent.closest('a, button, script, style, .dynamic-item-header, .restore-chips'))) return NodeFilter.FILTER_REJECT;
+          return /https?:\/\/|www\.|\.[a-z]{2,}/i.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+        }
+      });
+      var nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(function(node) {
+        var parts = node.nodeValue.split(/(\s+)/);
+        var frag = document.createDocumentFragment();
+        var changed = false;
+        parts.forEach(function(part) {
+          if (!part) return;
+          var t = /^\s+$/.test(part) ? null : self.splitToken(part);
+          var href = t ? self.toHref(t.core) : '';
+          if (!href) { frag.appendChild(document.createTextNode(part)); return; }
+          if (t.lead) frag.appendChild(document.createTextNode(t.lead));
+          frag.appendChild(self.makeLink(href, t.core));
+          if (t.tail) frag.appendChild(document.createTextNode(t.tail));
+          changed = true;
+          count++;
+        });
+        if (changed) node.parentNode.replaceChild(frag, node);
+      });
+      return count;
+    },
+
+    apply: function(root) {
+      root = root || document.querySelector('.page');
+      if (!root) return 0;
+      this.remove(root);
+      var count = 0;
+      var self = this;
+      root.querySelectorAll('[data-field-id]').forEach(function(el) { count += self.wrapText(el); });
+      // 이메일도 누르면 메일 쓰기가 열리게 한다
+      var email = root.querySelector('[data-field-id="header-email"]');
+      var text = email && normalizeWhitespace(email.textContent);
+      if (email && isValidEmail(text) && !email.querySelector('a')) {
+        var link = this.makeLink('mailto:' + text, text);
+        email.textContent = '';
+        email.appendChild(link);
+        count++;
+      }
+      return count;
+    },
+
+    remove: function(root) {
+      (root || document).querySelectorAll('a.print-link').forEach(function(a) {
+        var parent = a.parentNode;
+        parent.replaceChild(document.createTextNode(a.textContent), a);
+        parent.normalize();
+      });
+    },
+
+    init: function() {
+      var self = this;
+      window.addEventListener('beforeprint', function() { if (!document.body.classList.contains('fx-printing')) self.apply(); });
+      window.addEventListener('afterprint', function() { self.remove(document.querySelector('.page')); });
+    }
+  };
+  window.PrintLinks = PrintLinks;
+
+  // ===== Module: FormatExport (사람인 · 잡코리아 · 호주 · 미국 · 일본 양식으로 바꿔 PDF 저장) =====
+  // 이력서에 적은 내용을 각 나라·사이트의 이력서 항목 순서와 관례에 맞춰 다시 배치한 문서를 만든다.
+  //  - 한국(사람인·잡코리아): 한국어 그대로, 항목 순서·표 형식만 바꾼다.
+  //  - 호주·미국: 영어. 사진·나이·생년월일은 넣지 않는다(채용 차별 방지 관례).
+  //  - 일본: 履歴書(이력서) + 職務経歴書(경력서). 사진·만 나이 포함, 학력·경력은 年/月 표.
+  // 영어·일본어 문장은 번역이 필요하다: 브라우저 내장 번역(Chrome) → AI(OpenRouter 키) 순으로 쓰고, 둘 다 없으면 한국어로 남기고 표시한다.
+  // 만들어진 문서는 화면에서 바로 고칠 수 있고, "PDF로 저장"은 이 문서만 인쇄한다(주소는 누를 수 있는 링크).
+  var FX_TRANSLATION_KEY = 'resume-format-translations';
+  var FX_FORMATS = [
+    { key: 'saramin', label: '사람인', lang: 'ko', desc: '사람인 이력서 항목 순서(기본정보 → 희망근무조건 → 학력 → 경력 → 교육 → 프로젝트 → 자격증 → 스킬 → 포트폴리오 → 병역 → 자기소개서)에 맞췄습니다. 사람인 "이력서 등록"의 같은 이름 칸에 옮겨 적거나 PDF를 첨부하세요.' },
+    { key: 'jobkorea', label: '잡코리아', lang: 'ko', desc: '잡코리아 이력서 항목 순서(인적사항 → 학력사항 → 경력사항 → 교육사항 → 자격증 → 스킬 → 포트폴리오 → 취업우대·병역 → 희망근무조건 → 자기소개서 → 경력기술서)에 맞췄습니다.' },
+    { key: 'au', label: '호주', lang: 'en', desc: '호주 이력서 관례(SEEK 등): 사진·나이·생년월일·병역은 넣지 않고, 비자(Work Rights) 줄과 Referees 줄을 넣습니다. 영어, 2페이지 이내.' },
+    { key: 'us', label: '미국', lang: 'en', desc: '미국 이력서 관례(LinkedIn·Indeed 등): 사진·나이·성별·생년월일 없이 1페이지, 성과는 숫자가 든 문장으로. 영어.' },
+    { key: 'jp', label: '일본', lang: 'ja', desc: '일본 지원 관례(リクナビNEXT·doda 등): 履歴書(이력서) + 職務経歴書(경력서) 2종. 사진·생년월일(満年齢) 포함, 학력·직력은 年/月 표. 일본어.' }
+  ];
+  var FX_MONTHS_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var FX_SURNAMES = {
+    '남궁': 'Namgung', '황보': 'Hwangbo', '제갈': 'Jegal', '선우': 'Sunwoo', '독고': 'Dokgo', '사공': 'Sagong', '서문': 'Seomun',
+    '김': 'Kim', '이': 'Lee', '박': 'Park', '최': 'Choi', '정': 'Jung', '강': 'Kang', '조': 'Cho', '윤': 'Yoon', '장': 'Jang', '임': 'Lim',
+    '한': 'Han', '오': 'Oh', '서': 'Seo', '신': 'Shin', '권': 'Kwon', '황': 'Hwang', '안': 'Ahn', '송': 'Song', '류': 'Ryu', '유': 'Yoo',
+    '전': 'Jeon', '홍': 'Hong', '고': 'Ko', '문': 'Moon', '양': 'Yang', '손': 'Son', '배': 'Bae', '백': 'Baek', '허': 'Heo', '노': 'Noh',
+    '남': 'Nam', '심': 'Shim', '하': 'Ha', '곽': 'Kwak', '성': 'Sung', '차': 'Cha', '주': 'Joo', '우': 'Woo', '구': 'Koo', '민': 'Min',
+    '진': 'Jin', '나': 'Na', '지': 'Ji', '엄': 'Eom', '채': 'Chae', '원': 'Won', '천': 'Cheon', '방': 'Bang', '공': 'Kong', '현': 'Hyun',
+    '함': 'Ham', '변': 'Byun', '염': 'Yeom', '여': 'Yeo', '추': 'Choo', '도': 'Do', '소': 'So', '석': 'Seok', '선': 'Sun', '설': 'Seol',
+    '마': 'Ma', '길': 'Gil', '연': 'Yeon', '위': 'Wi', '표': 'Pyo', '명': 'Myung', '기': 'Ki', '반': 'Ban', '왕': 'Wang', '금': 'Keum',
+    '옥': 'Ok', '육': 'Yook', '인': 'In', '맹': 'Maeng', '제': 'Je', '모': 'Mo', '탁': 'Tak', '국': 'Kook', '어': 'Eo', '은': 'Eun',
+    '편': 'Pyeon', '용': 'Yong', '예': 'Ye', '경': 'Kyung', '봉': 'Bong', '사': 'Sa', '부': 'Boo', '가': 'Ka', '복': 'Bok', '태': 'Tae',
+    '목': 'Mok', '형': 'Hyung', '계': 'Kye', '피': 'Pi', '두': 'Doo', '감': 'Kam', '음': 'Eum', '빈': 'Bin', '동': 'Dong', '온': 'On',
+    '호': 'Ho', '범': 'Beom', '좌': 'Jwa', '팽': 'Paeng', '승': 'Seung', '간': 'Kan', '상': 'Sang', '갈': 'Kal'
+  };
+  var FX_RR_INITIAL = ['g', 'kk', 'n', 'd', 'tt', 'r', 'm', 'b', 'pp', 's', 'ss', '', 'j', 'jj', 'ch', 'k', 't', 'p', 'h'];
+  var FX_RR_MEDIAL = ['a', 'ae', 'ya', 'yae', 'eo', 'e', 'yeo', 'ye', 'o', 'wa', 'wae', 'oe', 'yo', 'u', 'wo', 'we', 'wi', 'yu', 'eu', 'ui', 'i'];
+  var FX_RR_FINAL = ['', 'k', 'k', 'k', 'n', 'n', 'n', 't', 'l', 'k', 'm', 'l', 'l', 'l', 'p', 'l', 'm', 'p', 'p', 't', 't', 'ng', 't', 't', 'k', 't', 'p', 't'];
+  var FX_MILITARY = {
+    branch: [
+      [/해병/, { ko: '해병대', en: 'Republic of Korea Marine Corps', ja: '大韓民国海兵隊' }],
+      [/육군/, { ko: '육군', en: 'Republic of Korea Army', ja: '大韓民国陸軍' }],
+      [/해군/, { ko: '해군', en: 'Republic of Korea Navy', ja: '大韓民国海軍' }],
+      [/공군/, { ko: '공군', en: 'Republic of Korea Air Force', ja: '大韓民国空軍' }],
+      [/의경|의무경찰/, { ko: '의무경찰', en: 'Auxiliary Police (mandatory service)', ja: '義務警察' }],
+      [/사회복무/, { ko: '사회복무요원', en: 'Social Service Personnel (alternative service)', ja: '社会服務要員' }],
+      [/전문연구|산업기능/, { ko: '대체복무', en: 'Alternative Service (Technical Research / Industrial Technical Personnel)', ja: '代替服務' }]
+    ],
+    rank: [
+      [/병장/, { ko: '병장', en: 'Sergeant', ja: '兵長' }], [/상병/, { ko: '상병', en: 'Corporal', ja: '上等兵' }],
+      [/일병/, { ko: '일병', en: 'Private First Class', ja: '一等兵' }], [/이병/, { ko: '이병', en: 'Private', ja: '二等兵' }],
+      [/하사/, { ko: '하사', en: 'Staff Sergeant', ja: '下士' }], [/중사/, { ko: '중사', en: 'Sergeant First Class', ja: '中士' }],
+      [/소위/, { ko: '소위', en: 'Second Lieutenant', ja: '少尉' }], [/중위/, { ko: '중위', en: 'First Lieutenant', ja: '中尉' }],
+      [/대위/, { ko: '대위', en: 'Captain', ja: '大尉' }]
+    ],
+    discharge: [
+      [/만기\s*전역|만기\s*제대/, { ko: '만기전역', en: 'Honorable discharge', ja: '満期除隊' }],
+      [/소집\s*해제/, { ko: '소집해제', en: 'Completed service', ja: '召集解除' }],
+      [/의병\s*전역/, { ko: '의병전역', en: 'Medical discharge', ja: '依病除隊' }],
+      [/복무\s*완료/, { ko: '복무 완료', en: 'Completed service', ja: '服務完了' }]
+    ]
+  };
+
+  var FormatExport = {
+    overlay: null,
+    current: 'saramin',
+    edits: {},
+    pending: [],
+    busy: false,
+
+    init: function() {
+      this.overlay = document.getElementById('format-overlay');
+      if (!this.overlay) return;
+      var self = this;
+      this.doc = document.getElementById('format-doc');
+      this.status = document.getElementById('format-status');
+      var tabs = document.getElementById('format-tabs');
+      FX_FORMATS.forEach(function(f) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'tool-tab';
+        b.setAttribute('role', 'tab');
+        b.setAttribute('data-format', f.key);
+        b.textContent = f.label + (f.lang === 'en' ? ' (영어)' : f.lang === 'ja' ? ' (일본어)' : '');
+        b.addEventListener('click', function() { self.select(f.key); });
+        tabs.appendChild(b);
+      });
+      document.getElementById('format-open-btn').addEventListener('click', function() { self.open(); });
+      document.getElementById('format-close').addEventListener('click', function() { self.close(); });
+      this.overlay.addEventListener('click', function(e) { if (e.target === self.overlay) self.close(); });
+      document.getElementById('format-print').addEventListener('click', function() { self.print([self.current]); });
+      document.getElementById('format-print-all').addEventListener('click', function() { self.print(FX_FORMATS.map(function(f) { return f.key; })); });
+      document.getElementById('format-reset').addEventListener('click', function() {
+        delete self.edits[self.current];
+        self.render();
+      });
+      document.getElementById('format-translate').addEventListener('click', function() { self.translatePending(); });
+      // 미리보기에서 고친 내용은 양식별로 기억한다 (원본 이력서는 바뀌지 않음)
+      this.doc.addEventListener('input', debounce(function() { self.edits[self.current] = self.doc.innerHTML; self.updateStatus(); }, 300));
+      window.addEventListener('afterprint', function() { self.endPrint(); });
+    },
+
+    open: function(format) {
+      this.overlay.classList.add('active');
+      this.select(format || this.current);
+    },
+    close: function() { this.overlay.classList.remove('active'); },
+    isOpen: function() { return !!(this.overlay && this.overlay.classList.contains('active')); },
+
+    format: function(key) { return FX_FORMATS.filter(function(f) { return f.key === key; })[0] || FX_FORMATS[0]; },
+
+    select: function(key) {
+      this.current = this.format(key).key;
+      var cur = this.current;
+      document.querySelectorAll('#format-tabs .tool-tab').forEach(function(t) {
+        var on = t.getAttribute('data-format') === cur;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      document.getElementById('format-desc').textContent = this.format(cur).desc;
+      this.render();
+      // 브라우저 내장 번역(무료·기기 안)이 있으면 바로 번역한다. AI 번역은 사용량이 드므로 버튼을 눌렀을 때만.
+      if (this.pending.length && this.translationMethod() === 'browser' && !this.edits[cur]) this.translatePending();
+    },
+
+    // ---------- 이력서 내용 읽기 ----------
+    collect: function() {
+      var R = ResumeReader;
+      var c = R.clean.bind(R);
+      var link = function(id) { return stripLinkLabel(c(id)); };
+      var skills = [['Backend', 'skills-backend'], ['Frontend', 'skills-frontend'], ['Database', 'skills-database'], ['DevOps / Tool', 'skills-devops']]
+        .map(function(r) { return { label: r[0], items: FieldCollector.getSkillItems(r[1]).filter(function(x) { return !hasPlaceholderText(x); }) }; });
+      getCustomSkillFieldIds().forEach(function(fid) {
+        var m = /^skills-extra-(\d+)/.exec(fid);
+        var label = m ? c(getCustomSkillLabelFieldId(m[1])) : '';
+        var items = FieldCollector.getSkillItems(fid).filter(function(x) { return !hasPlaceholderText(x); });
+        if (label && items.length) skills.push({ label: label, items: items });
+      });
+      var rows = function(kind, parts) {
+        return getIndexedFieldNumbers(kind).map(function(i) {
+          var row = {};
+          parts.forEach(function(part) { row[part] = c(kind + '-' + i + '-' + part); });
+          return row;
+        }).filter(function(r) { return r.name; });
+      };
+      var photoBox = document.getElementById('header-photo');
+      var photoImg = document.getElementById('header-photo-img');
+      var ageText = c('header-age');
+      var ageMatch = /(\d{1,3})\s*세/.exec(ageText) || /^(\d{1,3})$/.exec(ageText);
+      return {
+        name: c('header-name'),
+        age: ageMatch ? parseInt(ageMatch[1], 10) : null,
+        headline: c('header-subtitle'),
+        position: c('header-badge'),
+        email: c('header-email'),
+        phone: c('header-phone'),
+        github: link('header-github'),
+        blog: link('header-blog'),
+        saramin: link('header-saramin'),
+        university: c('header-university'),
+        military: this.parseMilitary(c('header-military')),
+        about: c('about-summary'),
+        intro: c('intro-text'),
+        skills: skills.filter(function(g) { return g.items.length; }),
+        projects: R.projects().map(function(p) {
+          p.link = link('project-' + p.index + '-link');
+          p.period = FormatExport.parsePeriod(p.meta);
+          return p;
+        }),
+        education: rows('edu', ['period', 'name', 'detail']),
+        certs: rows('cert', ['date', 'name', 'issuer']),
+        docs: rows('doc', ['name', 'link', 'desc']).map(function(d) { d.link = stripLinkLabel(d.link); return d; }),
+        photo: photoBox && !photoBox.hidden && photoImg && photoImg.getAttribute('src') ? photoImg.getAttribute('src') : ''
+      };
+    },
+
+    // "2026.11.05 ~ 2026.11.30 | 팀 5명 (파이널 프로젝트)" → 시작·끝 날짜, 인원
+    parseDates: function(text) {
+      var out = [];
+      var re = /(\d{4})\s*[.\-\/년]\s*(\d{1,2})(?:\s*[.\-\/월]\s*(\d{1,2}))?/g;
+      var m;
+      while ((m = re.exec(String(text || '')))) out.push({ y: parseInt(m[1], 10), m: parseInt(m[2], 10), d: m[3] ? parseInt(m[3], 10) : null });
+      return out;
+    },
+    parsePeriod: function(text) {
+      var dates = this.parseDates(text);
+      var team = /팀\s*(\d+)\s*명/.exec(text || '');
+      return {
+        start: dates[0] || null,
+        end: dates[1] || null,
+        ongoing: /현재|진행\s*중|재학\s*중/.test(text || ''),
+        team: team ? parseInt(team[1], 10) : null,
+        personal: /개인/.test(text || ''),
+        final: /파이널/.test(text || ''),
+        semi: /세미/.test(text || '')
+      };
+    },
+    fmtYM: function(d, lang) {
+      if (!d) return '';
+      if (lang === 'en') return FX_MONTHS_EN[d.m - 1] + ' ' + d.y;
+      if (lang === 'ja') return d.y + '年' + d.m + '月';
+      return d.y + '.' + (d.m < 10 ? '0' : '') + d.m;
+    },
+    fmtRange: function(p, lang) {
+      if (!p || !p.start) return '';
+      var end = p.end ? this.fmtYM(p.end, lang) : (p.ongoing ? (lang === 'en' ? 'Present' : lang === 'ja' ? '現在' : '현재') : '');
+      var sep = lang === 'en' ? ' – ' : lang === 'ja' ? '～' : ' ~ ';
+      return this.fmtYM(p.start, lang) + (end ? sep + end : '');
+    },
+
+    parseMilitary: function(text) {
+      if (!text) return null;
+      var pick = function(list) { for (var i = 0; i < list.length; i++) if (list[i][0].test(text)) return list[i][1]; return null; };
+      var status = /미필/.test(text) ? 'notyet' : /면제/.test(text) ? 'exempt' : /해당\s*없음|비대상/.test(text) ? 'na' : 'done';
+      var dates = this.parseDates(text);
+      return { raw: text, status: status, branch: pick(FX_MILITARY.branch), rank: pick(FX_MILITARY.rank), discharge: pick(FX_MILITARY.discharge), start: dates[0] || null, end: dates[1] || null };
+    },
+    militaryStatusText: function(m, lang) {
+      var t = { done: { ko: '군필', en: 'Completed', ja: '兵役済み' }, notyet: { ko: '미필', en: 'Not yet served', ja: '未了' }, exempt: { ko: '면제', en: 'Exempted', ja: '免除' }, na: { ko: '해당 없음', en: 'Not applicable', ja: '対象外' } };
+      return (t[m.status] || t.done)[lang];
+    },
+
+    // 한국 이름 → 로마자 (국어의 로마자 표기법, 성씨는 흔히 쓰는 표기) 예: 배수환 → Suhwan Bae
+    romanize: function(name) {
+      name = String(name || '').trim();
+      if (!/[가-힣]/.test(name)) return { given: name, family: '', full: name };
+      var compact = name.replace(/\s+/g, '');
+      var surname = compact.length >= 3 && FX_SURNAMES[compact.slice(0, 2)] ? compact.slice(0, 2) : compact.slice(0, 1);
+      var given = compact.slice(surname.length);
+      var rr = function(text) {
+        return text.split('').map(function(ch) {
+          var code = ch.charCodeAt(0) - 0xAC00;
+          if (code < 0 || code > 11171) return ch;
+          return FX_RR_INITIAL[Math.floor(code / 588)] + FX_RR_MEDIAL[Math.floor((code % 588) / 28)] + FX_RR_FINAL[code % 28];
+        }).join('');
+      };
+      var cap = function(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; };
+      var family = FX_SURNAMES[surname] || cap(rr(surname));
+      var givenEn = cap(rr(given));
+      return { given: givenEn, family: family, full: (givenEn ? givenEn + ' ' : '') + family };
+    },
+
+    phoneIntl: function(phone) {
+      var digits = String(phone || '').replace(/[^\d]/g, '');
+      if (/^0\d{9,10}$/.test(digits)) {
+        var rest = digits.slice(1);
+        return '+82 ' + rest.replace(/^(\d{2})(\d{3,4})(\d{4})$/, '$1-$2-$3');
+      }
+      return phone || '';
+    },
+
+    // ---------- 번역 ----------
+    hasHangul: function(text) { return /[가-힣]/.test(text || ''); },
+    cache: function() { return Storage.load(FX_TRANSLATION_KEY) || {}; },
+    // 번역이 있으면 번역을, 없으면 한국어 원문을 표시하고 "번역 필요" 표시를 단다
+    T: function(text, lang) {
+      text = normalizeWhitespace(text);
+      if (!text || lang === 'ko' || !this.hasHangul(text)) return escapeHtml(text);
+      var cached = (this.cache()[lang] || {})[text];
+      if (cached) return escapeHtml(cached);
+      if (this.pending.indexOf(text) === -1) this.pending.push(text);
+      return '<span class="fx-untr" title="번역 필요">' + escapeHtml(text) + '</span>';
+    },
+    translationMethod: function() {
+      if (window.Translator && typeof window.Translator.create === 'function') return 'browser';
+      if (Storage.load(STORAGE_KEYS.API_KEY)) return 'ai';
+      return '';
+    },
+    saveTranslations: function(lang, map) {
+      var all = this.cache();
+      all[lang] = all[lang] || {};
+      Object.keys(map).forEach(function(k) { if (map[k]) all[lang][k] = map[k]; });
+      Storage.save(FX_TRANSLATION_KEY, all);
+    },
+    translatePending: function() {
+      var self = this;
+      var fmt = this.format(this.current);
+      if (fmt.lang === 'ko' || !this.pending.length || this.busy) return;
+      var method = this.translationMethod();
+      if (!method) {
+        this.setStatus('번역하려면 Chrome 최신 버전(내장 번역)을 쓰거나, 고급 기능 → AI 설정에 OpenRouter API 키를 저장하세요. 지금은 한국어 문장이 주황색으로 남아 있고, 문서에서 직접 고쳐 써도 됩니다.', 'warn');
+        return;
+      }
+      if (this.edits[this.current] && !window.confirm('번역하면 이 양식에서 직접 고친 내용이 새 문서로 바뀝니다. 계속할까요?')) return;
+      var texts = this.pending.slice();
+      var key = this.current; // 번역 중에 다른 탭으로 옮겨도 이 양식의 고친 내용만 새로 만든다
+      this.busy = true;
+      document.getElementById('format-translate').disabled = true;
+      this.setStatus((method === 'browser' ? '브라우저 내장 번역' : 'AI') + '으로 ' + texts.length + '개 문장을 번역하는 중입니다…', 'info');
+      var run = method === 'browser'
+        ? this.translateBrowser(texts, fmt.lang).catch(function(err) {
+            // 내장 번역이 안 되면(모델 없음·응답 없음) API 키가 있을 때 AI 번역으로 넘어간다
+            if (!Storage.load(STORAGE_KEYS.API_KEY)) throw err;
+            self.setStatus('브라우저 번역을 쓸 수 없어 AI로 번역하는 중입니다…', 'info');
+            return self.translateAI(texts, fmt.lang);
+          })
+        : this.translateAI(texts, fmt.lang);
+      run.then(function(map) {
+        self.saveTranslations(fmt.lang, map);
+        delete self.edits[key];
+        self.busy = false;
+        self.render();
+        var left = self.pending.length;
+        self.setStatus(left ? '번역 완료. ' + left + '개 문장은 번역하지 못해 한국어로 남았습니다(주황색). 직접 고쳐 쓰세요.' : '번역 완료. 숫자·기술 이름이 맞는지 확인한 뒤 PDF로 저장하세요.', left ? 'warn' : 'ok');
+      }).catch(function(err) {
+        self.busy = false;
+        self.render();
+        self.setStatus('번역하지 못했습니다: ' + (err && err.message ? err.message : err) + ' 한국어 문장은 주황색으로 표시됩니다. 직접 고쳐 쓰거나, 고급 기능 → AI 설정에 API 키를 넣고 다시 누르세요.', 'warn');
+      });
+    },
+    // 응답이 없는 약속(Promise)을 ms 뒤에 실패로 끝낸다
+    withTimeout: function(promise, ms, message) {
+      return new Promise(function(resolve, reject) {
+        var timer = setTimeout(function() { reject(new Error(message)); }, ms);
+        Promise.resolve(promise).then(function(v) { clearTimeout(timer); resolve(v); }, function(e) { clearTimeout(timer); reject(e); });
+      });
+    },
+    // Chrome 내장 번역(Translator API): 기기 안에서 번역해 키가 필요 없다. 처음에는 번역 모델을 내려받는다.
+    // 모델을 받을 수 없는 환경에서는 응답이 없을 수 있어 시간 제한을 둔다.
+    translateBrowser: function(texts, lang) {
+      var self = this;
+      var T = window.Translator;
+      var opts = { sourceLanguage: 'ko', targetLanguage: lang };
+      var langName = lang === 'en' ? '영어' : '일본어';
+      return this.withTimeout(T.availability ? T.availability(opts) : 'available', 8000, '브라우저 번역 기능이 응답하지 않습니다.').then(function(avail) {
+        if (avail === 'unavailable' || avail === 'no') throw new Error('이 브라우저는 한국어→' + langName + ' 번역을 지원하지 않습니다.');
+        var lastProgress = Date.now();
+        var created = T.create(Object.assign({}, opts, {
+          monitor: function(m) {
+            m.addEventListener('downloadprogress', function(e) {
+              lastProgress = Date.now();
+              var ratio = e.total ? e.loaded / e.total : e.loaded;
+              self.setStatus('번역 모델을 내려받는 중입니다… ' + Math.round((ratio || 0) * 100) + '% (처음 한 번만)', 'info');
+            });
+          }
+        }));
+        // 내려받기가 20초 넘게 진행되지 않으면 포기한다
+        return new Promise(function(resolve, reject) {
+          var timer = setInterval(function() {
+            if (Date.now() - lastProgress > 20000) { clearInterval(timer); reject(new Error('번역 모델을 내려받지 못했습니다.')); }
+          }, 1000);
+          created.then(function(t) { clearInterval(timer); resolve(t); }, function(err) { clearInterval(timer); reject(err); });
+        });
+      }).then(function(translator) {
+        var map = {};
+        return texts.reduce(function(chain, text) {
+          return chain.then(function() {
+            return self.withTimeout(translator.translate(text), 20000, '번역이 너무 오래 걸립니다.').then(function(out) { map[text] = String(out || '').trim(); });
+          });
+        }, Promise.resolve()).then(function() { return map; });
+      });
+    },
+    // AI 번역: 연락처는 가리고, 숫자·기술 이름은 그대로 두라고 요청한 뒤 결과의 숫자를 원문과 대조한다
+    translateAI: function(texts, lang) {
+      var target = lang === 'en' ? 'English (natural resume style, action verbs, past tense for achievements)' : 'Japanese (履歴書・職務経歴書の丁寧な書き言葉、です・ます調または体言止め)';
+      var system = 'You translate Korean resume text for a junior software developer into ' + target + '. ' +
+        'Rules: keep every number, date, percentage, version and technology name exactly as written (Spring Boot, MySQL, N+1, 101회→1회 becomes "101 → 1" etc.). ' +
+        'Do not add facts, do not drop facts, do not translate URLs. Placeholders in [brackets] stay in brackets. ' +
+        'Return only JSON: {"items":[{"i":0,"t":"translation"}]}.';
+      var masked = texts.map(function(t) { return maskContactInfo(t); });
+      var chunks = [];
+      var cur = [];
+      var size = 0;
+      masked.forEach(function(t, i) {
+        if (size + t.length > 3500 && cur.length) { chunks.push(cur); cur = []; size = 0; }
+        cur.push({ i: i, t: t });
+        size += t.length;
+      });
+      if (cur.length) chunks.push(cur);
+      var map = {};
+      return chunks.reduce(function(chain, chunk) {
+        return chain.then(function() {
+          return callOpenRouter(system, JSON.stringify({ items: chunk }), { title: 'Resume Format Translate', maxTokens: 3500, temperature: 0.2 })
+            .then(function(text) {
+              var data = extractJsonFromAI(text);
+              (Array.isArray(data.items) ? data.items : []).forEach(function(it) {
+                var idx = parseInt(it && it.i, 10);
+                var out = it && typeof it.t === 'string' ? it.t.trim().slice(0, 2000) : '';
+                if (isNaN(idx) || !texts[idx] || !out) return;
+                // 원문의 숫자가 번역에 모두 남아 있을 때만 쓴다 (숫자를 바꾸거나 빠뜨린 번역은 버림)
+                var nums = texts[idx].match(/\d+(?:[.,]\d+)?/g) || [];
+                var ok = nums.every(function(n) { return out.indexOf(n) !== -1 || out.indexOf(n.replace(',', '')) !== -1; });
+                if (ok) map[texts[idx]] = out;
+              });
+            });
+        });
+      }, Promise.resolve()).then(function() { return map; });
+    },
+
+    // ---------- 그리기 ----------
+    // 이력서에 없는 정보 자리. 화면에서는 노란 칸, PDF에서는 빠진다(fill을 주면 그만큼 빈칸으로 남겨 손으로 적을 수 있게)
+    blank: function(text, fill) {
+      return '<span class="fx-blank"' + (fill ? ' data-fill="' + escapeHtml(fill) + '"' : '') + '>' + escapeHtml(text) + '</span>';
+    },
+    // 주소 → 링크(누를 수 있게). 안전하지 않은 주소는 글자로만.
+    linkHtml: function(url, label) {
+      var v = stripLinkLabel(url || '');
+      if (!v) return '';
+      var href = PrintLinks.toHref(v.replace(/[).,]+$/, '')) || (isValidEmail(v) ? 'mailto:' + v : '');
+      if (!href) return escapeHtml(label || v);
+      return '<a class="fx-link" href="' + escapeHtml(href) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(label || v) + '</a>';
+    },
+    isSchool: function(row) { return /(대학교|대학원|대학|고등학교|학교|University|College|High School)/i.test(row.name || ''); },
+    eduEndStatus: function(row, lang) {
+      var t = (row.detail || '') + ' ' + (row.period || '');
+      var key = /제적|중퇴|자퇴/.test(t) ? 'drop' : /재학|휴학/.test(t) ? 'now' : /수료/.test(t) ? 'done' : /졸업/.test(t) ? 'grad' : '';
+      if (!key) {
+        var end = this.parseDates(row.period)[1];
+        var now = new Date();
+        var future = end && (end.y > now.getFullYear() || (end.y === now.getFullYear() && end.m > now.getMonth() + 1));
+        key = this.isSchool(row) ? (future ? 'gradExp' : 'grad') : (future ? 'doneExp' : 'done');
+      }
+      var words = {
+        grad: { ko: '졸업', en: 'Graduated', ja: '卒業' }, gradExp: { ko: '졸업 예정', en: 'Expected', ja: '卒業見込み' },
+        done: { ko: '수료', en: 'Completed', ja: '修了' }, doneExp: { ko: '수료 예정', en: 'Expected', ja: '修了見込み' },
+        drop: { ko: '중퇴', en: 'Withdrew', ja: '中途退学' }, now: { ko: '재학 중', en: 'Enrolled', ja: '在学中' }
+      };
+      return { key: key, text: words[key][lang] };
+    },
+
+    render: function() {
+      var fmt = this.format(this.current);
+      this.pending = [];
+      if (this.edits[fmt.key]) {
+        this.doc.innerHTML = this.edits[fmt.key];
+      } else {
+        var data = this.collect();
+        this.doc.innerHTML = this.build(fmt.key, data);
+      }
+      this.doc.className = 'fx-doc fx-' + fmt.key;
+      this.doc.setAttribute('lang', fmt.lang);
+      // 번역이 필요한 문장 목록은 직접 고친 문서에서도 다시 센다
+      if (this.edits[fmt.key]) {
+        var self = this;
+        this.doc.querySelectorAll('.fx-untr').forEach(function(el) { if (self.pending.indexOf(el.textContent) === -1) self.pending.push(el.textContent); });
+      }
+      var tr = document.getElementById('format-translate');
+      tr.hidden = fmt.lang === 'ko';
+      tr.disabled = this.busy || !this.pending.length;
+      tr.textContent = this.pending.length ? '번역하기 (' + this.pending.length + '문장)' : '번역 완료';
+      this.updateStatus();
+    },
+
+    build: function(key, d) {
+      if (key === 'saramin' || key === 'jobkorea') return this.buildKorean(key, d);
+      if (key === 'jp') return this.buildJapan(d);
+      return this.buildEnglish(key, d);
+    },
+
+    setStatus: function(text, tone) {
+      this.status.textContent = text || '';
+      this.status.className = 'fx-status' + (tone ? ' fx-' + tone : '');
+    },
+    updateStatus: function() {
+      if (this.busy) return;
+      var blanks = this.doc.querySelectorAll('.fx-blank').length;
+      var untr = this.doc.querySelectorAll('.fx-untr').length;
+      var parts = [];
+      if (blanks) parts.push('노란 칸 ' + blanks + '곳은 이력서에 없는 정보라 비워 두었습니다. 문서를 눌러 직접 채우세요.');
+      if (untr) parts.push('주황색 ' + untr + '곳은 아직 한국어입니다. "번역하기"를 누르거나 직접 고치세요.');
+      this.setStatus(parts.length ? parts.join(' ') : '바로 PDF로 저장할 수 있습니다. 문서를 눌러 내용을 고칠 수도 있습니다.', parts.length ? 'warn' : 'ok');
+    },
+
+    // ----- 한국 (사람인 · 잡코리아) -----
+    buildKorean: function(key, d) {
+      var self = this;
+      var e = escapeHtml;
+      var isJK = key === 'jobkorea';
+      var schools = d.education.filter(function(r) { return self.isSchool(r); });
+      var courses = d.education.filter(function(r) { return !self.isSchool(r); });
+      var sec = function(title, body) { return body ? '<h2 class="fx-h2">' + title + '</h2>' + body : ''; };
+      var table = function(head, rows) {
+        return '<table class="fx-table"><thead><tr>' + head.map(function(h) { return '<th>' + h + '</th>'; }).join('') + '</tr></thead><tbody>' +
+          rows.map(function(r) { return '<tr>' + r.map(function(c) { return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table>';
+      };
+      var jobTitle = d.position || (d.headline.split('|')[0] || '').trim();
+      var basic = '<table class="fx-table fx-basic"><tbody>' +
+        '<tr><td class="fx-photo" rowspan="4">' + (d.photo ? '<img src="' + e(d.photo) + '" alt="증명사진">' : '<span>사진</span>') + '</td>' +
+        '<th>이름</th><td>' + (e(d.name) || this.blank('[이름]')) + '</td><th>나이</th><td>' + (d.age ? '만 ' + d.age + '세' : this.blank('[만 OO세]')) + ' ' + this.blank('[생년월일 YYYY.MM.DD]') + '</td></tr>' +
+        '<tr><th>이메일</th><td>' + (this.linkHtml(d.email) || this.blank('[이메일]')) + '</td><th>휴대폰</th><td>' + (e(d.phone) || this.blank('[휴대폰]')) + '</td></tr>' +
+        '<tr><th>주소</th><td colspan="3">' + this.blank('[주소: 예) 부산광역시 OO구]') + '</td></tr>' +
+        '<tr><th>' + (isJK ? '홈페이지' : 'GitHub') + '</th><td colspan="3">' + ([this.linkHtml(d.github), this.linkHtml(d.blog)].filter(Boolean).join(' · ') || this.blank('[GitHub 주소]')) + '</td></tr>' +
+        '</tbody></table>';
+      var hope = table(['고용형태', '희망연봉', '희망근무지', '직무·직종'], [[this.blank('[정규직]'), '회사 내규에 따름', this.blank('[희망 지역]'), e(jobTitle) || this.blank('[직무]')]]);
+      var schoolRows = schools.map(function(r) {
+        var st = self.eduEndStatus(r, 'ko');
+        return [e(r.period) || self.blank('[재학기간]'), e(r.name), e(r.detail), st.text];
+      });
+      if (!schoolRows.length && d.university) schoolRows.push([this.blank('[재학기간]'), e(d.university), '', '']);
+      var edu = schoolRows.length ? table(['재학기간', '학교명', '전공·상세', '구분'], schoolRows) : '<p>' + this.blank('[최종 학력: 학교명 · 전공 · 졸업 구분]') + '</p>';
+      var career = '<p class="fx-strong">신입</p>';
+      var courseHtml = courses.length ? table(['교육명·과정', '교육기관', '기간'], courses.map(function(r) { return [e(r.detail), e(r.name), e(r.period)]; })) : '';
+      var projects = d.projects.map(function(p) {
+        var meta = [self.fmtRange(p.period, 'ko'), p.period.team ? '팀 ' + p.period.team + '명' : (p.period.personal ? '개인' : '')].filter(Boolean).join(' · ');
+        return '<div class="fx-item"><div class="fx-item-head"><strong>' + e(p.name) + '</strong><span>' + e(meta || p.meta) + '</span></div>' +
+          (p.desc ? '<p class="fx-sub">' + e(p.desc) + '</p>' : '') +
+          (p.role ? '<p><b>담당:</b> ' + e(p.role) + '</p>' : '') +
+          (p.details.length ? '<ul>' + p.details.map(function(x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul>' : '') +
+          (p.result ? '<p class="fx-result"><b>성과:</b> ' + e(p.result) + '</p>' : '') +
+          (p.link ? '<p class="fx-sub">' + self.linkHtml(p.link) + '</p>' : '') + '</div>';
+      }).join('');
+      var certs = d.certs.length ? table(['취득일', '자격증명', '발행처'], d.certs.map(function(r) { return [e(r.date), e(r.name), e(r.issuer)]; })) : '';
+      var skills = d.skills.length ? '<div class="fx-chips">' + d.skills.map(function(g) {
+        return '<div><b>' + e(g.label) + '</b> ' + g.items.map(function(x) { return '<span class="fx-chip">' + e(x) + '</span>'; }).join('') + '</div>';
+      }).join('') + '</div>' : '';
+      var portfolio = [];
+      if (d.github) portfolio.push('<li>GitHub: ' + this.linkHtml(d.github) + '</li>');
+      if (d.blog) portfolio.push('<li>블로그: ' + this.linkHtml(d.blog) + '</li>');
+      d.projects.forEach(function(p) { if (p.link) portfolio.push('<li>' + e(p.name) + ': ' + self.linkHtml(p.link) + '</li>'); });
+      d.docs.forEach(function(x) { portfolio.push('<li>' + e(x.name) + (x.link ? ': ' + self.linkHtml(x.link) : '') + (x.desc ? ' — ' + e(x.desc) : '') + '</li>'); });
+      var portfolioHtml = portfolio.length ? '<ul class="fx-list">' + portfolio.join('') + '</ul>' : '';
+      var m = d.military;
+      var military = m ? table(['병역 대상', '군별', '계급', '복무기간', '제대 구분'], [[
+        this.militaryStatusText(m, 'ko'), m.branch ? m.branch.ko : (m.status === 'done' ? this.blank('[군별]') : '-'),
+        m.rank ? m.rank.ko : (m.status === 'done' ? this.blank('[계급]') : '-'),
+        m.start ? this.fmtYM(m.start, 'ko') + (m.end ? ' ~ ' + this.fmtYM(m.end, 'ko') : '') : (m.status === 'done' ? this.blank('[복무기간]') : '-'),
+        m.discharge ? m.discharge.ko : (m.status === 'done' ? this.blank('[제대 구분]') : '-')
+      ]]) : '';
+      var essay = (d.about ? '<h3 class="fx-h3">핵심 역량 요약</h3><p>' + e(d.about) + '</p>' : '') +
+        (d.intro ? '<h3 class="fx-h3">' + (isJK ? '지원 동기 및 입사 후 포부' : '성장 과정 및 지원 동기') + '</h3><p>' + e(d.intro) + '</p>' : '');
+      var titleHtml = '<h1 class="fx-title">' + (e(d.headline) || '이력서') + '</h1>';
+      var parts = isJK ? [
+        ['인적사항', basic], ['학력사항', edu], ['경력사항', career], ['교육사항', courseHtml], ['자격증', certs], ['스킬', skills],
+        ['포트폴리오', portfolioHtml], ['취업우대·병역', military], ['희망근무조건', hope], ['자기소개서', essay], ['경력기술서 (프로젝트)', projects]
+      ] : [
+        ['기본정보', basic], ['희망근무조건', hope], ['학력', edu], ['경력', career], ['교육 이수', courseHtml], ['프로젝트 · 대외활동', projects],
+        ['자격증', certs], ['스킬', skills], ['포트폴리오 · 기타 문서', portfolioHtml], ['병역', military], ['자기소개서', essay]
+      ];
+      return '<section class="fx-page">' + titleHtml + parts.map(function(x) { return sec(x[0], x[1]); }).join('') + '</section>';
+    },
+
+    // ----- 영어 (호주 · 미국) -----
+    buildEnglish: function(key, d) {
+      var self = this;
+      var e = escapeHtml;
+      var L = 'en';
+      var T = function(t) { return self.T(t, L); };
+      var au = key === 'au';
+      var name = this.romanize(d.name);
+      var contact = [this.blank('[City], ') + 'South Korea', e(this.phoneIntl(d.phone)), this.linkHtml(d.email), this.linkHtml(d.github), this.linkHtml(d.blog)].filter(Boolean).join(' <span class="fx-dot">·</span> ');
+      var header = '<header class="fx-en-head"><h1>' + (e(name.full) || this.blank('[Your Name]')) + '</h1>' +
+        (d.headline ? '<p class="fx-en-title">' + T(d.headline) + '</p>' : '') +
+        '<p class="fx-en-contact">' + contact + '</p>' +
+        (au ? '<p class="fx-en-contact fx-optional-line"><b>Work rights:</b> ' + this.blank('[e.g. Working Holiday visa (subclass 417) · full work rights until YYYY]') + '</p>' : '') + '</header>';
+      var sec = function(title, body) { return body ? '<h2 class="fx-h2">' + title + '</h2>' + body : ''; };
+      var summary = d.about ? '<p>' + T(d.about) + '</p>' : '';
+      var skills = d.skills.length ? '<ul class="fx-skill-lines">' + d.skills.map(function(g) {
+        return '<li><b>' + T(g.label) + ':</b> ' + g.items.map(function(x) { return T(x); }).join(', ') + '</li>';
+      }).join('') + '</ul>' : '';
+      var projects = d.projects.map(function(p) {
+        var who = p.period.team ? 'Team of ' + p.period.team : (p.period.personal ? 'Personal project' : '');
+        var kind = p.period.final ? 'Final project' : p.period.semi ? 'Mid-term project' : '';
+        var lines = p.details.slice();
+        if (p.result) lines.push(p.result);
+        return '<div class="fx-item"><div class="fx-item-head"><strong>' + T(p.name) + '</strong><span>' + e(self.fmtRange(p.period, L)) + '</span></div>' +
+          '<p class="fx-sub">' + [p.role ? T(p.role) : '', who, kind].filter(Boolean).join(' · ') + '</p>' +
+          (p.desc ? '<p class="fx-sub">' + T(p.desc) + '</p>' : '') +
+          (lines.length ? '<ul>' + lines.map(function(x) { return '<li>' + T(x) + '</li>'; }).join('') + '</ul>' : '') +
+          (p.link ? '<p class="fx-sub">' + self.linkHtml(p.link) + '</p>' : '') + '</div>';
+      }).join('');
+      var education = d.education.map(function(r) {
+        var p = self.parsePeriod(r.period);
+        return '<div class="fx-item"><div class="fx-item-head"><strong>' + T(r.name) + '</strong><span>' + e(self.fmtRange(p, L) || r.period) + '</span></div>' +
+          (r.detail ? '<p class="fx-sub">' + T(r.detail) + '</p>' : '') + '</div>';
+      }).join('');
+      var certs = d.certs.length ? '<ul class="fx-list">' + d.certs.map(function(r) {
+        var dt = self.parseDates(r.date)[0];
+        return '<li><b>' + T(r.name) + '</b>' + (r.issuer ? ', ' + T(r.issuer) : '') + (dt ? ' — ' + e(self.fmtYM(dt, L)) : '') + '</li>';
+      }).join('') + '</ul>' : '';
+      var extra = [];
+      var m = d.military;
+      if (m && m.status === 'done') {
+        extra.push('<li><b>Military service:</b> ' + e(m.branch ? m.branch.en : 'Republic of Korea Armed Forces') + (m.rank ? ', ' + e(m.rank.en) : '') +
+          (m.discharge ? ' — ' + e(m.discharge.en) : '') + (m.start ? ' (' + e(this.fmtYM(m.start, L)) + (m.end ? ' – ' + e(this.fmtYM(m.end, L)) : '') + ')' : '') + '</li>');
+      }
+      extra.push('<li><b>Languages:</b> Korean (native), English ' + this.blank('[level, e.g. IELTS 6.5 / professional working proficiency]') + '</li>');
+      d.docs.forEach(function(x) { extra.push('<li><b>' + T(x.name) + ':</b> ' + (x.link ? self.linkHtml(x.link) : '') + (x.desc ? ' — ' + T(x.desc) : '') + '</li>'); });
+      var body = header +
+        sec(au ? 'Professional Summary' : 'Summary', summary) +
+        sec('Technical Skills', skills) +
+        sec('Projects', projects) +
+        sec(au ? 'Education &amp; Training' : 'Education', education) +
+        sec(au ? 'Licences &amp; Certifications' : 'Certifications', certs) +
+        sec(au ? 'Additional Information' : 'Additional', '<ul class="fx-list">' + extra.join('') + '</ul>') +
+        (au ? sec('Referees', '<p>Available upon request.</p>') : '');
+      return '<section class="fx-page fx-en">' + body + '</section>';
+    },
+
+    // ----- 일본 (履歴書 + 職務経歴書) -----
+    buildJapan: function(d) {
+      var self = this;
+      var e = escapeHtml;
+      var L = 'ja';
+      var T = function(t) { return self.T(t, L); };
+      var now = new Date();
+      var today = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日現在';
+      var name = this.romanize(d.name);
+      var ym = function(dt) { return dt ? '<td class="fx-y">' + dt.y + '</td><td class="fx-m">' + dt.m + '</td>' : '<td class="fx-y"></td><td class="fx-m"></td>'; };
+      var hist = ['<tr><td class="fx-y"></td><td class="fx-m"></td><td class="fx-c">学歴</td></tr>'];
+      var schools = d.education.filter(function(r) { return self.isSchool(r); });
+      var courses = d.education.filter(function(r) { return !self.isSchool(r); });
+      schools.concat(courses).forEach(function(r) {
+        var dates = self.parseDates(r.period);
+        var school = self.isSchool(r);
+        hist.push('<tr>' + ym(dates[0]) + '<td>' + T(r.name) + (r.detail ? '　' + T(r.detail) : '') + '　' + (school ? '入学' : '入校') + '</td></tr>');
+        var st = self.eduEndStatus(r, L);
+        if (st.key !== 'now') hist.push('<tr>' + ym(dates[1]) + '<td>' + T(r.name) + '　' + st.text + '</td></tr>');
+      });
+      if (!d.education.length) hist.push('<tr>' + ym(null) + '<td>' + this.blank('[学校名・学部・学科 入学/卒業]') + '</td></tr>');
+      hist.push('<tr><td class="fx-y"></td><td class="fx-m"></td><td class="fx-c">職歴</td></tr>');
+      var m = d.military;
+      if (m && m.status === 'done') {
+        hist.push('<tr>' + ym(m.start) + '<td>' + e(m.branch ? m.branch.ja : '大韓民国軍') + '　入隊（兵役）</td></tr>');
+        hist.push('<tr>' + ym(m.end) + '<td>' + e(m.branch ? m.branch.ja : '大韓民国軍') + (m.rank ? '　' + e(m.rank.ja) : '') + '　' + e(m.discharge ? m.discharge.ja : '除隊') + '</td></tr>');
+      }
+      hist.push('<tr><td class="fx-y"></td><td class="fx-m"></td><td>なし（新卒）</td></tr>');
+      hist.push('<tr><td class="fx-y"></td><td class="fx-m"></td><td class="fx-r">以上</td></tr>');
+      var lic = d.certs.map(function(r) {
+        var dt = self.parseDates(r.date)[0];
+        return '<tr>' + ym(dt) + '<td>' + T(r.name) + '　取得</td></tr>';
+      });
+      if (!lic.length) lic.push('<tr>' + ym(null) + '<td>特になし</td></tr>');
+      var rirekisho = '<section class="fx-page fx-jp">' +
+        '<div class="fx-jp-top"><h1>履 歴 書</h1><span>' + today + '</span></div>' +
+        '<table class="fx-table fx-jp-basic"><tbody>' +
+        '<tr><th>ふりがな</th><td>' + this.blank('[フリガナ]', '　') + '</td><td class="fx-photo" rowspan="4">' + (d.photo ? '<img src="' + e(d.photo) + '" alt="写真">' : '<span>写真<br>(縦4cm×横3cm)</span>') + '</td></tr>' +
+        '<tr><th>氏　名</th><td class="fx-jp-name">' + (e(d.name) || this.blank('[氏名]')) + (name.family ? '<small>（' + e((name.family + ' ' + name.given).toUpperCase()) + '）</small>' : '') + '</td></tr>' +
+        '<tr><th>生年月日</th><td>' + this.blank('[YYYY]', '　　　　') + '年' + this.blank('[MM]', '　　') + '月' + this.blank('[DD]', '　　') + '日生' + (d.age ? '（満 ' + d.age + ' 歳）' : '（満 ' + this.blank('[OO]', '　　') + ' 歳）') + '</td></tr>' +
+        '<tr><th>国　籍</th><td>大韓民国</td></tr>' +
+        '<tr><th>現住所</th><td colspan="2">' + this.blank('[〒 住所]') + '</td></tr>' +
+        '<tr><th>電　話</th><td colspan="2">' + e(this.phoneIntl(d.phone)) + '</td></tr>' +
+        '<tr><th>E-mail</th><td colspan="2">' + (this.linkHtml(d.email) || this.blank('[E-mail]')) + '</td></tr>' +
+        '</tbody></table>' +
+        '<table class="fx-table fx-jp-hist"><thead><tr><th class="fx-y">年</th><th class="fx-m">月</th><th>学歴・職歴</th></tr></thead><tbody>' + hist.join('') + '</tbody></table>' +
+        '<table class="fx-table fx-jp-hist"><thead><tr><th class="fx-y">年</th><th class="fx-m">月</th><th>免許・資格</th></tr></thead><tbody>' + lic.join('') + '</tbody></table>' +
+        '<table class="fx-table"><tbody><tr><th>志望動機・自己PR</th></tr><tr><td class="fx-jp-box">' + (d.intro ? T(d.intro) : this.blank('[志望動機]')) + '</td></tr>' +
+        '<tr><th>本人希望記入欄</th></tr><tr><td class="fx-jp-box">貴社規定に従います。' + (d.position ? '（希望職種：' + T(d.position) + '）' : '') + '</td></tr></tbody></table>' +
+        '</section>';
+      var projects = d.projects.map(function(p) {
+        var tech = Autofill.detectSkills([p.desc, p.role, p.details.join(' ')].join(' '));
+        var techList = [].concat(tech.backend, tech.frontend, tech.database, tech.devops);
+        var who = p.period.team ? 'チーム ' + p.period.team + '名' : (p.period.personal ? '個人' : '');
+        return '<table class="fx-table fx-jp-proj"><tbody>' +
+          '<tr><th>期間</th><td>' + e(self.fmtRange(p.period, L) || p.meta) + '</td><th>規模</th><td>' + e(who) + '</td></tr>' +
+          '<tr><th>プロジェクト</th><td colspan="3"><strong>' + T(p.name) + '</strong>' + (p.desc ? '<br>' + T(p.desc) : '') + '</td></tr>' +
+          '<tr><th>役割</th><td colspan="3">' + (p.role ? T(p.role) : '') + '</td></tr>' +
+          '<tr><th>業務内容</th><td colspan="3">' + (p.details.length ? '<ul>' + p.details.map(function(x) { return '<li>' + T(x) + '</li>'; }).join('') + '</ul>' : '') + '</td></tr>' +
+          (p.result ? '<tr><th>成果</th><td colspan="3">' + T(p.result) + '</td></tr>' : '') +
+          (techList.length ? '<tr><th>使用技術</th><td colspan="3">' + e(techList.join(', ')) + '</td></tr>' : '') +
+          (p.link ? '<tr><th>URL</th><td colspan="3">' + self.linkHtml(p.link) + '</td></tr>' : '') +
+          '</tbody></table>';
+      }).join('');
+      var skills = d.skills.length ? '<ul class="fx-skill-lines">' + d.skills.map(function(g) {
+        return '<li><b>' + T(g.label) + '：</b>' + g.items.map(function(x) { return T(x); }).join('、') + '</li>';
+      }).join('') + '</ul>' : '';
+      var docs = d.docs.length ? '<ul class="fx-list">' + d.docs.map(function(x) { return '<li>' + T(x.name) + (x.link ? '：' + self.linkHtml(x.link) : '') + (x.desc ? '（' + T(x.desc) + '）' : '') + '</li>'; }).join('') +
+        (d.github ? '<li>GitHub：' + this.linkHtml(d.github) + '</li>' : '') + '</ul>' : (d.github ? '<ul class="fx-list"><li>GitHub：' + this.linkHtml(d.github) + '</li></ul>' : '');
+      var shokumu = '<section class="fx-page fx-jp">' +
+        '<div class="fx-jp-top"><h1>職 務 経 歴 書</h1><span>' + today + '<br>氏名　' + e(d.name) + '</span></div>' +
+        '<h2 class="fx-h2">職務要約</h2><p>' + (d.about ? T(d.about) : this.blank('[職務要約]')) + '</p>' +
+        '<h2 class="fx-h2">活かせる経験・知識・技術</h2>' + skills +
+        '<h2 class="fx-h2">プロジェクト経歴</h2>' + (projects || '<p>' + this.blank('[プロジェクト]') + '</p>') +
+        (d.certs.length ? '<h2 class="fx-h2">資格</h2><ul class="fx-list">' + d.certs.map(function(r) { return '<li>' + T(r.name) + (r.date ? '（' + e(r.date) + '）' : '') + '</li>'; }).join('') + '</ul>' : '') +
+        (docs ? '<h2 class="fx-h2">ポートフォリオ・資料</h2>' + docs : '') +
+        '<h2 class="fx-h2">自己PR</h2><p>' + (d.intro ? T(d.intro) : this.blank('[自己PR]')) + '</p>' +
+        '<p class="fx-r">以上</p></section>';
+      return rirekisho + shokumu;
+    },
+
+    // ---------- PDF로 저장 ----------
+    // 고른 양식(들)만 인쇄 전용 영역에 옮겨 인쇄한다. 브라우저 인쇄 창에서 "PDF로 저장"을 고르면 된다.
+    print: function(keys) {
+      var self = this;
+      var untr = 0;
+      var html = keys.map(function(key) {
+        var fmt = self.format(key);
+        if (key === self.current) return '<div class="fx-doc fx-' + key + '" lang="' + fmt.lang + '">' + self.doc.innerHTML + '</div>';
+        var savedPending = self.pending;
+        var out = self.edits[key] || self.build(key, self.collect());
+        self.pending = savedPending;
+        return '<div class="fx-doc fx-' + key + '" lang="' + fmt.lang + '">' + out + '</div>';
+      }).join('');
+      var root = document.getElementById('format-print-root');
+      root.innerHTML = html;
+      untr = root.querySelectorAll('.fx-untr').length;
+      var blanks = root.querySelectorAll('.fx-blank').length;
+      var warn = [];
+      if (untr) warn.push('번역되지 않은 한국어 문장 ' + untr + '곳');
+      if (blanks) warn.push('채우지 않은 칸 ' + blanks + '곳');
+      if (warn.length && !window.confirm(warn.join(', ') + '이 있습니다. 그대로 PDF로 저장할까요?\n(채우지 않은 칸은 PDF에 나오지 않습니다)')) { root.innerHTML = ''; return; }
+      // 비어 있는 노란 칸은 PDF에서 뺀다: 값이 없으면 의미가 없는 줄(예: 비자 줄)은 줄째로, 손으로 적는 칸은 빈칸으로 남긴다.
+      root.querySelectorAll('.fx-optional-line').forEach(function(line) { if (line.querySelector('.fx-blank')) line.parentNode.removeChild(line); });
+      root.querySelectorAll('.fx-blank').forEach(function(el) {
+        var fill = el.getAttribute('data-fill');
+        if (fill) el.parentNode.replaceChild(document.createTextNode(fill), el); else el.parentNode.removeChild(el);
+      });
+      // 본문 속 주소는 누를 수 있는 링크로 바꾼다
+      root.querySelectorAll('[contenteditable]').forEach(function(el) { el.removeAttribute('contenteditable'); });
+      PrintLinks.wrapText(root);
+      document.body.classList.add('fx-printing');
+      this.printing = true;
+      window.print();
+      // 인쇄 창이 막지 않는 브라우저(모바일 등)는 afterprint 때 정리된다
+    },
+    endPrint: function() {
+      if (!this.printing) return;
+      this.printing = false;
+      document.body.classList.remove('fx-printing');
+      var root = document.getElementById('format-print-root');
+      if (root) root.innerHTML = '';
+    }
+  };
+  window.FormatExport = FormatExport;
+
   // ===== Module: ItemTools (지운 칸 접기 · 되살리기 · 고정 행 삭제) + 기타 문서·병역 예시 =====
   (function extendLibraryWithDocsAndMilitary() {
     var G = '[your-id]/[repo]';
@@ -12069,9 +12920,13 @@
     A4Guide.init();
     ItemTools.init();
     PrintVisibility.init();
+    PrintLinks.init();
+    var versionEl = document.getElementById('app-version');
+    if (versionEl) versionEl.textContent = APP_VERSION;
     GuidedTour.init();
     SimpleMode.init();
     Starter.init();
+    FormatExport.init();
 
     // Auto-restore saved content
     var savedContent = UI.getSavedContentPayload();
