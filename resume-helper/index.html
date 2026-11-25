@@ -1656,6 +1656,28 @@
   .starter-footer button:disabled { opacity: .45; cursor: default; }
   @media (max-width: 640px) { .starter-footer { flex-direction: column; align-items: stretch; } }
 
+  /* ===== 지운 칸 접기 · 되살리기 · 기타 문서 · 기술 분류 목록 ===== */
+  .name-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 10px; }
+  .header-age { font-size: 10pt; font-weight: 600; color: #4a6fa5; }
+  .page.theme-modern .header-age { color: #fff; }
+  [data-user-empty="true"]:not(:focus-within) { display: none !important; }
+  .restore-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 6px; margin-top: 4px; flex-basis: 100%; }
+  .restore-chips:empty { display: none; }
+  #restore-chips-header { justify-content: flex-start; }
+  .restore-chip { border: 1px dashed #a0aec0; background: #f7fafc; color: #4a5568; border-radius: 999px; padding: 2px 9px; font-size: 7.5pt; cursor: pointer; }
+  .restore-chip:hover { background: #edf2f7; }
+  .inline-add-wrap, .project-add-wrap { flex-wrap: wrap; }
+  .skill-preset-menu { flex-basis: 100%; margin-top: 6px; padding: 8px; border: 1px solid #cbd5e0; border-radius: 8px; background: #fff; }
+  .skill-preset-menu[hidden] { display: none; }
+  .skill-preset-title { font-size: 8pt; color: #4a5568; margin-bottom: 6px; text-align: center; }
+  .skill-preset-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
+  .skill-preset-chip { font-size: 8.5pt; padding: 4px 11px; border-style: solid; border-color: #4a6fa5; color: #1a365d; background: #f0f4fa; }
+  .doc-row { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-bottom: 3px; font-size: 8.5pt; }
+  .doc-name { font-weight: 700; color: #1a365d; }
+  .doc-link { color: #4a6fa5; }
+  .doc-desc { color: #555; }
+  @media print { .restore-chips, .skill-preset-menu { display: none !important; } }
+
   /* ===== 말풍선 따라 쓰기 투어 ===== */
   .tour-blocker { position: fixed; z-index: 21000; background: rgba(15, 23, 42, 0.62); cursor: not-allowed; }
   .tour-ring { position: fixed; z-index: 21001; pointer-events: none; border-radius: 8px; border: 3px solid #f6ad55;
@@ -2467,7 +2489,10 @@
   <!-- ==================== 헤더 ==================== -->
   <div class="header">
     <div class="header-left">
-      <h1 contenteditable="true" data-field-id="header-name" data-required="true" data-max-lines="1" data-guide-type="name">[홍길동]</h1>
+      <div class="name-row">
+        <h1 contenteditable="true" data-field-id="header-name" data-required="true" data-max-lines="1" data-guide-type="name">[홍길동]</h1>
+        <span class="header-age" contenteditable="true" data-field-id="header-age" data-optional="true" data-max-lines="1" data-guide-type="age">만 [나이]세</span>
+      </div>
       <div class="subtitle" contenteditable="true" data-field-id="header-subtitle" data-required="true" data-max-lines="1" data-guide-type="headline">지원 포지션 | Java · Spring Boot · JPA · Thymeleaf</div>
       <div class="contact-info">
         <span contenteditable="true" data-field-id="header-email" data-required="true" data-max-lines="1" data-guide-type="email">[your.email@gmail.com]</span>
@@ -2475,7 +2500,9 @@
         <span contenteditable="true" data-field-id="header-github" data-required="true" data-max-lines="1" data-guide-type="github-url">GitHub: [github.com/your-id]</span>
         <span contenteditable="true" data-field-id="header-blog" data-optional="true" data-max-lines="1" data-guide-type="blog-url">Blog: [your-blog.tistory.com]</span>
         <span contenteditable="true" data-field-id="header-saramin" data-optional="true" data-max-lines="1" data-guide-type="saramin-url">Saramin: [saramin.co.kr/your-resume-link]</span>
+        <span contenteditable="true" data-field-id="header-military" data-optional="true" data-max-lines="1" data-guide-type="military">병역: [군필 해병/병장 만기전역 2021.11 ~ 2023.05]</span>
       </div>
+      <div class="restore-chips" id="restore-chips-header"></div>
     </div>
     <div class="header-photo" id="header-photo" hidden><img id="header-photo-img" alt="증명사진"></div>
     <div class="header-right">
@@ -2658,6 +2685,29 @@
     <div class="ai-feedback-container" data-section="certification" style="display:none;"></div>
   </div>
 
+  <!-- ==================== 기타 문서 ==================== -->
+  <div class="section" data-section-toggle="documents">
+    <div class="section-header">
+      <div class="section-title">기타 문서</div>
+      <button class="section-toggle-btn" data-toggle-target="documents">숨기기</button>
+    </div>
+    <div class="doc-row">
+      <span class="doc-name" contenteditable="true" data-field-id="doc-1-name" data-optional="true" data-max-lines="1" data-guide-type="doc-name">[AI 코드 검증일지]</span>
+      <span class="doc-link" contenteditable="true" data-field-id="doc-1-link" data-optional="true" data-max-lines="1" data-guide-type="doc-link">[github.com/아이디/저장소/docs/ai-verify-log.md]</span>
+      <span class="doc-desc" contenteditable="true" data-field-id="doc-1-desc" data-optional="true" data-max-lines="1" data-guide-type="doc-desc">[결함 N건의 발견·측정·개선 기록]</span>
+    </div>
+    <div class="doc-row">
+      <span class="doc-name" contenteditable="true" data-field-id="doc-2-name" data-optional="true" data-max-lines="1" data-guide-type="doc-name">[디버깅 일지]</span>
+      <span class="doc-link" contenteditable="true" data-field-id="doc-2-link" data-optional="true" data-max-lines="1" data-guide-type="doc-link">[링크]</span>
+      <span class="doc-desc" contenteditable="true" data-field-id="doc-2-desc" data-optional="true" data-max-lines="1" data-guide-type="doc-desc">[에러 원인 분석과 해결 과정]</span>
+    </div>
+    <div class="inline-add-wrap">
+      <button type="button" id="add-doc-btn" class="inline-add-btn">+ 문서 추가</button>
+    </div>
+    <div class="guide">* 포트폴리오 외에 보여 줄 문서(AI 코드 검증일지, 디버깅 일지, 결과보고서 등)의 이름과 공개 링크를 적으세요. 파일 자체는 PDF에 들어가지 않으므로 GitHub·노션·구글 드라이브 링크를 씁니다. 없으면 "숨기기"를 누르세요.</div>
+    <div class="ai-feedback-container" data-section="documents" style="display:none;"></div>
+  </div>
+
   <!-- ==================== 자기소개 ==================== -->
   <div class="section" data-section-toggle="intro">
     <div class="section-header">
@@ -2761,6 +2811,8 @@
     'header-blog': '블로그 주소',
     'header-saramin': '사람인 주소',
     'header-university': '학력 정보',
+    'header-age': '나이',
+    'header-military': '병역',
     'about-summary': 'About Me 요약',
     'skills-backend': '백엔드 기술',
     'skills-frontend': '프론트엔드 기술',
@@ -3120,6 +3172,11 @@
         var certLabels = { date: '취득일', name: '이름', issuer: '발급기관' };
         return '자격증' + certMatch[1] + ' ' + (certLabels[certMatch[2]] || certMatch[2]);
       }
+      var docMatch = /^doc-(\d+)-(name|link|desc)$/.exec(fieldId || '');
+      if (docMatch) {
+        var docLabels = { name: '문서명', link: '링크', desc: '설명' };
+        return '기타 문서' + docMatch[1] + ' ' + (docLabels[docMatch[2]] || docMatch[2]);
+      }
       return FIELD_LABELS[fieldId] || fieldId;
     },
     getSection: function(fieldId) {
@@ -3129,6 +3186,7 @@
       if (fieldId.startsWith('project-')) return 'projects';
       if (fieldId.startsWith('edu-')) return 'education';
       if (fieldId.startsWith('cert-')) return 'certification';
+      if (fieldId.startsWith('doc-')) return 'documents';
       if (fieldId.startsWith('intro')) return 'intro';
       return 'unknown';
     },
@@ -3161,6 +3219,7 @@
       var isOptional = el.getAttribute('data-optional') === 'true';
       var guideType = el.getAttribute('data-guide-type') || '';
       var hasContent = !hasPlaceholderText(text);
+      if (!hasContent && el.closest('[data-user-empty="true"]')) return; // 사용자가 지워서 접은 칸은 필수 점검에서 뺀다
 
       if (el.getAttribute('data-required') === 'true' && !hasContent) {
         this.addMessage(result, fieldId, 'warnings', '필수 항목입니다. placeholder를 지우고 실제 내용을 입력하세요.');
@@ -3476,7 +3535,7 @@
       document.body.appendChild(ruler);
       var limit = ruler.getBoundingClientRect().height;
       document.body.removeChild(ruler);
-      var hideTargets = page.querySelectorAll('.guide, .section-toggle-btn, .inline-sample-btn, .draft-helper-tools, .draft-helper-box, .ai-feedback-container, [data-print-empty="true"]');
+      var hideTargets = page.querySelectorAll('.guide, .section-toggle-btn, .inline-sample-btn, .draft-helper-tools, .draft-helper-box, .ai-feedback-container, .restore-chips, .skill-preset-menu, [data-print-empty="true"]');
       var hiddenStyles = [];
       for (var i = 0; i < hideTargets.length; i++) {
         hiddenStyles.push(hideTargets[i].style.display);
@@ -3501,6 +3560,7 @@
 
       document.querySelectorAll('[data-field-id][data-required="true"]').forEach(function(el) {
         var fieldId = el.getAttribute('data-field-id');
+        if (el.closest('[data-user-empty="true"]')) return;
         if (hasPlaceholderText(fields[fieldId])) blocking.push(FieldCollector.getLabel(fieldId));
       });
 
@@ -3616,6 +3676,45 @@
       }
     },
 
+    // 기타 문서: 내용이 있는 행이 하나도 없으면 섹션째로 인쇄하지 않는다 (자격증과 같은 규칙)
+    syncDocumentSection: function(fields) {
+      var rows = document.querySelectorAll('.doc-row');
+      var hasVisibleRow = false;
+      for (var i = 0; i < rows.length; i++) {
+        var fieldEls = rows[i].querySelectorAll('[data-field-id]');
+        var anyReal = false;
+        for (var j = 0; j < fieldEls.length; j++) {
+          if (FieldCollector.hasRealContent(fieldEls[j].getAttribute('data-field-id'), fields)) { anyReal = true; break; }
+        }
+        this.mark(rows[i], !anyReal);
+        if (anyReal) hasVisibleRow = true;
+      }
+      this.mark(document.querySelector('.section[data-section-toggle="documents"]'), !hasVisibleRow);
+    },
+
+    // 사용자가 지운(완전히 빈) 칸은 인쇄뿐 아니라 화면에서도 접는다. 예시 문구가 그대로인 칸은 안내로 남긴다.
+    //  - 연락처·나이·병역·배지: 칸이 비면 점·배경만 남지 않게 접음
+    //  - 고정 선택 행(프로젝트 2~3, 교육·자격증·문서 기본 행): 내용이 없고 칸 하나라도 비었으면 접음
+    syncUserEmpty: function(fields) {
+      var blank = function(id) { return !String(fields[id] || '').trim(); };
+      ItemTools.headerFieldIds.forEach(function(id) {
+        var el = FieldCollector.getFieldEl(id);
+        if (el) el.setAttribute('data-user-empty', blank(id) ? 'true' : 'false');
+      });
+      var items = document.querySelectorAll('.project-item:not([data-dynamic-item]), .edu-row:not([data-dynamic-item]), .cert-row:not([data-dynamic-item]), .doc-row:not([data-dynamic-item])');
+      for (var i = 0; i < items.length; i++) {
+        var fieldEls = items[i].querySelectorAll('[data-field-id]');
+        var anyReal = false, anyBlank = false;
+        for (var j = 0; j < fieldEls.length; j++) {
+          var id = fieldEls[j].getAttribute('data-field-id');
+          if (FieldCollector.hasRealContent(id, fields)) anyReal = true;
+          if (blank(id)) anyBlank = true;
+        }
+        var removable = fieldEls.length > 0 && !ItemTools.isRequiredFirst(items[i]);
+        items[i].setAttribute('data-user-empty', removable && !anyReal && anyBlank ? 'true' : 'false');
+      }
+    },
+
     sync: function() {
       // 필드 텍스트를 한 번만 읽어 모든 판정에 재사용한다 (기존: 필드마다 전체를 다시 읽음)
       var fields = FieldCollector.getAllFields();
@@ -3624,6 +3723,9 @@
       this.syncProjectItems(fields);
       this.syncEducationRows(fields);
       this.syncCertificationSection(fields);
+      this.syncDocumentSection(fields);
+      this.syncUserEmpty(fields);
+      if (typeof ItemTools !== 'undefined') ItemTools.syncChips();
     },
 
     init: function() {
@@ -3930,6 +4032,7 @@
       this.setupSkillAdder();
       this.setupEducationAdder();
       this.setupCertificationAdder();
+      this.setupDocumentAdder();
       this.setupAutosave();
 
       // Wizard button
@@ -4152,6 +4255,7 @@
       var projectSeen = {};
       var eduSeen = {};
       var certSeen = {};
+      var docSeen = {};
       var skillSeen = {};
 
       for (var i = 0; i < fieldIds.length; i++) {
@@ -4166,6 +4270,10 @@
         var certMatch = /^cert-(\d+)-/.exec(fieldIds[i]);
         if (certMatch && parseInt(certMatch[1], 10) > 2 && !FieldCollector.getFieldEl(fieldIds[i])) {
           certSeen[parseInt(certMatch[1], 10)] = true;
+        }
+        var docMatch = /^doc-(\d+)-/.exec(fieldIds[i]);
+        if (docMatch && parseInt(docMatch[1], 10) > 2 && !FieldCollector.getFieldEl(fieldIds[i])) {
+          docSeen[parseInt(docMatch[1], 10)] = true;
         }
         var skillMatch = /^skills-extra-(\d+)(?:-(label|tags))?$/.exec(fieldIds[i]);
         if (skillMatch && !FieldCollector.getFieldEl(fieldIds[i])) {
@@ -4184,6 +4292,9 @@
       });
       Object.keys(certSeen).sort(function(a, b) { return parseInt(a, 10) - parseInt(b, 10); }).forEach(function(idx) {
         UI.addCertificationRow({ index: parseInt(idx, 10), skipUndo: true, skipSave: true, skipScroll: true });
+      });
+      Object.keys(docSeen).sort(function(a, b) { return parseInt(a, 10) - parseInt(b, 10); }).forEach(function(idx) {
+        UI.addDocumentRow({ index: parseInt(idx, 10), skipUndo: true, skipSave: true, skipScroll: true });
       });
     },
 
@@ -4714,8 +4825,37 @@
       var self = this;
       var addBtn = document.getElementById('add-skill-row-btn');
       if (!addBtn) return;
+      var wrap = addBtn.closest('.inline-add-wrap');
+      // 버튼을 누르면 분류 목록이 열리고, 하나를 고르면 그 이름과 대표 기술이 든 행이 만들어진다
+      var menu = document.createElement('div');
+      menu.id = 'skill-preset-menu';
+      menu.className = 'skill-preset-menu';
+      menu.hidden = true;
+      var title = document.createElement('div');
+      title.className = 'skill-preset-title';
+      title.textContent = '어떤 분류를 추가할까요? (고른 뒤 기술은 내 것으로 고치세요)';
+      menu.appendChild(title);
+      var chips = document.createElement('div');
+      chips.className = 'skill-preset-chips';
+      SKILL_CATEGORY_PRESETS.concat([{ label: '직접 입력', tags: null }]).forEach(function(preset) {
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'restore-chip skill-preset-chip';
+        chip.textContent = preset.label;
+        chip.addEventListener('click', function() {
+          menu.hidden = true;
+          addBtn.setAttribute('aria-expanded', 'false');
+          self.addSkillRow(preset.tags ? { label: preset.label, tags: preset.tags } : {});
+        });
+        chips.appendChild(chip);
+      });
+      menu.appendChild(chips);
+      wrap.appendChild(menu);
+      addBtn.setAttribute('aria-expanded', 'false');
+      addBtn.setAttribute('aria-controls', 'skill-preset-menu');
       addBtn.addEventListener('click', function() {
-        self.addSkillRow();
+        menu.hidden = !menu.hidden;
+        addBtn.setAttribute('aria-expanded', menu.hidden ? 'false' : 'true');
       });
     },
 
@@ -4732,10 +4872,11 @@
       row.setAttribute('data-print-empty', 'true');
       row.innerHTML =
         '<span class="dynamic-item-header" style="margin-bottom:0;min-width:auto;"><button type="button" class="dynamic-delete-btn" onclick="UI.removeDynamicItem(this)">삭제</button></span>' +
-        '<span class="skill-cat" contenteditable="true" data-field-id="' + getCustomSkillLabelFieldId(nextIndex) + '" data-optional="true" data-max-lines="1">[카테고리명]</span>' +
+        '<span class="skill-cat" contenteditable="true" data-field-id="' + getCustomSkillLabelFieldId(nextIndex) + '" data-optional="true" data-max-lines="1">' + (options.label ? escapeHtml(options.label) : '[카테고리명]') + '</span>' +
         '<div class="skill-tags" contenteditable="true" data-field-id="skills-extra-' + nextIndex + '-tags" data-optional="true" data-guide-type="skills" data-max-items="5" data-storage-format="html">' +
-          '<span class="skill-tag">[기술명]</span>' +
-          '<span class="skill-tag">[기술명]</span>' +
+          (options.tags && options.tags.length
+            ? options.tags.slice(0, 5).map(function(t) { return '<span class="skill-tag">' + escapeHtml(t) + '</span>'; }).join('')
+            : '<span class="skill-tag">[기술명]</span><span class="skill-tag">[기술명]</span>') +
         '</div>';
       section.insertBefore(row, addWrap);
       this.attachEditableHandlers(row.querySelectorAll('[contenteditable="true"]'));
@@ -4812,9 +4953,41 @@
       if (typeof PrintVisibility !== 'undefined' && PrintVisibility && PrintVisibility.sync) PrintVisibility.sync();
       if (!options.skipSave) this.persistContent({ label: '자격증 추가 저장' });
       if (!options.skipScroll) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    },
+
+    setupDocumentAdder: function() {
+      var self = this;
+      var btn = document.getElementById('add-doc-btn');
+      if (btn) btn.addEventListener('click', function() { self.addDocumentRow(); });
+    },
+
+    addDocumentRow: function(options) {
+      options = options || {};
+      var section = document.querySelector('.section[data-section-toggle="documents"]');
+      var addWrap = document.querySelector('#add-doc-btn').closest('.inline-add-wrap');
+      if (!section || !addWrap) return;
+      if (!options.skipUndo) this.captureUndoSnapshot();
+      var nextIndex = options.index || ((getIndexedFieldNumbers('doc').pop() || 0) + 1);
+      var row = document.createElement('div');
+      row.className = 'doc-row';
+      row.setAttribute('data-dynamic-item', 'true');
+      row.setAttribute('data-print-empty', 'true');
+      row.innerHTML =
+        '<span class="dynamic-item-header" style="margin-bottom:0;min-width:auto;"><button type="button" class="dynamic-delete-btn" onclick="UI.removeDynamicItem(this)">삭제</button></span>' +
+        '<span class="doc-name" contenteditable="true" data-field-id="doc-' + nextIndex + '-name" data-optional="true" data-max-lines="1" data-guide-type="doc-name">[문서명]</span>' +
+        '<span class="doc-link" contenteditable="true" data-field-id="doc-' + nextIndex + '-link" data-optional="true" data-max-lines="1" data-guide-type="doc-link">[링크]</span>' +
+        '<span class="doc-desc" contenteditable="true" data-field-id="doc-' + nextIndex + '-desc" data-optional="true" data-max-lines="1" data-guide-type="doc-desc">[한 줄 설명]</span>';
+      section.insertBefore(row, addWrap);
+      this.attachEditableHandlers(row.querySelectorAll('[contenteditable="true"]'));
+      this.refreshPlaceholders();
+      this.updateCompleteness();
+      if (typeof PrintVisibility !== 'undefined' && PrintVisibility && PrintVisibility.sync) PrintVisibility.sync();
+      if (!options.skipSave) this.persistContent({ label: '기타 문서 추가 저장' });
+      if (!options.skipScroll) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
   window.UI = UI;
+  window.ValidationEngine = ValidationEngine; // 테스트에서 PDF 점검 결과를 직접 확인할 때 사용
 
   // ===== Module 6: Wizard =====
   var WIZARD_STORAGE_KEY = 'resume-wizard-data';
@@ -4827,6 +5000,15 @@
     Database: ['MySQL 8', 'MySQL', 'H2', 'AWS RDS', 'JPA/Hibernate', 'JPQL'],
     DevOps: ['Git/GitHub', 'GitHub Actions', 'AWS EC2', 'AWS S3', 'Elastic Beanstalk', 'Gradle', 'Maven', 'Postman', 'IntelliJ IDEA']
   };
+
+  var SKILL_CATEGORY_PRESETS = [
+    { label: '클라우드·인프라', tags: ['AWS EC2', 'AWS S3', 'AWS RDS', 'Docker', 'Nginx'] },
+    { label: 'AI', tags: ['Spring AI', 'OpenRouter', '프롬프트 설계'] },
+    { label: '테스트', tags: ['JUnit 5', 'Mockito', 'MockMvc', 'AssertJ'] },
+    { label: '보안·인증', tags: ['Spring Security', 'JWT', 'OAuth2 (Google)', 'BCrypt'] },
+    { label: '협업·도구', tags: ['Git/GitHub', 'GitHub Actions', 'Notion', 'Postman', 'Slack'] },
+    { label: '모니터링·기타', tags: ['Hibernate Statistics', 'MySQL EXPLAIN', 'Swagger'] }
+  ];
 
   var SKILL_TIPS = {
     'Java 17': 'Java 최신 LTS 버전',
@@ -6121,6 +6303,8 @@
     },
 
     openSection: function(sectionKey) {
+      // 기타 문서는 섹션별 작성 예시 패널 대신 예시 라이브러리에 예시가 있다
+      if (sectionKey === 'documents') { ExampleLibrary.open('documents'); return; }
       var order = {
         about: 1,
         skills: 2,
@@ -7847,7 +8031,7 @@
           main.className = 'tool-item-title';
           main.textContent = item.title;
         } else if (item.row) {
-          main.textContent = [item.row.period || item.row.date, item.row.name, item.row.detail || item.row.issuer].filter(Boolean).join('  |  ');
+          main.textContent = [item.row.period || item.row.date, item.row.name, item.row.link, item.row.detail || item.row.issuer || item.row.desc].filter(Boolean).join('  |  ');
         } else {
           main.textContent = item.text;
         }
@@ -7949,12 +8133,17 @@
         message = '기술 ' + added + '개를 넣었습니다.';
         this.close();
         UI.scrollToField('skills-backend');
-      } else if (cat.target === 'education' || cat.target === 'certification') {
+      } else if (cat.target === 'education' || cat.target === 'certification' || cat.target === 'documents') {
         UI.captureUndoSnapshot();
         var rows = picks.map(function(p) { return p.row; });
         if (cat.target === 'education') {
           ResumeWriter.fillRows('edu', ['period', 'name', 'detail'], rows, mode, function(i) {
             UI.addEducationRow({ index: i, skipUndo: true, skipSave: true, skipScroll: true });
+          }, 'name');
+        } else if (cat.target === 'documents') {
+          ResumeWriter.showSection('documents');
+          ResumeWriter.fillRows('doc', ['name', 'link', 'desc'], rows, mode, function(i) {
+            UI.addDocumentRow({ index: i, skipUndo: true, skipSave: true, skipScroll: true });
           }, 'name');
         } else {
           ResumeWriter.showSection('certification');
@@ -7965,7 +8154,7 @@
         ResumeWriter.afterChange('예시 적용 저장');
         message = cat.label + ' ' + rows.length + '개를 넣었습니다. [ ] 부분을 본인 정보로 바꿔주세요.';
         this.close();
-        UI.scrollToField(cat.target === 'education' ? 'edu-1-name' : 'cert-1-name');
+        UI.scrollToField(cat.target === 'education' ? 'edu-1-name' : cat.target === 'documents' ? 'doc-1-name' : 'cert-1-name');
       }
       if (message) ResumeWriter.notify(message);
     }
@@ -8700,6 +8889,17 @@
       if (certRows.length) {
         md += '## 자격증\n\n' + certRows.map(function(r) { return '- ' + r.filter(Boolean).join(' | '); }).join('\n') + '\n\n';
       }
+      // 기타 문서(AI 코드 검증일지·디버깅 일지 등): 링크가 안전한 주소일 때만 링크로 건다
+      var docRows = getIndexedFieldNumbers('doc').map(function(i) {
+        return [c('doc-' + i + '-name'), stripLinkLabel(c('doc-' + i + '-link')), c('doc-' + i + '-desc')];
+      }).filter(function(r) { return r[0]; });
+      if (docRows.length) {
+        md += '## 기타 문서\n\n' + docRows.map(function(r) {
+          var url = r[1].replace(/^https?:\/\//, '');
+          var name = r[1] && /^[\w.-]+\.[a-z]{2,}(\/\S*)?$/i.test(url) ? '[' + r[0] + '](https://' + url + ')' : r[0];
+          return '- ' + name + (r[2] ? ' — ' + r[2] : '');
+        }).join('\n') + '\n\n';
+      }
       var intro = c('intro-text');
       if (intro) md += '## 이런 개발자가 되겠습니다\n\n' + intro + '\n\n';
       md += '---\n\n_이 README는 이력서 작성 도우미로 이력서 내용에서 자동 생성했습니다. 숫자와 링크가 실제와 같은지 확인한 뒤 GitHub 프로필 저장소(아이디/아이디)의 README.md에 붙여넣으세요._\n';
@@ -8813,6 +9013,7 @@
       });
       getIndexedFieldNumbers('edu').forEach(function(i) { parts.push(self.clean('edu-' + i + '-name') + ' ' + self.clean('edu-' + i + '-detail')); });
       getIndexedFieldNumbers('cert').forEach(function(i) { parts.push(self.clean('cert-' + i + '-name')); });
+      getIndexedFieldNumbers('doc').forEach(function(i) { parts.push(self.clean('doc-' + i + '-name') + ' ' + self.clean('doc-' + i + '-desc')); });
       parts.push(self.clean('intro-text'));
       return parts.filter(Boolean).join('\n');
     },
@@ -10125,7 +10326,7 @@
       document.body.appendChild(ruler);
       var limit = ruler.getBoundingClientRect().height;
       document.body.removeChild(ruler);
-      var hideTargets = page.querySelectorAll('.guide, .section-toggle-btn, .inline-sample-btn, .draft-helper-tools, .draft-helper-box, .ai-feedback-container, [data-print-empty="true"], .project-add-wrap, .inline-add-wrap, .dynamic-item-header, .section-actions, .a4-limit-line');
+      var hideTargets = page.querySelectorAll('.guide, .section-toggle-btn, .inline-sample-btn, .draft-helper-tools, .draft-helper-box, .ai-feedback-container, .restore-chips, .skill-preset-menu, [data-print-empty="true"], .project-add-wrap, .inline-add-wrap, .dynamic-item-header, .section-actions, .a4-limit-line');
       var saved = [];
       for (var i = 0; i < hideTargets.length; i++) { saved.push(hideTargets[i].style.display); hideTargets[i].style.display = 'none'; }
       var pageRect = page.getBoundingClientRect();
@@ -11143,6 +11344,10 @@
           required: ['header-email', 'header-phone', 'header-github'],
           title: '연락처 · GitHub', body: '이메일, 전화번호, GitHub 주소를 적으세요. 블로그·사람인은 없으면 비워 두어도 됩니다.',
           tip: 'GitHub는 github.com/아이디 형식으로. 이메일·전화번호는 AI 기능을 쓸 때 자동으로 가려서 보냅니다.' },
+        { key: 'personal', target: [function() { var e = self.field('header-age'); return e && e.closest('.header-left'); }], focus: 'header-age', optional: true,
+          title: '나이 · 병역 (선택)', body: '이름 옆에 나이, 연락처 줄에 병역을 적을 수 있습니다. 쓰지 않을 칸은 지워도 됩니다.',
+          tip: '예) 만 29세 / 병역: 군필 (해병 병장 만기전역, 2021.11 ~ 2023.05). 지운 칸은 이력서에서 사라지고, 아래 "+ 나이·병역" 버튼으로 되살립니다.',
+          actions: [{ label: '비어 있는 칸 되살리기', run: function() { ItemTools.restoreHeaderFields(); } }, lib('military', '병역 예시 고르기')] },
         { key: 'about', target: [function() { return self.section('about'); }], focus: 'about-summary', required: ['about-summary'],
           title: 'About Me (2~3문장)', body: '교육·배경 → 핵심 기술·프로젝트 경험 → 일하는 방식 순서로 2~3문장을 씁니다.',
           tip: '막막하면 아래 "초안 만들기"를 누르세요. 이력서에 적은 내용으로 초안 8개를 만들어 줍니다.',
@@ -11174,6 +11379,9 @@
         { key: 'cert', target: [function() { return self.section('certification'); }], focus: 'cert-1-date', optional: true,
           title: '자격증 (없으면 건너뛰기)', body: '취득했거나 준비 중인 자격증을 적습니다. 없으면 "다음"을 누르면 됩니다.',
           tip: '준비 중이면 "SQLD (2026.12 응시 예정)"처럼 적어도 됩니다.', actions: [lib('certification', '자격증 예시 고르기')] },
+        { key: 'documents', target: [function() { return self.section('documents'); }], focus: 'doc-1-name', optional: true,
+          title: '기타 문서 (선택)', body: '포트폴리오 말고 보여 줄 문서(AI 코드 검증일지, 디버깅 일지, 결과보고서 등)의 이름과 링크를 적습니다.',
+          tip: '파일 자체는 PDF에 들어가지 않으니 GitHub·노션·구글 드라이브 링크를 쓰세요. 없으면 "다음"을 누르면 됩니다.', actions: [lib('documents', '문서 예시 고르기')] },
         { key: 'intro', target: [function() { return self.section('intro'); }], focus: 'intro-text', required: ['intro-text'],
           title: '자기소개 (3~4문장)', body: '왜 개발자인가 → 무엇을 해냈나 → 강점 → 입사 후 방향 순서로 씁니다. About Me와 다른 이야기로.',
           tip: '"초안 만들기"를 누르면 이력서 내용으로 초안 8개를 만들어 줍니다.',
@@ -11662,6 +11870,186 @@
   };
   window.Starter = Starter;
 
+  // ===== Module: ItemTools (지운 칸 접기 · 되살리기 · 고정 행 삭제) + 기타 문서·병역 예시 =====
+  (function extendLibraryWithDocsAndMilitary() {
+    var G = '[your-id]/[repo]';
+    EXAMPLE_LIBRARY.documents = {
+      label: '기타 문서', target: 'documents',
+      desc: '포트폴리오 말고 보여 줄 문서의 이름·링크·한 줄 설명입니다. 파일은 PDF에 들어가지 않으니 공개 링크로 쓰고, [ ] 부분은 내 값으로 바꾸세요.',
+      items: [
+        { row: { name: 'AI 코드 검증일지', link: 'github.com/' + G + '/blob/main/docs/ai-verify-log.md', desc: '결함 [N]건의 발견 근거·Before/After·재발 방지 기록' }, tags: ['verify', 'common'] },
+        { row: { name: '디버깅 일지', link: 'github.com/' + G + '/blob/main/docs/debug-log.md', desc: '에러 [N]건 — Caused by 추적과 원인·해결 기록' }, tags: ['verify', 'common'] },
+        { row: { name: '결과보고서 (파이널 프로젝트)', link: '[구글 드라이브·노션 공개 링크]', desc: '역할별 기여와 문제 해결(6막 구조) 정리' }, tags: ['common'] },
+        { row: { name: '주간보고서 1~4주차', link: '[구글 드라이브 공개 링크]', desc: '주차별 진행·이슈·검증 일지 요약' }, tags: ['common'] },
+        { row: { name: '시연 영상', link: '[유튜브·드라이브 링크]', desc: '배포 주소에서 핵심 기능과 AI 기능을 시연한 3분 영상' }, tags: ['common', 'devops'] },
+        { row: { name: '배포 주소', link: '[http://EC2-퍼블릭-IP:8080]', desc: 'EC2 + GitHub Actions 자동 배포 (발표 후 종료)' }, tags: ['devops'] },
+        { row: { name: 'ERD · 아키텍처', link: 'github.com/' + G + '/blob/main/docs/erd.md', desc: '엔티티 관계와 결함 위치(N+1·동시성)를 표시한 설계도' }, tags: ['common', 'quality'] },
+        { row: { name: '성능 측정 기록', link: 'github.com/' + G + '/blob/main/docs/measure.md', desc: '쿼리 수·응답시간 Before/After (데이터 [N]건, 5회 평균)' }, tags: ['quality', 'food'] },
+        { row: { name: '보안 점검 기록', link: 'github.com/' + G + '/blob/main/docs/security.md', desc: 'IDOR·XSS·SQL Injection 재현과 차단 결과' }, tags: ['quality', 'crm'] },
+        { row: { name: '기획·설계 (요구사항·화면)', link: '[구글 드라이브 공개 링크]', desc: '요구사항 명세, ERD, 화면 설계' }, tags: ['common'] },
+        { row: { name: '기술 블로그 — 트러블슈팅 회고', link: '[블로그 글 주소]', desc: '문제 상황 → 원인 → 해결 → 배운 점' }, tags: ['common'] },
+        { row: { name: 'README (프로젝트)', link: 'github.com/' + G, desc: '실행 방법·아키텍처·AI 코드 검증 일지 표' }, tags: ['common'] }
+      ]
+    };
+    EXAMPLE_LIBRARY.military = {
+      label: '병역', field: 'header-military', single: true,
+      desc: '연락처 줄에 들어가는 한 줄입니다. 해당하는 것 하나를 고르고 군별·계급·기간을 내 것으로 바꾸세요.',
+      items: [
+        { text: '병역: 군필 (해병 병장 만기전역, 2021.11 ~ 2023.05)', tags: ['common'] },
+        { text: '병역: 군필 (해병대 병장 만기전역, [YYYY.MM ~ YYYY.MM], 정보통신병)', tags: ['common'] },
+        { text: '병역: 군필 (육군 병장 만기전역, [YYYY.MM ~ YYYY.MM], 정보통신병)', tags: ['common'] },
+        { text: '병역: 군필 (육군 병장 만기전역, [YYYY.MM ~ YYYY.MM])', tags: ['common'] },
+        { text: '병역: 군필 (해군 병장 만기전역, [YYYY.MM ~ YYYY.MM])', tags: ['common'] },
+        { text: '병역: 군필 (공군 병장 만기전역, [YYYY.MM ~ YYYY.MM])', tags: ['common'] },
+        { text: '병역: 군필 (사회복무요원 소집해제, [YYYY.MM ~ YYYY.MM])', tags: ['common'] },
+        { text: '병역: 군필 (전문연구요원·산업기능요원 복무 완료, [YYYY.MM ~ YYYY.MM])', tags: ['common'] },
+        { text: '병역: 미필 (입영 예정 [YYYY.MM])', tags: ['common'] },
+        { text: '병역: 면제 ([사유])', tags: ['common'] },
+        { text: '병역: 해당 없음', tags: ['common'] }
+      ]
+    };
+    var idx = EXAMPLE_CATEGORY_ORDER.indexOf('certification');
+    EXAMPLE_CATEGORY_ORDER.splice(idx === -1 ? EXAMPLE_CATEGORY_ORDER.length : idx + 1, 0, 'documents');
+    EXAMPLE_CATEGORY_ORDER.push('military');
+    EXAMPLE_SECTION_DEFAULT.documents = 'documents';
+  })();
+
+  // 이력서 위의 "선택 칸"을 다루는 도구
+  //  - 지운 칸(연락처 점, 배지 동그라미, 비어 버린 프로젝트 칸)이 화면에 남지 않게 접고, 버튼으로 되살린다
+  //  - 삭제 버튼이 없던 고정 행(프로젝트 2~3, 교육·자격증·문서 기본 행)에 삭제 버튼을 단다
+  var ItemTools = {
+    headerFieldIds: ['header-age', 'header-blog', 'header-saramin', 'header-military', 'header-badge'],
+    chipText: { 'header-age': '+ 나이', 'header-blog': '+ 블로그', 'header-saramin': '+ 사람인', 'header-military': '+ 병역', 'header-badge': '+ 지원 배지' },
+    sectionItems: [['projects', '.project-item', '프로젝트'], ['education', '.edu-row', '교육'], ['certification', '.cert-row', '자격증'], ['documents', '.doc-row', '기타 문서']],
+    STATIC_ITEMS: '.project-item:not([data-dynamic-item]), .edu-row:not([data-dynamic-item]), .cert-row:not([data-dynamic-item]), .doc-row:not([data-dynamic-item])',
+
+    init: function() {
+      // 예시(기본) 문구를 기억해 둔다: 지운 칸을 되살릴 때 쓴다 (저장된 내용을 불러오기 전에 실행됨)
+      document.querySelectorAll('[data-field-id]').forEach(function(el) {
+        if (!el.hasAttribute('data-default-html')) el.setAttribute('data-default-html', el.innerHTML);
+      });
+      this.addDeleteButtons();
+    },
+
+    addDeleteButtons: function() {
+      var self = this;
+      document.querySelectorAll(this.STATIC_ITEMS).forEach(function(item) {
+        var fieldEls = item.querySelectorAll('[data-field-id]');
+        if (!fieldEls.length || item.querySelector(':scope > .dynamic-item-header')) return;
+        if (self.isRequiredFirst(item)) return; // 대표 프로젝트·첫 교육 행처럼 꼭 있어야 하는 첫 행은 지우지 않는다
+        var isRow = !item.classList.contains('project-item');
+        var host = document.createElement(isRow ? 'span' : 'div');
+        host.className = 'dynamic-item-header';
+        if (isRow) host.style.cssText = 'margin-bottom:0;min-width:auto;';
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'dynamic-delete-btn static-delete-btn';
+        btn.textContent = '삭제';
+        btn.addEventListener('click', function() { self.removeStatic(item); });
+        host.appendChild(btn);
+        item.insertBefore(host, item.firstChild);
+      });
+    },
+
+    // 필수 칸이 든 "첫 번째" 행(대표 프로젝트, 첫 교육)인가
+    isRequiredFirst: function(item) {
+      var cls = ['project-item', 'edu-row', 'cert-row', 'doc-row'].filter(function(c) { return item.classList.contains(c); })[0];
+      if (!cls || item !== document.querySelector('.' + cls)) return false;
+      return Array.prototype.some.call(item.querySelectorAll('[data-field-id]'), function(e) { return e.getAttribute('data-required') === 'true'; });
+    },
+
+    afterEdit: function(label) {
+      UI.refreshPlaceholders();
+      UI.updateCompleteness();
+      PrintVisibility.sync();
+      UI.persistContent({ label: label });
+    },
+
+    // 고정 행은 칸 id가 저장·내보내기와 이어져 있어 DOM에서 지우지 않고, 칸을 비워 화면·인쇄에서 접는다
+    removeStatic: function(item) {
+      if (!item) return;
+      if (!window.confirm('이 칸을 비우고 숨길까요?\n숨긴 칸은 "+ 되살리기" 버튼이나 "방금 변경 되돌리기"로 다시 쓸 수 있습니다.')) return;
+      UI.captureUndoSnapshot();
+      item.querySelectorAll('[data-field-id]').forEach(function(el) { el.innerHTML = ''; });
+      // 누른 삭제 버튼이 이 행 안에 있으므로 포커스를 풀어야 접힌다 (포커스가 있는 칸은 접지 않음)
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+      this.afterEdit('항목 삭제 저장');
+    },
+
+    restoreField: function(el, skipSave) {
+      if (!el) return;
+      if (!skipSave) UI.captureUndoSnapshot();
+      el.innerHTML = el.getAttribute('data-default-html') || '';
+      el.setAttribute('data-user-empty', 'false');
+      if (!skipSave) this.afterEdit('칸 되살림');
+      if (!skipSave) { el.focus(); }
+    },
+
+    restoreItem: function(item) {
+      if (!item) return;
+      UI.captureUndoSnapshot();
+      var first = null;
+      item.querySelectorAll('[data-field-id]').forEach(function(el) {
+        ItemTools.restoreField(el, true);
+        if (!first) first = el;
+      });
+      item.setAttribute('data-user-empty', 'false');
+      this.afterEdit('칸 되살림');
+      if (first) first.focus();
+    },
+
+    restoreHeaderFields: function() {
+      var self = this;
+      var blank = this.headerFieldIds.map(function(id) { return FieldCollector.getFieldEl(id); })
+        .filter(function(el) { return el && el.getAttribute('data-user-empty') === 'true'; });
+      if (!blank.length) return;
+      UI.captureUndoSnapshot();
+      blank.forEach(function(el) { self.restoreField(el, true); });
+      this.afterEdit('칸 되살림');
+    },
+
+    chip: function(text, onClick) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'restore-chip';
+      b.textContent = text;
+      b.addEventListener('click', onClick);
+      return b;
+    },
+
+    // 접힌 칸마다 "+ ... 되살리기" 버튼을 만든다 (내용이 바뀔 때만 다시 그린다)
+    syncChips: function() {
+      var self = this;
+      var render = function(host, entries) {
+        var sig = entries.map(function(e) { return e.text; }).join('|');
+        if (host.getAttribute('data-sig') === sig) return;
+        host.setAttribute('data-sig', sig);
+        host.innerHTML = '';
+        entries.forEach(function(e) { host.appendChild(self.chip(e.text, e.run)); });
+      };
+      var header = document.getElementById('restore-chips-header');
+      if (header) {
+        render(header, this.headerFieldIds.map(function(id) { return { id: id, el: FieldCollector.getFieldEl(id) }; })
+          .filter(function(x) { return x.el && x.el.getAttribute('data-user-empty') === 'true'; })
+          .map(function(x) { return { text: self.chipText[x.id], run: function() { self.restoreField(x.el); } }; }));
+      }
+      this.sectionItems.forEach(function(def) {
+        var section = document.querySelector('.section[data-section-toggle="' + def[0] + '"]');
+        var wrap = section && section.querySelector('.project-add-wrap, .inline-add-wrap');
+        if (!wrap) return;
+        var host = wrap.querySelector(':scope > .restore-chips');
+        if (!host) { host = document.createElement('div'); host.className = 'restore-chips'; wrap.appendChild(host); }
+        var items = Array.prototype.slice.call(section.querySelectorAll(def[1] + '[data-user-empty="true"]'));
+        render(host, items.map(function(item) {
+          var f = item.querySelector('[data-field-id]');
+          var m = f && /-(\d+)-/.exec(f.getAttribute('data-field-id'));
+          return { text: '+ ' + def[2] + (m ? ' ' + m[1] : '') + ' 되살리기', run: function() { self.restoreItem(item); } };
+        }));
+      });
+    }
+  };
+  window.ItemTools = ItemTools;
+
   // ===== Initialize =====
   document.addEventListener('DOMContentLoaded', function() {
     UI.init();
@@ -11679,6 +12067,7 @@
     Photo.init();
     FieldMeter.init();
     A4Guide.init();
+    ItemTools.init();
     PrintVisibility.init();
     GuidedTour.init();
     SimpleMode.init();

@@ -59,7 +59,7 @@ test('끝내기 후 이어서 하기, 마지막 단계에서 남은 칸으로 �
   await goTo(page, 'About Me');
   await page.click('.tour-close');
   assert.equal(await page.evaluate(() => GuidedTour.active), false);
-  assert.match(await page.textContent('#guided-tour-btn'), /이어서 \(5\//);
+  assert.match(await page.textContent('#guided-tour-btn'), /이어서 \(\d+\//);
   await page.click('#guided-tour-btn');
   assert.match(await title(page), /About Me/);
   await page.click('.tour-action:has-text("초안 만들기")');

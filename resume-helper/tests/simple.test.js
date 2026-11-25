@@ -3,7 +3,7 @@ const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
-const { launch, openPage } = require('./helpers');
+const { launch, openPage, reloadKeepingStorage } = require('./helpers');
 
 const URL = pathToFileURL(path.join(__dirname, '..', 'index.html')).href;
 let browser;
@@ -86,10 +86,10 @@ test('간단 모드: 고급 기능은 접혀 있고, 열면 모두 쓸 수 있�
   assert.equal(await page.isVisible('#interview-open-btn'), true);
   assert.equal(await page.isVisible('.guide'), true);
   assert.match(await page.textContent('#advanced-toggle-btn'), /닫기/);
-  await page.reload();
+  await reloadKeepingStorage(page);
   assert.equal(await page.isVisible('#interview-open-btn'), true, '새로고침 후에도 열린 상태');
   await page.click('#advanced-toggle-btn');
-  await page.reload();
+  await reloadKeepingStorage(page);
   assert.equal(await page.isVisible('#interview-open-btn'), false, '닫은 상태도 유지');
   assert.deepEqual(page.errors, []);
 });
