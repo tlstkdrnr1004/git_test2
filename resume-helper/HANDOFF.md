@@ -16,7 +16,7 @@
    ```bash
    cd resume-helper
    npm install
-   npm test            # 자동 테스트 54개 (몇 분 걸림)
+   npm test            # 자동 테스트 56개 (몇 분 걸림)
    npm run audit       # 기능 전수 점검 109개 (간단·고급 모드)
    npm run chaos       # 기능끼리 얽히는 경우 점검
    npm run check-ids   # 화면 id 285개 중 빠진 것 0개
@@ -34,7 +34,7 @@
 | 무엇 | 신입 개발자(국비 KDT 과정 학생)용 **이력서 작성 도우미** 웹앱. 파일 하나(`resume-helper/index.html`)로 동작 |
 | 쓰는 사람 | KH정보교육원AX 부산지원 「K-디지털 트레이닝 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 5회차」 학생. 사용자는 이 도구를 학생들에게 나눠 줌 |
 | 쓰는 방법 | `index.html`을 내려받아 더블클릭(브라우저에서 열림). 서버 없음. 입력 내용은 그 브라우저의 localStorage에 저장 |
-| 지금 버전 | **v10.1 (2026.11.25)** — 화면 오른쪽 위에 표시, 내보낸 백업 파일에도 `appVersion`으로 남음 |
+| 지금 버전 | **v10.2 (2026.11.26)** — 화면 오른쪽 위에 표시, 내보낸 백업 파일에도 `appVersion`으로 남음 |
 | 크기 | `index.html` 약 1.3만 줄 (HTML + CSS + 바닐라 JS 하나의 IIFE) |
 | AI | 선택 기능. OpenRouter(`openrouter/free` 모델), 사용자가 자기 API 키를 넣음. 키가 없어도 대부분 기능은 동작 |
 | 저장소 | `tlstkdrnr1004/git_test2` (기본 브랜치 `main`) |
@@ -44,11 +44,11 @@
 .github/workflows/resume-helper-test.yml   # PR·main 푸시 때 npm test (Node 20, Chromium)
 resume-helper/
   index.html        # 앱 전체
-  CHANGELOG.md      # 사용자(학생)용 개선 내역 — 7차 → v10.1, v10 → v10.1
+  CHANGELOG.md      # 사용자(학생)용 개선 내역 — 7차 → v10.2, v10.1 → v10.2, v10 → v10.1
   CODE_REVIEW.md    # 개발 기록: 코드 리뷰, 차수별 업그레이드 상세, 미반영 제안, 검증 방법
   HANDOFF.md        # 이 문서
   package.json      # npm test / audit / chaos / check-ids (playwright 1.63.0)
-  tests/            # Playwright + node:test 자동 테스트 54개
+  tests/            # Playwright + node:test 자동 테스트 56개
   tools/            # audit.js(전수 점검 109), chaos.js(얽힘 점검), check-ids.js + ids-baseline.txt
 ```
 
@@ -109,6 +109,7 @@ resume-helper/
 | 11/25 | 버전 업데이트: ① PDF에서 모든 http·https 주소를 눌러 열기(모바일 터치 포함) ② 입력 내용을 사람인·잡코리아·호주·미국·일본 양식으로 자동 변환해 PDF로 ③ 전체 디버깅 후 리팩토링 | `PrintLinks`, `FormatExport`, 인쇄·측정·번역 버그 수정, 공통 함수로 리팩토링 → v10 |
 | 11/25 | "검사 안 한 테스트가 있다면 정밀히 테스트" | 정밀 테스트 13개 추가, 버그 9건 수정, 테스트 속 개인정보를 가짜 값으로 → v10.1. 간단 모드부터 여기까지 모두 **PR #8**(squash 머지, main `1a0f917`) |
 | 11/25 | "그전 버전에서 더 개선한 내용 작성" | `CHANGELOG.md` 작성 (7차 → v10.1 전체 + v10 → v10.1) |
+| 11/26 | (화면 캡처) 학력 정보 필수 빼기, 프로젝트 성과도 숫자 없이 되게 | 학력 정보를 선택 칸으로(비우면 접힘, "+ 학력"), 성과 숫자는 "(선택)" 추천으로만, PDF 저장 막지 않음 → v10.2 (PR #10에 포함) |
 | 11/26 | 다른 계정의 새 세션에서 이어 가기 위한 인수인계 | 이 문서 + 점검 도구(`tools/`)를 저장소에 올림 → **PR #10 (Draft)** |
 
 ---
@@ -125,7 +126,7 @@ resume-helper/
 | #6 | `f190194` | 6차 | 초안 제안 확대, 보충자료(AI 코드 검수) |
 | #7 | `84ca1ec` | 7차 | 말풍선 따라 쓰기 투어 |
 | #8 | `1a0f917` (squash) | 8차·9차·v10·v10.1 | 간단 모드, 칸 보완, PDF 주소 링크, 양식 5종, 디버깅, 정밀 테스트 |
-| #10 | (Draft) | — | `CHANGELOG.md`, `HANDOFF.md`, `tools/` 점검 도구 |
+| #10 | (Draft) | v10.2 | `CHANGELOG.md`, `HANDOFF.md`, `tools/` 점검 도구, 학력 정보·성과 숫자 필수 해제 |
 
 차수별 상세는 `CODE_REVIEW.md` 2장(2-1 ~ 2-9)에 있습니다.
 
@@ -209,7 +210,7 @@ resume-helper/
 
 | 명령 | 내용 | 기준 |
 |---|---|---|
-| `npm test` | `tests/*.test.js` 54개. 보안·기능·과정 정보·보충자료·투어·간단 모드·칸 보완·v10·정밀 테스트 | 모두 통과 |
+| `npm test` | `tests/*.test.js` 56개. 보안·기능·과정 정보·보충자료·투어·간단 모드·칸 보완·v10·정밀 테스트 | 모두 통과 |
 | `npm run audit` | `tools/audit.js`: 간단·고급 모드 각각에서 모든 기능을 실제로 실행 | 109 / 109 |
 | `npm run chaos` | `tools/chaos.js`: 옛 백업 가져오기, 버전 전환, 모바일 가로 넘침, Esc, 붙여넣기 등 | 모두 PASS, 오류 0 |
 | `npm run check-ids` | `tools/check-ids.js`: 화면 id가 기준 목록(`tools/ids-baseline.txt`)에서 빠졌는지 | 빠진 것 0개 |
@@ -226,7 +227,7 @@ resume-helper/
 - 헤드리스 Chromium에는 Translator API가 있지만 응답하지 않습니다. 테스트에서는 `addInitScript`로 `window.Translator`를 없애거나 가짜로 바꿉니다.
 - `page.emulateMedia({ media: 'screen' })` 뒤에 `page.pdf()`를 부르면 화면 스타일로 찍힙니다. 되돌릴 때는 `{ media: null }`을 씁니다.
 - 기본 예시 그대로면 PDF 사전 점검이 "PDF로 저장" 버튼(`#pdf-do-print`)을 막습니다.
-  - 테스트에서는 필수 칸을 채워야 합니다. 프로젝트 성과에는 숫자가 들어가야 합니다.
+  - 테스트에서는 필수 칸을 채워야 합니다. v10.2부터 학력 정보와 성과 숫자는 필수가 아닙니다.
   - 가짜 데이터 예: `tests/v10-deep.test.js`의 `REQUIRED_DUMMY`.
 - `FieldCollector`, `PrintVisibility`는 전역이 아닙니다. `UI.buildContentPayload()`, `window.ValidationEngine`, `window.PrintLinks` 등을 씁니다.
 - PDF 확인 방법:
@@ -241,7 +242,7 @@ resume-helper/
 1. 코드 수정
 2. 테스트 추가 (`tests/`에 새 파일 또는 기존 파일)
 3. `npm test` + `npm run audit` + `npm run chaos` + `npm run check-ids` 모두 통과
-4. `APP_VERSION` 올리기 (`index.html`의 `var APP_VERSION = 'v10.1 (2026.11.25)'`)
+4. `APP_VERSION` 올리기 (`index.html`의 `var APP_VERSION = 'v10.2 (2026.11.26)'`)
 5. `CODE_REVIEW.md`에 차수 절 추가 (문제 · 원인 · 고친 방법 표 + 확인 결과)
 6. `CHANGELOG.md`에 학생용 설명 추가 (쉬운 말)
 7. 커밋 → 푸시 → Draft PR → CI 확인 → 사용자에게 보고하고 `index.html`을 첨부로 전달
@@ -251,7 +252,7 @@ resume-helper/
 ## 9. 남은 일과 다음 후보
 
 ### 바로 처리할 것
-- **PR #10 머지:** `CHANGELOG.md`, `HANDOFF.md`, `tools/`. 사용자가 머지를 지시하면 처리합니다.
+- **PR #10 머지:** `CHANGELOG.md`, `HANDOFF.md`, `tools/`, v10.2(학력 정보·성과 숫자 필수 해제). 사용자가 머지를 지시하면 처리합니다.
 - **PR #8 커밋 기록 속 개인정보:**
   - v10 커밋(`2343184`)의 테스트 파일에 사용자 본인 이력서 정보가 들어 있었습니다. v10.1에서 가짜 값으로 바꿨고, main에는 squash 머지여서 들어가지 않았습니다.
   - 다만 PR #8의 커밋 목록과 작업 브랜치 기록에는 남아 있습니다.

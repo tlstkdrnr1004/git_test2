@@ -2602,7 +2602,7 @@
     <div class="header-photo" id="header-photo" hidden><img id="header-photo-img" alt="증명사진"></div>
     <div class="header-right">
       <div class="badge" contenteditable="true" data-field-id="header-badge" data-max-lines="1" data-guide-type="badge">신입 · 웹 백엔드 지원</div>
-      <div contenteditable="true" data-field-id="header-university" data-required="true" data-max-lines="2" data-guide-type="education-summary" data-storage-format="html" style="margin-top:3px;">[OO대학교] 졸업<br>[컴퓨터공학과 / 비전공]</div>
+      <div contenteditable="true" data-field-id="header-university" data-optional="true" data-max-lines="2" data-guide-type="education-summary" data-storage-format="html" style="margin-top:3px;">[OO대학교] 졸업<br>[컴퓨터공학과 / 비전공]</div>
     </div>
   </div>
   <div class="ai-feedback-container" data-section="header" style="display:none;"></div>
@@ -2730,7 +2730,7 @@
       <button type="button" id="add-personal-project-btn" class="project-add-btn">+ 개인 프로젝트 추가</button>
     </div>
 
-    <div class="guide">* 대표 프로젝트 1개는 반드시 정량 성과까지 작성하세요. 각 프로젝트는 문제/역할/구현/결과가 모두 보이도록 쓰고, 보조 프로젝트는 1~2개만 남기세요.</div>
+    <div class="guide">* 대표 프로젝트 1개는 성과까지 작성하세요(숫자가 있으면 더 좋지만 꼭 넣지 않아도 됩니다). 각 프로젝트는 문제/역할/구현/결과가 모두 보이도록 쓰고, 보조 프로젝트는 1~2개만 남기세요.</div>
     <div class="ai-feedback-container" data-section="projects" style="display:none;"></div>
   </div>
 
@@ -2836,7 +2836,7 @@
   };
   var STORAGE_VERSION = 2;
   // 화면 오른쪽 위와 내보낸 백업 파일에 표시되는 앱 버전 (CODE_REVIEW.md의 업그레이드 차수와 같다)
-  var APP_VERSION = 'v10.1 (2026.11.25)';
+  var APP_VERSION = 'v10.2 (2026.11.26)';
   var API_URL = 'https://openrouter.ai/api/v1/chat/completions';
   var MODEL = 'openrouter/free';
   var AI_TIMEOUT_MS = 45000;
@@ -3381,7 +3381,7 @@
       if (!hasContent && el.closest('[data-user-empty="true"]')) return; // 사용자가 지워서 접은 칸은 필수 점검에서 뺀다
 
       if (el.getAttribute('data-required') === 'true' && !hasContent) {
-        this.addMessage(result, fieldId, 'warnings', '필수 항목입니다. placeholder를 지우고 실제 내용을 입력하세요.');
+        this.addMessage(result, fieldId, 'warnings', '필수 항목입니다. 예시 문구를 지우고 실제 내용을 입력하세요.');
         return;
       }
       if (isOptional && !hasContent) return;
@@ -3434,7 +3434,7 @@
         }
       }
       if (guideType === 'project-result' && !containsMetric(text)) {
-        this.addMessage(result, fieldId, 'warnings', '성과 항목에는 숫자나 변화량을 꼭 넣어주세요. 예: `응답속도 1.2초 → 0.3초`. 아래 `성과 문장 추천` 버튼으로 문장 틀부터 잡아보세요.');
+        this.addMessage(result, fieldId, 'recommendations', '(선택) 숫자나 변화량이 있으면 더 잘 보입니다. 예: `응답속도 1.2초 → 0.3초`. 숫자가 없으면 지금처럼 써도 됩니다.');
       }
       if (guideType === 'education-detail' && text.indexOf('시간') === -1 && text.indexOf('학점') === -1 && text.indexOf('졸업') === -1) {
         this.addMessage(result, fieldId, 'recommendations', '교육 상세에는 수업 시간, 학점, 학위처럼 판단 근거가 되는 정보를 남겨주세요.');
@@ -3556,7 +3556,7 @@
       if (warningCount === 0 && recommendationCount === 0) {
         result.overall = '필수 항목과 형식 점검을 모두 통과했습니다. 이제 숫자와 기여도를 마지막으로 다듬은 뒤 PDF로 저장하면 됩니다.';
       } else if (warningCount > 0) {
-        result.overall = '필수 수정 ' + warningCount + '건, 개선 추천 ' + recommendationCount + '건이 있습니다. 대표 프로젝트 성과, 연락처 형식, placeholder가 남은 부분부터 먼저 정리하세요.';
+        result.overall = '필수 수정 ' + warningCount + '건, 개선 추천 ' + recommendationCount + '건이 있습니다. 연락처 형식과 예시 문구가 남은 부분부터 먼저 정리하세요.';
       } else {
         result.overall = '필수 오류는 없지만 더 좋아질 포인트가 ' + recommendationCount + '건 있습니다. 문장 압축과 역할/성과 표현을 조금만 다듬으면 훨씬 강해집니다.';
       }
@@ -3635,10 +3635,10 @@
           }
         },
         {
-          label: '대표 프로젝트 정량 성과',
+          label: '대표 프로젝트 성과',
           weight: 14,
           ok: function() {
-            return FieldCollector.hasRealContent('project-1-result', fields) && containsMetric(fields['project-1-result']);
+            return FieldCollector.hasRealContent('project-1-result', fields);
           }
         },
         {
@@ -3711,7 +3711,6 @@
       if (!isValidEmail(fields['header-email'] || '')) blocking.push('이메일 형식');
       if (!isValidPhone(fields['header-phone'] || '')) blocking.push('전화번호 형식');
       if (!isValidGithubUrl(fields['header-github'] || '')) blocking.push('GitHub 주소');
-      if (!containsMetric(fields['project-1-result'] || '')) blocking.push('대표 프로젝트 정량 성과');
       if (report.overflow.overflow) warnings.push('현재 내용은 A4 한 페이지를 초과할 가능성이 있습니다. 문장을 줄이거나 보조 프로젝트를 정리해보세요.');
       if (report.score < 85) warnings.push('완성도 ' + report.score + '%입니다. PDF 저장 전 빠른 점검 결과를 한 번 더 확인해보세요.');
 
@@ -5832,7 +5831,7 @@
       html += '<div style="background:#f7f9fc;border-radius:8px;padding:12px;text-align:left;margin-bottom:16px;font-size:9pt;color:#555;line-height:1.7;">';
       html += '<strong style="color:#1a365d;">다음 단계:</strong><br>';
       html += '\u2022 이력서의 각 항목을 <strong>직접 클릭</strong>하면 수정할 수 있습니다<br>';
-      html += '\u2022 우측 패널의 <strong>"빠른 점검 실행"</strong>으로 필수 항목과 정량 성과를 먼저 확인하세요<br>';
+      html += '\u2022 우측 패널의 <strong>"빠른 점검 실행"</strong>으로 필수 항목을 먼저 확인하세요<br>';
       html += '\u2022 프로젝트 설명이 필요하면 <strong>"프로젝트 README 도구"</strong>로 README 초안을 만들어보세요<br>';
       html += '\u2022 점검이 끝나면 <strong>"PDF로 저장하기"</strong> 버튼으로 다운로드하세요';
       html += '</div>';
@@ -12791,8 +12790,8 @@
   //  - 지운 칸(연락처 점, 배지 동그라미, 비어 버린 프로젝트 칸)이 화면에 남지 않게 접고, 버튼으로 되살린다
   //  - 삭제 버튼이 없던 고정 행(프로젝트 2~3, 교육·자격증·문서 기본 행)에 삭제 버튼을 단다
   var ItemTools = {
-    headerFieldIds: ['header-age', 'header-blog', 'header-saramin', 'header-military', 'header-badge'],
-    chipText: { 'header-age': '+ 나이', 'header-blog': '+ 블로그', 'header-saramin': '+ 사람인', 'header-military': '+ 병역', 'header-badge': '+ 지원 배지' },
+    headerFieldIds: ['header-age', 'header-blog', 'header-saramin', 'header-military', 'header-badge', 'header-university'],
+    chipText: { 'header-age': '+ 나이', 'header-blog': '+ 블로그', 'header-saramin': '+ 사람인', 'header-military': '+ 병역', 'header-badge': '+ 지원 배지', 'header-university': '+ 학력' },
     sectionItems: [['projects', '.project-item', '프로젝트'], ['education', '.edu-row', '교육'], ['certification', '.cert-row', '자격증'], ['documents', '.doc-row', '기타 문서']],
     STATIC_ITEMS: '.project-item:not([data-dynamic-item]), .edu-row:not([data-dynamic-item]), .cert-row:not([data-dynamic-item]), .doc-row:not([data-dynamic-item])',
 
