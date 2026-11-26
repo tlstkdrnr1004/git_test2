@@ -3,7 +3,10 @@
   "private": true,
   "description": "신입 개발자 이력서 작성 도우미 (단일 HTML) 회귀 테스트",
   "scripts": {
-    "test": "node --test --test-concurrency=1 tests/*.test.js"
+    "test": "node --test --test-concurrency=1 tests/*.test.js",
+    "audit": "node tools/audit.js",
+    "chaos": "node tools/chaos.js",
+    "check-ids": "node tools/check-ids.js"
   },
   "devDependencies": {
     "playwright": "1.63.0"
