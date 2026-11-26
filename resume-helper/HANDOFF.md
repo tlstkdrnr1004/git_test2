@@ -10,13 +10,13 @@
 1. **저장소 접근 확인:** `tlstkdrnr1004/git_test2`.
    - 새 계정의 GitHub 연결에서 이 저장소가 보여야 합니다.
    - GitHub 사용자가 달라지면, 저장소 주인이 그 사용자를 Collaborator로 초대하고 Claude GitHub App을 이 저장소에 설치해야 합니다.
-2. **열린 PR 확인:** 이 문서를 올린 PR(#10, `ccr-25e5d1af-g7ljt5` → `main`)이 머지됐는지 봅니다.
+2. **열린 PR 확인:** `main`으로 가는 열린 PR(작업 브랜치 `ccr-25e5d1af-g7ljt5`)이 있는지, 머지됐는지 봅니다. PR #10까지는 머지 완료.
    - 머지 전이면 CI 통과를 확인하고 머지합니다(사용자가 "PR 머지해줘"라고 하면).
 3. **설치와 시험:** 아래가 모두 통과하는지 확인합니다. 통과해야 "출발점이 정상"입니다.
    ```bash
    cd resume-helper
    npm install
-   npm test            # 자동 테스트 56개 (몇 분 걸림)
+   npm test            # 자동 테스트 58개 (몇 분 걸림)
    npm run audit       # 기능 전수 점검 109개 (간단·고급 모드)
    npm run chaos       # 기능끼리 얽히는 경우 점검
    npm run check-ids   # 화면 id 285개 중 빠진 것 0개
@@ -34,7 +34,7 @@
 | 무엇 | 신입 개발자(국비 KDT 과정 학생)용 **이력서 작성 도우미** 웹앱. 파일 하나(`resume-helper/index.html`)로 동작 |
 | 쓰는 사람 | KH정보교육원AX 부산지원 「K-디지털 트레이닝 클라우드 네이티브 풀스택 & DevOps 개발자 아카데미 5회차」 학생. 사용자는 이 도구를 학생들에게 나눠 줌 |
 | 쓰는 방법 | `index.html`을 내려받아 더블클릭(브라우저에서 열림). 서버 없음. 입력 내용은 그 브라우저의 localStorage에 저장 |
-| 지금 버전 | **v10.2 (2026.11.26)** — 화면 오른쪽 위에 표시, 내보낸 백업 파일에도 `appVersion`으로 남음 |
+| 지금 버전 | **v10.3 (2026.11.26)** — 화면 오른쪽 위에 표시, 내보낸 백업 파일에도 `appVersion`으로 남음 |
 | 크기 | `index.html` 약 1.3만 줄 (HTML + CSS + 바닐라 JS 하나의 IIFE) |
 | AI | 선택 기능. OpenRouter(`openrouter/free` 모델), 사용자가 자기 API 키를 넣음. 키가 없어도 대부분 기능은 동작 |
 | 저장소 | `tlstkdrnr1004/git_test2` (기본 브랜치 `main`) |
@@ -48,7 +48,7 @@ resume-helper/
   CODE_REVIEW.md    # 개발 기록: 코드 리뷰, 차수별 업그레이드 상세, 미반영 제안, 검증 방법
   HANDOFF.md        # 이 문서
   package.json      # npm test / audit / chaos / check-ids (playwright 1.63.0)
-  tests/            # Playwright + node:test 자동 테스트 56개
+  tests/            # Playwright + node:test 자동 테스트 58개
   tools/            # audit.js(전수 점검 109), chaos.js(얽힘 점검), check-ids.js + ids-baseline.txt
 ```
 
@@ -110,7 +110,8 @@ resume-helper/
 | 11/25 | "검사 안 한 테스트가 있다면 정밀히 테스트" | 정밀 테스트 13개 추가, 버그 9건 수정, 테스트 속 개인정보를 가짜 값으로 → v10.1. 간단 모드부터 여기까지 모두 **PR #8**(squash 머지, main `1a0f917`) |
 | 11/25 | "그전 버전에서 더 개선한 내용 작성" | `CHANGELOG.md` 작성 (7차 → v10.1 전체 + v10 → v10.1) |
 | 11/26 | (화면 캡처) 학력 정보 필수 빼기, 프로젝트 성과도 숫자 없이 되게 | 학력 정보를 선택 칸으로(비우면 접힘, "+ 학력"), 성과 숫자는 "(선택)" 추천으로만, PDF 저장 막지 않음 → v10.2 (PR #10에 포함) |
-| 11/26 | 다른 계정의 새 세션에서 이어 가기 위한 인수인계 | 이 문서 + 점검 도구(`tools/`)를 저장소에 올림 → **PR #10 (Draft)** |
+| 11/26 | PDF에서 링크 주소가 안 보여 복사해야 하고, 복사해 넣어도 접속이 안 됨 | 링크를 파란색·밑줄로, PDF 저장 창에 "누를 수 있는 주소" 확인 목록, PDF 프린터·비공개 저장소 안내, 보이지 않는 글자 제거 → v10.3 |
+| 11/26 | 다른 계정의 새 세션에서 이어 가기 위한 인수인계 | 이 문서 + 점검 도구(`tools/`)를 저장소에 올림 → **PR #10** (머지 완료) |
 
 ---
 
@@ -126,7 +127,7 @@ resume-helper/
 | #6 | `f190194` | 6차 | 초안 제안 확대, 보충자료(AI 코드 검수) |
 | #7 | `84ca1ec` | 7차 | 말풍선 따라 쓰기 투어 |
 | #8 | `1a0f917` (squash) | 8차·9차·v10·v10.1 | 간단 모드, 칸 보완, PDF 주소 링크, 양식 5종, 디버깅, 정밀 테스트 |
-| #10 | (Draft) | v10.2 | `CHANGELOG.md`, `HANDOFF.md`, `tools/` 점검 도구, 학력 정보·성과 숫자 필수 해제 |
+| #10 | `09136bb` (squash) | v10.2 | `CHANGELOG.md`, `HANDOFF.md`, `tools/` 점검 도구, 학력 정보·성과 숫자 필수 해제 |
 
 차수별 상세는 `CODE_REVIEW.md` 2장(2-1 ~ 2-9)에 있습니다.
 
@@ -210,7 +211,7 @@ resume-helper/
 
 | 명령 | 내용 | 기준 |
 |---|---|---|
-| `npm test` | `tests/*.test.js` 56개. 보안·기능·과정 정보·보충자료·투어·간단 모드·칸 보완·v10·정밀 테스트 | 모두 통과 |
+| `npm test` | `tests/*.test.js` 58개. 보안·기능·과정 정보·보충자료·투어·간단 모드·칸 보완·v10·정밀 테스트 | 모두 통과 |
 | `npm run audit` | `tools/audit.js`: 간단·고급 모드 각각에서 모든 기능을 실제로 실행 | 109 / 109 |
 | `npm run chaos` | `tools/chaos.js`: 옛 백업 가져오기, 버전 전환, 모바일 가로 넘침, Esc, 붙여넣기 등 | 모두 PASS, 오류 0 |
 | `npm run check-ids` | `tools/check-ids.js`: 화면 id가 기준 목록(`tools/ids-baseline.txt`)에서 빠졌는지 | 빠진 것 0개 |
@@ -242,7 +243,7 @@ resume-helper/
 1. 코드 수정
 2. 테스트 추가 (`tests/`에 새 파일 또는 기존 파일)
 3. `npm test` + `npm run audit` + `npm run chaos` + `npm run check-ids` 모두 통과
-4. `APP_VERSION` 올리기 (`index.html`의 `var APP_VERSION = 'v10.2 (2026.11.26)'`)
+4. `APP_VERSION` 올리기 (`index.html`의 `var APP_VERSION = 'v10.3 (2026.11.26)'`)
 5. `CODE_REVIEW.md`에 차수 절 추가 (문제 · 원인 · 고친 방법 표 + 확인 결과)
 6. `CHANGELOG.md`에 학생용 설명 추가 (쉬운 말)
 7. 커밋 → 푸시 → Draft PR → CI 확인 → 사용자에게 보고하고 `index.html`을 첨부로 전달
@@ -252,7 +253,7 @@ resume-helper/
 ## 9. 남은 일과 다음 후보
 
 ### 바로 처리할 것
-- **PR #10 머지:** `CHANGELOG.md`, `HANDOFF.md`, `tools/`, v10.2(학력 정보·성과 숫자 필수 해제). 사용자가 머지를 지시하면 처리합니다.
+- **v10.3 PR 머지:** PDF 링크 표시·주소 확인 목록. 사용자가 머지를 지시하면 처리합니다. (PR #10은 머지 완료)
 - **PR #8 커밋 기록 속 개인정보:**
   - v10 커밋(`2343184`)의 테스트 파일에 사용자 본인 이력서 정보가 들어 있었습니다. v10.1에서 가짜 값으로 바꿨고, main에는 squash 머지여서 들어가지 않았습니다.
   - 다만 PR #8의 커밋 목록과 작업 브랜치 기록에는 남아 있습니다.
