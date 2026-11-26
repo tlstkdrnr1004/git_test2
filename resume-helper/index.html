@@ -1087,6 +1087,11 @@
     margin-bottom: 16px;
     text-align: center;
   }
+  .pdf-link-box { max-height: 170px; overflow-y: auto; }
+  .pdf-link-box ul { margin: 4px 0 0; padding-left: 18px; }
+  .pdf-link-box li { word-break: break-all; }
+  .pdf-link-hint { color: #4a5568; margin-top: 2px; }
+  .pdf-check-link { color: #1a56db; text-decoration: underline; }
   .pdf-preflight-box {
     font-size: 8.5pt;
     line-height: 1.6;
@@ -1690,7 +1695,7 @@
   .fx-dot { color: #a0aec0; }
   .fx-blank { background: #fefcbf; border-bottom: 1px dashed #d69e2e; color: #744210; }
   .fx-untr { background: #feebc8; }
-  .fx-link { color: #2b6cb0; text-decoration: none; }
+  .fx-link { color: #1a56db; text-decoration: underline; text-underline-offset: 2px; }
   .fx-en { font-family: Calibri, 'Segoe UI', Arial, 'Malgun Gothic', sans-serif; }
   .fx-en-head { text-align: center; margin-bottom: 8px; }
   .fx-en-head h1 { font-size: 20pt; color: #1a202c; }
@@ -1723,7 +1728,8 @@
   }
 
   /* ===== 인쇄용 링크 · 버전 표시 ===== */
-  a.print-link { color: inherit; text-decoration: none; }
+  a.print-link { color: #1a56db; text-decoration: underline; text-underline-offset: 2px; }
+  .page.theme-modern .header a.print-link { color: #fff; }
   .page.measuring-print [contenteditable="true"]:not(.project-result):not(.badge) { border: none !important; }
   .panel-version { font-size: 7pt; font-weight: 600; color: #a0aec0; margin-left: 4px; }
 
@@ -2212,12 +2218,13 @@
     </div>
     <div class="pdf-step">
       <span class="pdf-step-num">2</span>
-      <div class="pdf-step-text"><strong>"대상"</strong> 또는 <strong>"프린터"</strong> 항목에서<br><strong>"PDF로 저장"</strong>을 선택하세요</div>
+      <div class="pdf-step-text"><strong>"대상"</strong> 또는 <strong>"프린터"</strong> 항목에서<br><strong>"PDF로 저장"</strong>을 선택하세요<br><span style="color:#c53030;">"Microsoft Print to PDF"나 다른 PDF 프린터를 고르면 주소를 눌러도 열리지 않습니다.</span></div>
     </div>
     <div class="pdf-step">
       <span class="pdf-step-num">3</span>
       <div class="pdf-step-text"><strong>"저장"</strong> 버튼을 눌러 원하는 위치에 저장하세요<br><span style="color:#4a5568;">PDF 속 http·https 주소(GitHub·블로그·문서 링크)와 이메일은 누르면 바로 열립니다.</span></div>
     </div>
+    <div id="pdf-link-check" class="pdf-preflight-box pdf-link-box"></div>
     <div id="pdf-preflight-status" class="pdf-preflight-box">저장 전에 빠른 점검 결과를 불러옵니다.</div>
     <div class="pdf-guide-btns">
       <button class="pdf-print-btn" id="pdf-do-print">인쇄 화면 열기</button>
@@ -2836,7 +2843,7 @@
   };
   var STORAGE_VERSION = 2;
   // 화면 오른쪽 위와 내보낸 백업 파일에 표시되는 앱 버전 (CODE_REVIEW.md의 업그레이드 차수와 같다)
-  var APP_VERSION = 'v10.2 (2026.11.26)';
+  var APP_VERSION = 'v10.3 (2026.11.26)';
   var API_URL = 'https://openrouter.ai/api/v1/chat/completions';
   var MODEL = 'openrouter/free';
   var AI_TIMEOUT_MS = 45000;
@@ -4659,6 +4666,7 @@
           Storage.save(STORAGE_KEYS.FEEDBACK, preflight.validation);
           self.updateCompleteness();
           self.renderPdfPreflight(preflight, preflightBox, printBtn);
+          PrintLinks.renderCheckList(document.getElementById('pdf-link-check'));
           overlay.classList.add('active');
         });
       }
@@ -11954,9 +11962,11 @@
     },
 
     // root 안의 글자에서 주소를 찾아 링크로 감싼다. 감싼 개수를 돌려준다.
-    wrapText: function(root) {
+    // list가 배열이면 감싸지 않고 주소만 모은다 (PDF 저장 창의 "주소 확인" 목록)
+    wrapText: function(root, list) {
       var self = this;
       var count = 0;
+      var INVISIBLE = /[\u200B-\u200D\u2060\uFEFF\u00AD]/g;
       var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
         acceptNode: function(node) {
           var parent = node.parentNode;
@@ -11972,8 +11982,9 @@
         var changed = false;
         parts.forEach(function(part) {
           if (!part) return;
-          var t = /^\s+$/.test(part) ? null : self.splitToken(part);
+          var t = /^\s+$/.test(part) ? null : self.splitToken(part.replace(INVISIBLE, ''));
           var href = t ? self.toHref(t.core) : '';
+          if (href && list) { list.push(href); return; }
           if (!href) { frag.appendChild(document.createTextNode(part)); return; }
           if (t.lead) frag.appendChild(document.createTextNode(t.lead));
           frag.appendChild(self.makeLink(href, t.core));
@@ -11981,9 +11992,53 @@
           changed = true;
           count++;
         });
-        if (changed) node.parentNode.replaceChild(frag, node);
+        if (changed && !list) node.parentNode.replaceChild(frag, node);
       });
       return count;
+    },
+
+    // PDF에 실제로 들어갈(인쇄에서 숨지 않는) 칸의 주소 목록. 화면은 바꾸지 않는다.
+    collect: function(root) {
+      root = root || document.querySelector('.page');
+      var list = [];
+      if (!root) return list;
+      var self = this;
+      if (typeof PrintVisibility !== 'undefined' && PrintVisibility.sync) PrintVisibility.sync();
+      root.querySelectorAll('[data-field-id]').forEach(function(el) {
+        if (el.classList.contains('is-placeholder') || el.closest(PRINT_HIDE_SELECTOR + ', .hidden-section, [data-user-empty="true"]')) return;
+        self.wrapText(el, list);
+      });
+      var email = root.querySelector('[data-field-id="header-email"]');
+      var text = email && normalizeWhitespace(email.textContent);
+      if (email && isValidEmail(text) && !/[\[\]<>()"'\s]/.test(text) && !email.classList.contains('is-placeholder')) list.push('mailto:' + text);
+      return list.filter(function(h, i) { return list.indexOf(h) === i; });
+    },
+
+    // PDF 저장 창: 누를 수 있게 될 주소를 보여 주고, 하나씩 열어 확인하게 한다
+    renderCheckList: function(box) {
+      if (!box) return;
+      var links = this.collect();
+      box.innerHTML = '';
+      var title = document.createElement('strong');
+      title.textContent = 'PDF에서 누를 수 있는 주소 ' + links.length + '개';
+      box.appendChild(title);
+      if (!links.length) {
+        box.appendChild(document.createElement('br'));
+        box.appendChild(document.createTextNode('아직 주소가 없습니다. GitHub·블로그·문서 칸에 https://로 시작하는 주소를 적으세요.'));
+        return;
+      }
+      var hint = document.createElement('div');
+      hint.className = 'pdf-link-hint';
+      hint.textContent = '저장 전에 하나씩 눌러 열리는지 확인하세요. 404가 나오면 주소 오타이거나 비공개(Private) 저장소입니다. 다른 사람도 보려면 GitHub에서 Public으로 바꾸세요.';
+      box.appendChild(hint);
+      var ul = document.createElement('ul');
+      links.forEach(function(href) {
+        var li = document.createElement('li');
+        li.appendChild(PrintLinks.makeLink(href, href.replace(/^mailto:/, '')));
+        li.firstChild.className = 'pdf-check-link';
+        ul.appendChild(li);
+      });
+      box.appendChild(ul);
     },
 
     apply: function(root) {

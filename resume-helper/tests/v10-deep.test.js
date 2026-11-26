@@ -3,7 +3,7 @@ const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
-const { launch } = require('./helpers');
+const { launch, reloadKeepingStorage } = require('./helpers');
 
 const URL = pathToFileURL(path.join(__dirname, '..', 'index.html')).href;
 let browser;
@@ -343,7 +343,7 @@ test('번역은 새로 고침 뒤에도 기억되어 다시 번역하지 않는�
   await page.waitForFunction(() => !FormatExport.busy && document.querySelectorAll('#format-doc .fx-untr').length === 0);
   const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('resume-format-translations')));
   assert.ok(stored.en['저장되는 번역 시험 문장입니다.']);
-  await page.reload();
+  await reloadKeepingStorage(page); // 헤드리스 file:// localStorage 유실 피하기 (helpers.js 참고)
   await page.click('#format-open-btn');
   await page.click('#format-tabs .tool-tab[data-format="us"]');
   await page.waitForFunction(() => !FormatExport.busy);
