@@ -2843,7 +2843,7 @@
   };
   var STORAGE_VERSION = 2;
   // 화면 오른쪽 위와 내보낸 백업 파일에 표시되는 앱 버전 (CODE_REVIEW.md의 업그레이드 차수와 같다)
-  var APP_VERSION = 'v10.3 (2026.11.26)';
+  var APP_VERSION = 'v10.4 (2026.11.26)';
   var API_URL = 'https://openrouter.ai/api/v1/chat/completions';
   var MODEL = 'openrouter/free';
   var AI_TIMEOUT_MS = 45000;
@@ -4674,6 +4674,7 @@
       printBtn.addEventListener('click', function() {
         if (printBtn.disabled) return;
         overlay.classList.remove('active');
+        PrintLinks.apply(); // 인쇄 신호를 기다리지 않고 미리 주소를 링크로 감싼다
         setTimeout(function() { window.print(); }, 300);
       });
 
@@ -12070,8 +12071,20 @@
 
     init: function() {
       var self = this;
-      window.addEventListener('beforeprint', function() { if (!document.body.classList.contains('fx-printing')) self.apply(); });
-      window.addEventListener('afterprint', function() { self.remove(document.querySelector('.page')); });
+      var before = function() { if (!document.body.classList.contains('fx-printing')) self.apply(); };
+      var after = function() { self.remove(document.querySelector('.page')); };
+      window.addEventListener('beforeprint', before);
+      window.addEventListener('afterprint', after);
+      // 인쇄 신호(beforeprint)가 늦거나 없는 브라우저에서도 링크가 들어가게: 인쇄 모양으로 바뀌는 순간과
+      // Ctrl/Cmd+P를 누르는 순간에도 미리 감싼다
+      if (window.matchMedia) {
+        var mq = window.matchMedia('print');
+        var onChange = function(e) { if (e.matches) before(); };
+        if (mq.addEventListener) mq.addEventListener('change', onChange); else if (mq.addListener) mq.addListener(onChange);
+      }
+      document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && !e.altKey && (e.key === 'p' || e.key === 'P')) before();
+      }, true);
     }
   };
   window.PrintLinks = PrintLinks;
